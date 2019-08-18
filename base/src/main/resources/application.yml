@@ -1,0 +1,9 @@
+server:
+  port: 80
+  servlet:
+    context-path: /
+
+pwd:
+  my-config:
+    str: this is str!
+    integer: 12
