@@ -1,9 +1,12 @@
 package pwd.allen.property;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Email;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +26,19 @@ import java.util.Map;
 // Canonical names should be kebab-case ('-' separated), lowercase alpha-numeric characters and must start with a letter
 @ConfigurationProperties("pwd.my-config")
 @Data
+//@Validated
 public class MyProperties {
 
+
+//                                                  @ConfigurationProperties	 @Value
+//    功能	                                        批量注入配置文件中的属性	     一个个指定
+//    松散绑定（例如驼峰、-或者_分隔、不区分大小写）	支持	                         不支持
+//    SpEL	                                        不支持	                     支持
+//    JSR303数据校验	                                支持	                         不支持（新版本支持）
+//    复杂类型封装	                                支持                         不支持
+
+    @Email
+    @Value("os.name=${os.name}")//ConfigurationProperties的赋值会覆盖@Value的
     private String myStr;
     private Integer integer;
     private Boolean bool;

@@ -6,10 +6,8 @@ server:
 
 pwd:
   my-config:
-    #my-str或者myStr都可以
-    my-str: >
-      this is str!
-      sdf
+    #my-str或者myStr都可以 可以用${key}从环境变量、配置文件中，也可以使用${random.int[1,100]}这种随机数占位符，但是#{spEL}无效
+#    my-str: this is str!${os.name}#{os.name}#{12+1}${12+1}${pwd.my-config.map1.age}${random.uuid}
     integer: 12
     bool: false
     date: 2019/08/21
