@@ -3,6 +3,7 @@ package pwd.allen.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +24,7 @@ public class MyController {
     @Autowired
     private MyProperties myProperties;
 
-    @RequestMapping("myConfig")
+    @RequestMapping(value = "myConfig", produces = MediaType.APPLICATION_JSON_VALUE)
     public Object showMyConfig(@RequestParam Map paramMap) {
 
         logger.info("paramMap {}", paramMap);

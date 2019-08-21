@@ -3,7 +3,20 @@ server:
   servlet:
     context-path: /
 
+
 pwd:
   my-config:
-    str: this is str!
+    my-str: this is str! #my-str或者myStr都可以
     integer: 12
+    bool: false
+    date: 2019/08/21
+    map1:
+      name: pw蛋
+      age: 18
+    map2: {name: pw蛋,age: 18}
+    list1:
+      - "one\none"
+      - 'two\ntwo'
+      - three\nthree
+    list2: [one,two] #todo复合集合类型报错
+
