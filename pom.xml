@@ -40,6 +40,8 @@
 
         <!--
         导入配置文件处理器，配置文件进行绑定就会有提示
+        原理：引入该插件后会自动帮我们项目生成spring-configuration-metadata.json文件（位于META-INF目录下）
+        这些文件IDE能识别并给出提示
          -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

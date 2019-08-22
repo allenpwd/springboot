@@ -1,0 +1,10 @@
+# 当spring.profiles.active包含dev时，该配置文件会被加载
+pwd:
+  my-config:
+    #my-str或者myStr都可以 可以用${key}从环境变量、配置文件中，也可以使用${random.int[1,100]}这种随机数占位符，但是#{spEL}无效
+    my-str: this is application-dev.yml
+
+controller:
+  MyController:
+    enabled: false
+    strValue: i am a controller!
