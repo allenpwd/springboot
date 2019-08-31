@@ -1,0 +1,16 @@
+所有 /webjars/** ，都去 classpath:/META-INF/resources/webjars/ 找资源；
+webjars：以jar包的方式引入静态资源；
+
+
+"/**" 访问当前项目的任何资源，都去（静态资源的文件夹）找映射
+"classpath:/META-INF/resources/",
+"classpath:/resources/",
+"classpath:/static/",
+"classpath:/public/"
+"/"：当前项目的根路径
+
+
+欢迎页； 静态资源文件夹下的所有index.html页面；被"/**"映射；
+
+
+所有的 **/favicon.ico 都是在静态资源文件下找；

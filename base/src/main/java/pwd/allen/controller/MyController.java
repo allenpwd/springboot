@@ -26,7 +26,7 @@ public class MyController {
 
     private static final Logger logger = LoggerFactory.getLogger(MyController.class);
 
-    //#{spEL} spEL里可以有${key}引用属性值
+    //#{spEL} spEL里可以用${key}引用属性值
     @Value("strValue=${controller.MyController.strValue}\nifEnable=#{${controller.MyController.enabled}==true}")
     private String strValue;
 

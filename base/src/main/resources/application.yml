@@ -36,4 +36,7 @@ pwd:
         换行被空格替换
     #todo复合集合类型报错
     list2: [one,two]
+    error-properties:
+      include-exception: true
+      path: /errors
 

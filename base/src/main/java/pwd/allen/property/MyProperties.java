@@ -2,7 +2,9 @@ package pwd.allen.property;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -47,6 +49,12 @@ public class MyProperties {
     private Map map2;
     private List list1;
     private List list2;
+
+    /**
+     * 不知道这个注解有何用 不加上也能正常嵌套赋值
+     */
+    @NestedConfigurationProperty
+    private ErrorProperties errorProperties = new ErrorProperties();
 }
 
 

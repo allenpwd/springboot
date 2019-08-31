@@ -6,5 +6,5 @@ pwd:
 
 controller:
   MyController:
-    enabled: false
+    enabled: true
     strValue: i am a controller!
