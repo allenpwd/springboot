@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.allen.hellospringbootstarterautoconfigurer.HelloService;
 import pwd.allen.property.MyProperties;
 
 import java.util.Map;
@@ -33,12 +34,18 @@ public class MyController {
     @Autowired
     private MyProperties myProperties;
 
+    @Autowired
+    private HelloService helloService;
+
     @RequestMapping(value = "myConfig", produces = MediaType.APPLICATION_JSON_VALUE)
     public Object showMyConfig(@RequestParam Map paramMap) {
 
         logger.info("paramMap {}", paramMap);
 
-        return myProperties;
+        paramMap.put("myProperties", myProperties);
+        paramMap.put("sayHello", helloService.getHelloStr("门那粒沙"));
+
+        return paramMap;
     }
 
 }

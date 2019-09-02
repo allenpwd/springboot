@@ -16,6 +16,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <!-- 引入自定义的启动器 -->
+        <dependency>
+            <groupId>pwd.allen</groupId>
+            <artifactId>hello-spring-boot-starter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 

@@ -40,3 +40,6 @@ pwd:
       include-exception: true
       path: /errors
 
+hello:
+  prefix: 自定义场景启动器的前缀
+  suffix: 自定义场景启动器的后缀
