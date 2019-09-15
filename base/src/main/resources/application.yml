@@ -43,3 +43,15 @@ pwd:
 hello:
   prefix: 自定义场景启动器的前缀
   suffix: 自定义场景启动器的后缀
+
+info:
+  myInfo:
+    test: spring-boot-actuator
+
+management:
+  endpoints:
+    web:
+      exposure:
+        #暴露所有端口，作用相当于低版本的management.security.enabled=false
+        include: '*'
+

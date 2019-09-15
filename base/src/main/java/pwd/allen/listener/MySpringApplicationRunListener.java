@@ -6,7 +6,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
- * 可以监控各种事件
+ * 作用：监控各种事件
  * 需要配置在META-INF/spring.factories中
  *
  * @author 门那粒沙

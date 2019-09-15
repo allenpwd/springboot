@@ -20,7 +20,7 @@ import java.util.Map;
  * @create 2019-02-14 16:03
  **/
 //@ConditionalOnExpression("${controller.MyController.enabled}==true")    //开启的条件是：controller.MyController.enabled=true
-@ConditionalOnProperty(prefix = "controller.MyController", value = "enabled", matchIfMissing = true)    //默认也会开启
+//@ConditionalOnProperty(prefix = "controller.MyController", value = "enabled", matchIfMissing = true)    //默认也会开启
 @RequestMapping("my")
 @RestController
 public class MyController {

@@ -4,8 +4,10 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
- * ioc容器fresh之前做处理
+ * 回调时机：ioc容器fresh之前
  * 需要配置在META-INF/spring.factories中
+ *      org.springframework.context.ApplicationContextInitializer=\
+ *      pwd.allen.listener.MyApplicationContextInitializer
  *
  * @author 门那粒沙
  * @create 2019-09-01 21:35

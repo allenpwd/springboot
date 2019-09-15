@@ -54,5 +54,5 @@
         <appender-ref ref="stdout" />
         <appender-ref ref="file" />
     </root>
-    <logger name="pwd.allen.controller" level="ERROR" />
+    <logger name="pwd.allen.controller" level="DEBUG" />
 </configuration>
