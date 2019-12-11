@@ -40,6 +40,7 @@ public class MyController {
 
         logger.info("paramMap {}", paramMap);
 
+        paramMap.put("strValue", strValue);
         paramMap.put("myProperties", myProperties);
         paramMap.put("sayHello", helloService.getHelloStr("门那粒沙"));
 
