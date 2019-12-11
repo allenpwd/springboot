@@ -1,4 +1,4 @@
-package pwd.allen.hellospringbootstarterautoconfigurer;
+package pwd.allen;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

@@ -1,4 +1,4 @@
-package pwd.allen.hellospringbootstarterautoconfigurer;
+package pwd.allen;
 
 import lombok.Data;
 

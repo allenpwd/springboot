@@ -11,7 +11,7 @@ import pwd.allen.property.MyProperties;
  **/
 @ConditionalOnWebApplication
 @Configuration
-@EnableConfigurationProperties(MyProperties.class)
-public class HelloServiceAutoConfiguration {
+@EnableConfigurationProperties(MyProperties.class)//加入自定义配置类
+public class MyAutoConfiguration {
 
 }

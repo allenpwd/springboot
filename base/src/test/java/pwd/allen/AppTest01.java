@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pwd.allen.property.MyProperties;
 
+import java.io.File;
+
 /**
  * @author 门那粒沙
  * @create 2019-08-18 22:46
@@ -25,6 +27,12 @@ public class AppTest01 {
     @Test
     public void test() {
         logger.info("myProperties {}", myProperties);
+    }
+
+    @Test
+    public void test2() {
+        File file = new File("C:\\Users\\lenovo\\Desktop\\git\\.");
+        System.out.println(file.getAbsolutePath());
     }
 
 }
