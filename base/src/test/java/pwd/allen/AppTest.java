@@ -1,5 +1,6 @@
 package pwd.allen;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.results.ResultMatchers;
 import org.junit.runner.RunWith;
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,8 +33,6 @@ import java.io.File;
 @RunWith(SpringRunner.class)
 //SpringBoot1.4版本之前用的是@SpringApplicationConfiguration(classes = Application.class)
 @SpringBootTest
-//测试环境使用，用来表示测试环境使用的ApplicationContext将是WebApplicationContext类型的
-@WebAppConfiguration
 public class AppTest {
 
     private static final Logger logger = LoggerFactory.getLogger(AppTest.class);
@@ -41,11 +41,18 @@ public class AppTest {
     private MyProperties myProperties;
 
     @Autowired
-    private WebApplicationContext webApplicationContext;
+    private WebApplicationContext wac;
+
+    private MockMvc mvc;
 
     @Test
     public void test() {
         logger.info("myProperties {}", myProperties);
+    }
+
+    @Before
+    public void setupMockMvc(){
+        mvc = MockMvcBuilders.webAppContextSetup(wac).build(); //初始化MockMvc对象
     }
 
     /**
@@ -57,13 +64,16 @@ public class AppTest {
      * 6、ResultActions.andDo添加一个结果处理器，表示要对结果做点什么事情
      *   比如此处使用MockMvcResultHandlers.print()输出整个响应结果信息。
      * 7、ResultActions.andReturn表示执行完成后返回相应的结果。
+     *
+     * 遇到的坑
+     * 1、地址前面没有/会404
+     * 2、配置的server.servlet.context-path不需要拼上去
      */
     @Test
     public void mvc() throws Exception {
-        MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        mvc.perform(MockMvcRequestBuilders.get("my/myConfig").accept(MediaType.APPLICATION_JSON).content("{\"name\":\"pwd\"}"))
+        mvc.perform(MockMvcRequestBuilders.get("/my/myConfig").accept(MediaType.APPLICATION_JSON).param("name", "pwd"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("abc"))
+//                .andExpect(MockMvcResultMatchers.content().string("abc"))
                 .andDo(MockMvcResultHandlers.print());
     }
 

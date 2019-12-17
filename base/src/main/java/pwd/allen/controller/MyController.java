@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.WebApplicationContext;
 import pwd.allen.HelloService;
 import pwd.allen.property.MyProperties;
 
@@ -35,6 +36,14 @@ public class MyController {
     @Autowired
     private HelloService helloService;
 
+    @Autowired
+    private WebApplicationContext applicationContext;
+
+    /**
+     * produces：指定返回值类型，还可以设定返回值的字符编码
+     * @param paramMap
+     * @return
+     */
     @RequestMapping(value = "myConfig", produces = MediaType.APPLICATION_JSON_VALUE)
     public Object showMyConfig(@RequestParam Map paramMap) {
 

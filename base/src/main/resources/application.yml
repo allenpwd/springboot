@@ -51,6 +51,11 @@ management:
       exposure:
         #暴露所有端口，作用相当于低版本的management.security.enabled=false
         include: '*'
+#          - health
+#          - beans
+#          - mappings
+#          - heapdump
+#          - env
   endpoint:
     health:
       show-details: always
