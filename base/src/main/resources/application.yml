@@ -58,6 +58,7 @@ management:
 #          - env
   endpoint:
     health:
+      #使health端点显示详细信息，比如自定义的HealthIndicator
       show-details: always
 #自定义actuator属性
 info:
