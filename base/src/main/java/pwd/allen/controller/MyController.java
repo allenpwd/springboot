@@ -47,6 +47,15 @@ public class MyController {
     @RequestMapping(value = "myConfig", produces = MediaType.APPLICATION_JSON_VALUE)
     public Object showMyConfig(@RequestParam Map paramMap) {
 
+        if (paramMap.containsKey("sleep")) {
+            Integer sleep = Integer.parseInt((String)paramMap.get("sleep"));
+            try {
+                Thread.sleep(sleep);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         logger.info("paramMap {}", paramMap);
 
         paramMap.put("strValue", strValue);

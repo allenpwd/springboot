@@ -41,6 +41,7 @@
         <!--</filter>-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log.dir}/file.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!--<fileNamePattern>${log.dir}/file.%d{yyyy-MM-dd}.%i.log</fileNamePattern>-->
             <maxHistory>${MAXHISTORY}</maxHistory>
             <!--<timeBasedFileNamingAndTriggeringPolicy-->
                     <!--class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
