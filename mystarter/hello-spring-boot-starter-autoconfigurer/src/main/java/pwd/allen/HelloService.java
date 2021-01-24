@@ -1,6 +1,7 @@
 package pwd.allen;
 
 import lombok.Data;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * @author lenovo

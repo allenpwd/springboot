@@ -1,10 +1,13 @@
 package pwd.allen.controller;
 
+import com.alibaba.ttl.TransmittableThreadLocal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +15,9 @@ import org.springframework.web.context.WebApplicationContext;
 import pwd.allen.HelloService;
 import pwd.allen.property.MyProperties;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author pwd
@@ -39,6 +44,8 @@ public class MyController {
     @Autowired
     private WebApplicationContext applicationContext;
 
+    private static final ThreadLocal<Object> THREAD_LOCAL = new TransmittableThreadLocal<>();
+
     /**
      * produces：指定返回值类型，还可以设定返回值的字符编码
      * @param paramMap
@@ -63,6 +70,21 @@ public class MyController {
         paramMap.put("sayHello", helloService.getHelloStr("门那粒沙"));
 
         return paramMap;
+    }
+
+    @GetMapping("async")
+    public Object async(HttpServletRequest request) throws InterruptedException {
+        THREAD_LOCAL.set(String.format("这里是父线程:%s", Thread.currentThread().getName()));
+
+        // 异步调用
+        applicationContext.getBean(MyController.class).execAsync();
+        return "hello";
+    }
+
+    @Async
+    public void execAsync() throws InterruptedException {
+        logger.info("【{}】从父线程获取的变量：{}", Thread.currentThread().getName(), THREAD_LOCAL.get());
+        TimeUnit.SECONDS.sleep(5);
     }
 
 }
