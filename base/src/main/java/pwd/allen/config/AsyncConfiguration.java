@@ -20,6 +20,14 @@ import java.util.concurrent.Executor;
 @Configuration
 public class AsyncConfiguration {
 
+    /**
+     * 将Executor包装成TtlExecutor使之支持线程池的线程变量共享，如果不包装的话，可能获取的共享变量是之前的
+     *
+     * 默认Executor配置可以参考：org.springframework.boot.autoconfigure.task.TaskExecutionProperties.Pool
+     *
+     * @param builder
+     * @return
+     */
     @Bean(name = { TaskExecutionAutoConfiguration.APPLICATION_TASK_EXECUTOR_BEAN_NAME,
             AsyncAnnotationBeanPostProcessor.DEFAULT_TASK_EXECUTOR_BEAN_NAME })
     @ConditionalOnMissingBean(Executor.class)
