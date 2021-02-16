@@ -7,7 +7,11 @@
     <groupId>pwd.allen</groupId>
     <artifactId>hello-spring-boot-starter</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <!--
+        这里不能配置为pom，否则引入该启动器的方式不能为dependencies-》dependency（会报错：Could not find artifact：XXX.jar）
+        一般type为pom是用于实现继承，主要用于配置dependencyManagement或者properties
+    -->
+    <!--<packaging>pom</packaging>-->
 
     <dependencies>
         <dependency>
