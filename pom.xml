@@ -6,6 +6,7 @@
     <modules>
         <module>mystarter</module>
         <module>base</module>
+        <module>mongodb</module>
     </modules>
 
     <parent>
