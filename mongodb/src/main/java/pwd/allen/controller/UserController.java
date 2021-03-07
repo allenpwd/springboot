@@ -1,10 +1,13 @@
-package pwd.allen.pwd.allen.controller;
+package pwd.allen.controller;
 
+import org.apache.skywalking.apm.toolkit.trace.ActiveSpan;
+import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pwd.allen.entity.User;
 import pwd.allen.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -37,4 +40,5 @@ public class UserController {
     public User findOneByName(@RequestParam String name) {
         return userService.getByName(name);
     }
+
 }
