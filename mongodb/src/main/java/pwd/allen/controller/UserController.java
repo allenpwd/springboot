@@ -23,7 +23,7 @@ public class UserController {
 
     @PostMapping("/save")
     public Object saveObj(@RequestBody User user) {
-        return userService.add(user);
+        return userService.save(user);
     }
 
     @GetMapping("/findAll")

@@ -9,5 +9,4 @@ import pwd.allen.entity.User;
  **/
 @Service
 public class UserService extends MongoDbService<User> {
-
 }
