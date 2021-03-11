@@ -134,7 +134,7 @@ public abstract class MongoDbService<T> {
                 String type = null;
                 if (val.contains(":")) {
                     type = val.substring(0, val.indexOf(":"));
-                    val = val.substring(val.indexOf(":"));
+                    val = val.substring(val.indexOf(":") + 1);
                 }
                 Object value = val;
                 if (val.matches("\\d{4}-\\d{2}-\\d{2}")) {

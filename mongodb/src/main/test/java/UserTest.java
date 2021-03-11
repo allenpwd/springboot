@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import pwd.allen.MongoMain;
+import pwd.allen.Pager;
 import pwd.allen.entity.User;
 import pwd.allen.repository.UserRepository;
 import pwd.allen.service.UserService;
@@ -39,7 +40,7 @@ public class UserTest {
     private UserRepository userRepository;
 
     @Test
-    public void user() {
+    public void save() {
         User user = new User();
         user.setId("666");
         user.setName("junit");
@@ -53,6 +54,16 @@ public class UserTest {
         System.out.println(user);
 
         userRepository.save(user);
+    }
+
+    @Test
+    public void page() {
+        Pager<User> userPager = new Pager<>();
+        userPager.getParameters().put("name", "regex:.*e.*");
+        userPager.getParameters().put("birthday", "lt:2021-03-11");
+        userPager.setPageable(PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC,"birthday")));
+        Pager<User> pager = userService.pager(userPager);
+        System.out.println(pager);
     }
 
     /**
@@ -77,7 +88,7 @@ public class UserTest {
 
     @Test
     public void template() {
-        Criteria criteria = Criteria.where("name").gt("a").and("birthday").lt(new Date());
+        Criteria criteria = Criteria.where("age").gt(1).and("birthday").lt(new Date());
         Query query = new Query(criteria);
 
         long count = mongoTemplate.count(query, User.class);
