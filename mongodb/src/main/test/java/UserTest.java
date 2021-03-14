@@ -61,7 +61,9 @@ public class UserTest {
         Pager<User> userPager = new Pager<>();
         userPager.getParameters().put("name", "regex:.*e.*");
         userPager.getParameters().put("birthday", "lt:2021-03-11");
-        userPager.setPageable(PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC,"birthday")));
+        userPager.setDirect("desc");
+        userPager.setProperty("birthday");
+        userPager.setPageSize(4);
         Pager<User> pager = userService.pager(userPager);
         System.out.println(pager);
     }
@@ -97,6 +99,7 @@ public class UserTest {
         query.with(PageRequest.of(0, 1));
         List<User> list = mongoTemplate.find(query, User.class);
         System.out.println(list);
+
     }
 
 }

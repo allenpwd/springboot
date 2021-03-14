@@ -14,8 +14,11 @@ import java.util.Map;
 @Data
 public class Pager<T> {
 
-    private Map<String, String> parameters = new HashMap<>();
-    private Pageable pageable;
+    private Map<String, Object> parameters = new HashMap<>();
+    private int pageSize = 10;
+    private int pageNumber = 1;
+    private String property;
+    private String direct;
     private List<T> list;
     private long total;
 }

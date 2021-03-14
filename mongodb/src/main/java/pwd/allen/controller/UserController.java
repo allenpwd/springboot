@@ -1,13 +1,11 @@
 package pwd.allen.controller;
 
-import org.apache.skywalking.apm.toolkit.trace.ActiveSpan;
-import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pwd.allen.Pager;
 import pwd.allen.entity.User;
 import pwd.allen.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -36,9 +34,9 @@ public class UserController {
         return userService.getById(id);
     }
 
-    @GetMapping("/findOneByName")
-    public User findOneByName(@RequestParam String name) {
-        return userService.getByName(name);
+    @PostMapping("/pager")
+    public Pager<User> findOneByName(@RequestBody Pager<User> pager) {
+        return userService.pager(pager);
     }
 
 }

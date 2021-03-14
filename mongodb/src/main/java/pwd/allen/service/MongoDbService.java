@@ -5,13 +5,13 @@ import com.mongodb.client.result.UpdateResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.ReflectionUtils;
 import pwd.allen.Pager;
 
 import java.lang.reflect.ParameterizedType;
@@ -20,7 +20,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * @author lenovo
@@ -58,17 +57,6 @@ public abstract class MongoDbService<T> {
      */
     public T getById(String id) {
         Query query = new Query(Criteria.where("_id").is(id));
-        return mongoTemplate.findOne(query, this.getEntityClass());
-    }
-
-    /**
-     * 根据名称查询
-     *
-     * @param name
-     * @return
-     */
-    public T getByName(String name) {
-        Query query = new Query(Criteria.where("name").is(name));
         return mongoTemplate.findOne(query, this.getEntityClass());
     }
 
@@ -122,28 +110,31 @@ public abstract class MongoDbService<T> {
      * @param paramMap
      * @return
      */
-    public List<T> find(Map<String, String> paramMap) {
+    public List<T> find(Map<String, Object> paramMap) {
         Query query = new Query();
         setParam(query, paramMap);
         return mongoTemplate.find(query, this.getEntityClass());
     }
 
-    private static void setParam(Query query, Map<String, String> paramMap) {
+    private static void setParam(Query query, Map<String, Object> paramMap) {
         if (!CollectionUtils.isEmpty(paramMap)) {
-            paramMap.forEach((key, val) -> {
+            paramMap.forEach((key, value) -> {
                 String type = null;
-                if (val.contains(":")) {
-                    type = val.substring(0, val.indexOf(":"));
-                    val = val.substring(val.indexOf(":") + 1);
-                }
-                Object value = val;
-                if (val.matches("\\d{4}-\\d{2}-\\d{2}")) {
-                    try {
-                        value = new SimpleDateFormat("yyyy-MM-dd").parse(val);
-                    } catch (ParseException e) {}
+                if (value instanceof String) {
+                    String val = value.toString();
+                    if (val.contains(":")) {
+                        type = val.substring(0, val.indexOf(":"));
+                        val = val.substring(val.indexOf(":") + 1);
+                        value = val;
+                    }
+                    if (val.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                        try {
+                            value = new SimpleDateFormat("yyyy-MM-dd").parse(val);
+                        } catch (ParseException e) {}
+                    }
                 }
                 if ("regex".equals(type)) {
-                    query.addCriteria(Criteria.where(key).regex(val));
+                    query.addCriteria(Criteria.where(key).regex(value.toString()));
                 } else if ("lt".equals(type)) {
                     query.addCriteria(Criteria.where(key).lt(value));
                 } else if ("gt".equals(type)) {
@@ -168,7 +159,7 @@ public abstract class MongoDbService<T> {
         Query query = new Query();
         setParam(query, pager.getParameters());
         pager.setTotal(mongoTemplate.count(query, this.getEntityClass()));
-        query.with(pager.getPageable());
+        query.with(PageRequest.of(pager.getPageNumber() - 1, pager.getPageSize(), Sort.by(Sort.Direction.fromString(pager.getDirect()), pager.getProperty())));
         pager.setList(mongoTemplate.find(query, this.getEntityClass()));
         return pager;
     }
