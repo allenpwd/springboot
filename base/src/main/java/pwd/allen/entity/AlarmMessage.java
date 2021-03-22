@@ -10,9 +10,20 @@ import lombok.Data;
 public class AlarmMessage {
 
     private int scopeId;
+    /**
+     * 类型名称
+     */
+    private String scope;
+    /**
+     * 实体名称
+     */
     private String name;
-    private int id0;
-    private int id1;
+    private String id0;
+    /**
+     * 告警规则名称
+     */
+    private String ruleName;
+    private String id1;
     /**
      * 告警消息
      */
