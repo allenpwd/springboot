@@ -37,7 +37,6 @@ public abstract class MongoDbService<T> {
      * @return
      */
     public boolean save(T obj) {
-        logger.info("添加");
         mongoTemplate.save(obj);
         return true;
     }

@@ -6,6 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -88,9 +90,12 @@ public class UserTest {
         System.out.println(userPage);
     }
 
+    /**
+     * age>=1 and birthday<now
+     */
     @Test
-    public void template() {
-        Criteria criteria = Criteria.where("age").gt(1).and("birthday").lt(new Date());
+    public void tempCond() {
+        Criteria criteria = Criteria.where("age").gte(1).and("birthday").lt(new Date());
         Query query = new Query(criteria);
 
         long count = mongoTemplate.count(query, User.class);
@@ -99,7 +104,6 @@ public class UserTest {
         query.with(PageRequest.of(0, 1));
         List<User> list = mongoTemplate.find(query, User.class);
         System.out.println(list);
-
     }
 
 }
