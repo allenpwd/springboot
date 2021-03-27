@@ -111,8 +111,12 @@ public class OrderTest {
                 Aggregation.skip(0L),//过滤
                 Aggregation.limit(10)//页数
         );
+        // 解除mongodb 查询数据默认占用最大内存的(默认100M).不然会抛出异常:Exceeded memory limit for $group, but didn't allow external sort.
+        agg.withOptions(Aggregation.newAggregationOptions().allowDiskUse(true).build());
+
         AggregationResults<Map> outputType = mongoTemplate.aggregate(agg, "order", Map.class);
         List<Map> list = outputType.getMappedResults();
         System.out.println(list);
+
     }
 }
