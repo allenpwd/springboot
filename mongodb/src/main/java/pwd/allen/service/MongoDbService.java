@@ -163,6 +163,10 @@ public abstract class MongoDbService<T> {
         return pager;
     }
 
+    public List<Map> aggrgate() {
+        return null;
+    }
+
     private Class<T> getEntityClass() {
         return getSuperClassGenricType(this.getClass());
     }

@@ -1,3 +1,12 @@
+import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.CountOptions;
+import com.mongodb.client.model.EstimatedDocumentCountOptions;
+import com.mongodb.internal.client.model.CountOptionsHelper;
+import org.assertj.core.util.Lists;
+import org.bson.Document;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeanUtils;
@@ -18,8 +27,8 @@ import pwd.allen.entity.User;
 import pwd.allen.repository.UserRepository;
 import pwd.allen.service.UserService;
 
-import java.util.Date;
-import java.util.List;
+import javax.websocket.RemoteEndpoint;
+import java.util.*;
 
 /**
  * @author lenovo
@@ -92,18 +101,43 @@ public class UserTest {
 
     /**
      * age>=1 and birthday<now
+     *
+     * Query: { "age" : { "$gte" : 1}, "birthday" : { "$lt" : { "$date" : 1616920424403}}}, Fields: {}, Sort: {}
      */
     @Test
     public void tempCond() {
-        Criteria criteria = Criteria.where("age").gte(1).and("birthday").lt(new Date());
-        Query query = new Query(criteria);
+        //<editor-fold desc="方式一">
+//        Criteria criteria = Criteria.where("age").gte(1).and("birthday").lt(new Date());
+//        Query query = new Query(criteria);
+//
+//        long count = mongoTemplate.count(query, User.class);
+//        System.out.println(count);
+//
+//        query.with(PageRequest.of(0, 1));
+//        List<User> list = mongoTemplate.find(query, User.class);
+//        System.out.println(list);
+        //</editor-fold>
 
-        long count = mongoTemplate.count(query, User.class);
+
+        //<editor-fold desc="方式二">
+        BasicDBObject queryObj = BasicDBObject.parse("{\n" +
+                "    \"age\": {\n" +
+                "        \"$gte\": 1\n" +
+                "    },\n" +
+                "    \"birthday\": {\n" +
+                "        \"$lt\": {\n" +
+                "            \"$date\": 1616920424403\n" +
+                "        }\n" +
+                "    }\n" +
+                "}");
+        MongoCollection<Document> collection = mongoTemplate.getCollection("user");
+        long count = collection.countDocuments(queryObj);
         System.out.println(count);
-
-        query.with(PageRequest.of(0, 1));
-        List<User> list = mongoTemplate.find(query, User.class);
+        FindIterable<Map> result = collection.find(queryObj, Map.class);
+        result.skip(0).limit(2);
+        ArrayList<Map> list = Lists.newArrayList(result);
         System.out.println(list);
+        //</editor-fold>
     }
 
 }
