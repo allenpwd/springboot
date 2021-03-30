@@ -130,10 +130,14 @@ public class UserTest {
                 "        }\n" +
                 "    }\n" +
                 "}");
+        BasicDBObject sortObj = BasicDBObject.parse("{\n" +
+                "    \"birthday\": -1\n" +
+                "}");
         MongoCollection<Document> collection = mongoTemplate.getCollection("user");
         long count = collection.countDocuments(queryObj);
         System.out.println(count);
         FindIterable<Map> result = collection.find(queryObj, Map.class);
+        result.sort(sortObj);
         result.skip(0).limit(2);
         ArrayList<Map> list = Lists.newArrayList(result);
         System.out.println(list);
