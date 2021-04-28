@@ -8,6 +8,11 @@ import java.io.IOException;
 
 /**
  * 自定义过滤器
+ *
+ * 在过滤器类上添加注解WebFilter，然后在启动类上添加ServletComponentScan
+ * @see javax.servlet.annotation.WebFilter
+ * @see org.springframework.boot.web.servlet.ServletComponentScan
+ *
  */
 //@WebFilter(urlPatterns = "/*", filterName = "myFilter")
 @Log4j2

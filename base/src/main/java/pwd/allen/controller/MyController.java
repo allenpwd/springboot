@@ -68,6 +68,7 @@ public class MyController {
         paramMap.put("strValue", strValue);
         paramMap.put("myProperties", myProperties);
         paramMap.put("sayHello", helloService.getHelloStr("门那粒沙"));
+        paramMap.put("empty", null);
 
         return paramMap;
     }
