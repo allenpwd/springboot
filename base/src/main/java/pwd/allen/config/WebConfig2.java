@@ -1,31 +1,29 @@
 package pwd.allen.config;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pwd.allen.filter.MyFilter;
 import pwd.allen.interceptor.MyInterceptor;
 
 /**
- * 自定义spring mvc配置
- * 这种自定义方式，spring.jackson.default-property-inclusion=non_empty无效
+ * 自定义spring mvc配置，并且保留了springboot默认的配置功能
+ * 这种自定义方式，spring.jackson.default-property-inclusion=non_empty有效
  *
- * @author lenovo
- * @create 2021-03-11 9:07
+ * @author 门那粒沙
+ * @create 2021-05-01 9:04
  **/
-//@Configuration
-//@ServletComponentScan
-public class WebConfig extends WebMvcConfigurationSupport {
+@Configuration
+public class WebConfig2 implements WebMvcConfigurer {
 
     /**
      * 添加自定义的过滤器
      *
      * 另一种方法是在过滤器类上添加注解WebFilter，然后在启动类上添加ServletComponentScan
      * @see javax.servlet.annotation.WebFilter
-     * @see ServletComponentScan
+     * @see org.springframework.boot.web.servlet.ServletComponentScan
      *
      * @return
      */
@@ -47,7 +45,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
      * @param registry
      */
     @Override
-    protected void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new MyInterceptor()).addPathPatterns("/**");
     }
 }
