@@ -8,6 +8,7 @@
         <module>base</module>
         <module>mongodb</module>
         <module>db</module>
+        <module>config</module>
     </modules>
 
     <parent>
