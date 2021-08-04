@@ -26,6 +26,9 @@ public class User extends Model<User> {
      */
     @TableId(value = "id")
     private Integer id;
+    /**
+     * 用户名
+     */
     private String userName;
     @TableField(updateStrategy = FieldStrategy.IGNORED) //为空时也更新到数据库
     private Integer age;

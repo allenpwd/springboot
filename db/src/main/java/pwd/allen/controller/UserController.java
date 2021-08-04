@@ -12,6 +12,7 @@ import pwd.allen.mapper.UserMapper;
 import java.util.List;
 
 /**
+ * 用户类
  * @author 门那粒沙
  * @create 2021-04-18 16:07
  **/
@@ -23,6 +24,11 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * 根据ID查询用户
+     * @param id id
+     * @return
+     */
     @GetMapping("getById")
     public Object getById(@RequestParam("id") String id) {
         User rel = userMapper.selectById(id);
