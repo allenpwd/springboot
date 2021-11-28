@@ -46,3 +46,6 @@ $redact 跟$cond结合使用，并在$cond里面使用了if 、then、else表达
 #### allowDiskUse
 每个阶段管道限制为100MB的内存，如果大于100MB的数据可以先写入临时文件。\
 设置为true时，aggregate操作可时可以先将数据写入对应数据目录的子目录中的唯一并以_tmp结尾的文档中。
+
+### 参考网址
+https://www.runoob.com/mongodb/mongodb-aggregate.html

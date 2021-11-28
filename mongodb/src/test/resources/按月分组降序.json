@@ -1,0 +1,53 @@
+[
+  {
+    "$match": {}
+  },
+  {
+    "$project": {
+      "_class": 1,
+      "name": 1,
+      "age": 1,
+      "day": {
+        "$substr": [
+          "$birthday",
+          0,
+          7
+        ]
+      }
+    }
+  },
+  {
+    "$group": {
+      "_id": {
+        "_class": "$_class",
+        "day": "$day"
+      },
+      "count": {
+        "$sum": 1
+      },
+      "maxAge": {
+        "$max": "$age"
+      },
+      "distinct": {
+        "$addToSet": "$name"
+      }
+    }
+  },
+  {
+    "$project": {
+      "count": 1,
+      "maxAge": 1,
+      "dist": {
+        "$size": "$distinct"
+      }
+    }
+  },
+  {
+    "$sort": {
+      "_id.day": -1
+    }
+  },
+  {
+    "$skip": 1
+  }
+]

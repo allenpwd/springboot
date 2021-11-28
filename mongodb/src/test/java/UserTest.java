@@ -1,7 +1,13 @@
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.IterUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.json.JSONUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Collation;
 import com.mongodb.client.model.CountOptions;
 import com.mongodb.client.model.EstimatedDocumentCountOptions;
 import com.mongodb.internal.client.model.CountOptionsHelper;
@@ -20,6 +26,7 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import pwd.allen.MongoMain;
 import pwd.allen.Pager;
@@ -59,12 +66,21 @@ public class UserTest {
         user.setBirthday(new Date());
 
         // 添加，如果已存在id为666的，会覆盖
-        userService.save(user);
+        System.out.println(userService.save(user));
 
         user = userService.getById("666");
         System.out.println(user);
 
         userRepository.save(user);
+    }
+
+    @Test
+    public void remove() {
+        User user = new User();
+        user.setId("666");
+        user.setName("junit");
+
+        System.out.println(userService.delete(user));
     }
 
     @Test
@@ -142,6 +158,30 @@ public class UserTest {
         ArrayList<Map> list = Lists.newArrayList(result);
         System.out.println(list);
         //</editor-fold>
+    }
+
+    /**
+     * 使用分组统计
+     */
+    @Test
+    public void aggregate() {
+        // 按月分组统计人数和最大年龄和每组不同的名称数，并按人数降序，并跳过第一条记录
+        String strJSON = FileUtil.readUtf8String("按月分组降序.json");
+
+        MongoCollection<Document> collection = mongoTemplate.getCollection("user");
+
+        List<Map> stages = JSONUtil.parseArray(strJSON).toList(Map.class);
+
+        ArrayList<BasicDBObject> bsonList = new ArrayList<>();
+        if (stages != null) {
+            for (Map stage : stages) {
+                bsonList.add(new BasicDBObject(stage));
+            }
+        }
+        AggregateIterable<Map> iterable = collection.aggregate(bsonList, Map.class);
+        iterable.allowDiskUse(true);
+        List<Map> list = IterUtil.toList(iterable);
+        System.out.println(list);
     }
 
 }

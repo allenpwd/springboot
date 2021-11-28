@@ -79,6 +79,7 @@ public abstract class MongoDbService<T> {
 
     /***
      * 删除对象
+     * 结果：一定要指定id，根据id删除的
      * @param obj
      * @return
      */
@@ -147,6 +148,47 @@ public abstract class MongoDbService<T> {
                 }
             });
         }
+    }
+
+    /**
+     * 根据Map解析成query
+     * @param paramMap
+     * @return
+     */
+    private static Query parse2Query(Map<String, Object> paramMap) {
+        Query query = new Query();
+        if (!CollectionUtils.isEmpty(paramMap)) {
+            paramMap.forEach((key, value) -> {
+                String type = null;
+                if (value instanceof String) {
+                    String val = value.toString();
+                    if (val.contains(":")) {
+                        type = val.substring(0, val.indexOf(":"));
+                        val = val.substring(val.indexOf(":") + 1);
+                        value = val;
+                    }
+                    if (val.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                        try {
+                            value = new SimpleDateFormat("yyyy-MM-dd").parse(val);
+                        } catch (ParseException e) {}
+                    }
+                }
+                if ("regex".equals(type)) {
+                    query.addCriteria(Criteria.where(key).regex(value.toString()));
+                } else if ("lt".equals(type)) {
+                    query.addCriteria(Criteria.where(key).lt(value));
+                } else if ("gt".equals(type)) {
+                    query.addCriteria(Criteria.where(key).gt(value));
+                } else if ("lte".equals(type)) {
+                    query.addCriteria(Criteria.where(key).lte(value));
+                } else if ("gte".equals(type)) {
+                    query.addCriteria(Criteria.where(key).gte(value));
+                } else {
+                    query.addCriteria(Criteria.where(key).is(value));
+                }
+            });
+        }
+        return query;
     }
 
     /**

@@ -1,8 +1,13 @@
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.json.JSONUtil;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -23,6 +28,11 @@ public class PwdTest {
 
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         System.out.println(simpleDateFormat.parse(dateStr).getTime());
+    }
 
+    @Test
+    public void read() {
+        List<Map> stages = JSONUtil.parseArray(FileUtil.readUtf8String("按月分组降序.json")).toList(Map.class);
+        System.out.println(stages);
     }
 }
