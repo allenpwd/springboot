@@ -1,5 +1,8 @@
 package pwd.allen.service;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.slf4j.Logger;
@@ -18,6 +21,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -189,6 +194,31 @@ public abstract class MongoDbService<T> {
             });
         }
         return query;
+    }
+
+    /**
+     * 转换map中的日期，mongodb日期要特殊处理
+     * @param mapParam
+     */
+    public static void parseParam(Map<String, Object> mapParam) {
+        if (!CollectionUtils.isEmpty(mapParam)) {
+            Iterator<Map.Entry<String, Object>> iterator = mapParam.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, Object> next = iterator.next();
+                Object value = next.getValue();
+                // 如果value 以date:开头，则转换为时间
+                if (value instanceof String) {
+                    String str_val = String.class.cast(value);
+                    if (str_val.startsWith("date:")) {
+                        try {
+                            next.setValue(LocalDate.parse(str_val.substring(5)));
+                        } catch (Exception e) {}
+                    }
+                } else if (value instanceof Map) {
+                    parseParam(Map.class.cast(value));
+                }
+            }
+        }
     }
 
     /**

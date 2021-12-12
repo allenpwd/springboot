@@ -32,6 +32,7 @@ import pwd.allen.MongoMain;
 import pwd.allen.Pager;
 import pwd.allen.entity.User;
 import pwd.allen.repository.UserRepository;
+import pwd.allen.service.MongoDbService;
 import pwd.allen.service.UserService;
 
 import javax.websocket.RemoteEndpoint;
@@ -119,6 +120,7 @@ public class UserTest {
      * age>=1 and birthday<now
      *
      * Query: { "age" : { "$gte" : 1}, "birthday" : { "$lt" : { "$date" : 1616920424403}}}, Fields: {}, Sort: {}
+     * TODO 日期无效
      */
     @Test
     public void tempCond() {
@@ -175,6 +177,8 @@ public class UserTest {
         ArrayList<BasicDBObject> bsonList = new ArrayList<>();
         if (stages != null) {
             for (Map stage : stages) {
+                // 日期做特殊处理
+                MongoDbService.parseParam(stage);
                 bsonList.add(new BasicDBObject(stage));
             }
         }
