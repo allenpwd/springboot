@@ -2,3 +2,5 @@
 ### pwd template
 **/target
 **/logs
+.idea
+*.iml
