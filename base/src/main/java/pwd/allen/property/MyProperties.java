@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
+import pwd.allen.entity.AlarmMessage;
 
 import javax.validation.constraints.Email;
 import java.util.Date;
@@ -49,6 +50,7 @@ public class MyProperties {
     private Map map2;
     private List list1;
     private List list2;
+    private List<AlarmMessage> list3;
 
     /**
      * 不知道这个注解有何用 不加上也能正常嵌套赋值

@@ -52,7 +52,7 @@ public class MyBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegi
      * @param registry Bean定义信息的保存中心，以后BeanFactory就是按照这些信息创建Bean实例的
      * @throws BeansException
      */
-    //@Override
+    @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
         System.out.println("【BeanDefinitionRegistryPostProcessor.postProcessBeanDefinitionRegistry】");
         System.out.println("bean数量：" + registry.getBeanDefinitionCount());

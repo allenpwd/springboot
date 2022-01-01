@@ -36,6 +36,10 @@ pwd:
         换行被空格替换
     #todo复合集合类型报错
 #    list2: [one,two,abc]
+    list3:
+      - name: 预警信息
+        id0: 这是id0
+        ruleName: 规则名称
     error-properties:
       include-exception: true
       path: /errors
