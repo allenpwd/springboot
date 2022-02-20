@@ -15,7 +15,10 @@ import org.springframework.web.context.WebApplicationContext;
 import pwd.allen.HelloService;
 import pwd.allen.property.MyProperties;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -86,6 +89,20 @@ public class MyController {
     public void execAsync() throws InterruptedException {
         logger.info("【{}】从父线程获取的变量：{}", Thread.currentThread().getName(), THREAD_LOCAL.get());
         TimeUnit.SECONDS.sleep(5);
+    }
+
+    /**
+     * 转发
+     * @param req
+     * @param resp
+     * @return
+     * @throws ServletException
+     * @throws IOException
+     */
+    @RequestMapping("forward")
+    public Object forward(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/my/myConfig").forward(req, resp);
+        return "forward test";
     }
 
 }
