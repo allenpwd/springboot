@@ -105,4 +105,11 @@ public class MyController {
         return "forward test";
     }
 
+    @GetMapping("log")
+    public void log() {
+        logger.info("info");
+        logger.warn("warn");
+        logger.debug("debug");
+    }
+
 }

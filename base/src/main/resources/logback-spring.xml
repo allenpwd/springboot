@@ -19,6 +19,8 @@
     <property name="MAXHISTORY" value="100" />
     <timestamp key="DATETIME" datePattern="yyyy-MM-dd HH:mm:ss" />
 
+    <springProperty scope="context" name="logPath" source="plumelog.logPath"/>
+
     <!-- 控制台打印 -->
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -50,10 +52,22 @@
         </rollingPolicy>
     </appender>
 
+    <!-- 可以通过http://ip:port/plumelog/#/查看日志
+        不好用，出现了浏览器崩溃的情况，滚动日志也不准确
+     -->
+<!--    <appender name="plumelog" class="com.plumelog.lite.logback.appender.LiteAppender">-->
+<!--        <appName>base</appName>-->
+<!--        &lt;!&ndash; 日志存储位置 &ndash;&gt;-->
+<!--        <logPath>${logPath}</logPath>-->
+<!--        &lt;!&ndash; 日志保留天数 &ndash;&gt;-->
+<!--        <keepDay>30</keepDay>-->
+<!--    </appender>-->
+
     <!-- Logger 根目录 -->
     <root level="INFO">
         <appender-ref ref="stdout" />
         <appender-ref ref="file" />
+        <appender-ref ref="plumelog"/>
     </root>
     <logger name="pwd.allen.controller" level="DEBUG" />
     <logger name="org.springframework.boot.autoconfigure" level="ERROR" />

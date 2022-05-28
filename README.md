@@ -22,3 +22,8 @@
 11、在@Configuration注解修改的类中，通过@PropertySource注解定义的属性
 
 12、应用默认属性，使用SpringApplication.setDefaultProperties定义的内容
+
+
+### logback-spring.xml配置slf4j日志
+能通过<springProperty标签来引用application.properties\
+logback.xml的加载顺序早于springboot的application.yml (或application.properties) 
