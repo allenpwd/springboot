@@ -10,6 +10,7 @@
         <module>db</module>
         <module>config</module>
         <module>websocket</module>
+        <module>redis</module>
     </modules>
 
     <parent>

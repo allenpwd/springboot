@@ -1,0 +1,35 @@
+spring:
+  redis:
+    # Redis数据库索引（默认为0）
+    database: 0
+    # Redis服务器地址
+    host: 192.168.118.102
+    # Redis服务器连接端口
+    port: 6379
+    # Redis服务器连接密码（默认为空）
+    password: 123456
+    # 连接超时时间（毫秒）
+    timeout: 1000
+    jedis:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 20
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1
+        # 连接池中的最大空闲连接
+        max-idle: 10
+        # 连接池中的最小空闲连接
+        min-idle: 0
+
+  cache:
+    redis:
+      # 缓存的默认过期时间（豪秒）;0或者默认为永远不失效
+      time-to-live: 60000
+      # 缓存空值，默认true
+      cache-null-values: true
+      # 缓存前缀，默认缓存的名称为{cacheName}::#{key}，即默认缓存前缀为{cacheName}::
+#      key-prefix: "cache:"
+    # 设置缓存类型为redis
+    type: redis
+    # 定义cache名称，用于在缓存注解中引用，多个名称可以使用逗号分隔
+    cache-names: redisCache
