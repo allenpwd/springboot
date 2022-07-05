@@ -2,15 +2,18 @@ package pwd.allen.websocket.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.security.util.Length;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
 
 /**
  * @author pwdan
@@ -48,9 +51,24 @@ public class FileMonitorRunnable implements Runnable {
         File file = new File(logPath);
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
             FileChannel channel = fileInputStream.getChannel();
-            //TODO: 初次连接将所有内容丢回去？这个考虑到数据如果很多先不丢
-            channel.position(channel.size());
             long lastModified = file.lastModified();
+            //TODO: 初次连接将所有内容丢回去？这个考虑到数据如果很多先不丢
+            int length = 1024 * 10;
+
+            if (channel.size() > 0) {
+                channel.position(channel.size() > length ? channel.size() - length : 0);
+                channel.read(byteBuffer);
+                byteBuffer.flip();
+                try {
+                    while (byteBuffer.get() != 10) {}
+                    decoder.decode(byteBuffer, charBuffer, true);
+                    charBuffer.flip();
+                    WebSocketUtils.sendMessageTo(sessionId, charBuffer.toString());
+                } catch (BufferUnderflowException e) {
+                    e.printStackTrace();
+                }
+            }
+
             while (isRunning) {
                 long now = file.lastModified();
                 if (now != lastModified) {

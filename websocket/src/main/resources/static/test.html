@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>查看日志</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+<div id="app" class="container-fluid">
+  <div class="row">
+    <div class="col-sm">
+      <input type="text" class="form-control" v-model="path" aria-describedby="basic-addon1">
+    </div>
+    <div class="col-sm">
+      <button v-if="!ifConnect" type="button" class="btn btn-primary" v-on:click="connect">connect</button>
+      <button v-else type="button" class="btn btn-primary" v-on:click="disconnect">disconnect</button>
+      <button type="button" class="btn btn-primary" v-on:click="clear">clear</button>
+      <button type="button" class="btn btn-primary" v-on:click="scroll">scroll</button>
+    </div>
+  </div>
+  <div class="row">
+    <textarea id="content" class="jumbotron" style="width:100%;word-wrap:break-word">{{content}}</textarea>
+  </div>
+</div>
+
+
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+<script src="/webjars/jquery/3.1.1-1/jquery.min.js"></script>
+<script type="text/javascript">
+  const vm = new Vue({
+    el: '#app',
+    data: {
+      path: 'C:\\Users\\pwdan\\Desktop\\monitor\\ToCompany_API.log.2022-07-01',
+      ifConnect: false,
+      content: '',
+      ws: null
+    },
+    methods: {
+      connect () {
+        var cont = this.content;
+        ws = new WebSocket('ws://' + window.location.host + '/logPath?path=' + encodeURI(this.path));
+        ws.onopen = function () {
+          this.ifConnect = true;
+          console.log('Info: WebSocket connection opened.');
+        };
+        ws.onmessage = function (event) {
+          console.log(event.data);
+          vm.content += event.data
+        };
+        ws.onclose = function (e) {
+          this.ifConnect = false;
+          console.log('Info: WebSocket connection closed.');
+        };
+        this.ifConnect = true
+      },
+      disconnect () {
+        if (ws != null) {
+          ws.close();
+          ws = null;
+        }
+        this.ifConnect = false;
+      },
+      clear () {
+        this.content += ""
+      },
+      scroll () {
+        var textarea = $("#connect");
+        textarea.scrollTop = textarea.scrollHeight
+      }
+    }
+  })
+</script>
+</body>
+</html>
