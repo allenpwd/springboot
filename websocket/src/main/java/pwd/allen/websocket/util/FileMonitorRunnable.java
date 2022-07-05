@@ -72,7 +72,7 @@ public class FileMonitorRunnable implements Runnable {
             while (isRunning) {
                 long now = file.lastModified();
                 if (now != lastModified) {
-                    log.info("{}的连接正在通过线程{}监控{}的文件update", sessionId, Thread.currentThread().getName(), logPath);
+//                    log.info("{}的连接正在通过线程{}监控{}的文件update", sessionId, Thread.currentThread().getName(), logPath);
                     String newContent = getNewContent(channel);
                     WebSocketUtils.sendMessageTo(sessionId, newContent);
                     lastModified = now;

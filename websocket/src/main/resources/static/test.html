@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%">
 <head>
   <meta charset="UTF-8">
   <title>查看日志</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
-<body>
-<div id="app" class="container-fluid">
-  <div class="row">
+<body style="height: 100%">
+<div id="app" class="container-fluid" style="height: 100%">
+  <div class="row" style="padding: 8px">
     <div class="col-sm">
       <input type="text" class="form-control" v-model="path" aria-describedby="basic-addon1">
     </div>
@@ -15,11 +15,12 @@
       <button v-if="!ifConnect" type="button" class="btn btn-primary" v-on:click="connect">connect</button>
       <button v-else type="button" class="btn btn-primary" v-on:click="disconnect">disconnect</button>
       <button type="button" class="btn btn-primary" v-on:click="clear">clear</button>
-      <button type="button" class="btn btn-primary" v-on:click="scroll">scroll</button>
+      <button type="button" class="btn btn-primary" v-on:click="scrollToButtom">scrollToButtom</button>
+      <button type="button" class="btn btn-primary" v-on:click="scrollToTop">scrollToTop</button>
     </div>
   </div>
-  <div class="row">
-    <textarea id="content" class="jumbotron" style="width:100%;word-wrap:break-word">{{content}}</textarea>
+  <div class="row" style="height: 90%;">
+    <textarea id="content" class="jumbotron" style="width:100%;word-wrap:" @mousewheel="mousewheel">{{content}}</textarea>
   </div>
 </div>
 
@@ -31,8 +32,9 @@
   const vm = new Vue({
     el: '#app',
     data: {
-      path: 'C:\\Users\\pwdan\\Desktop\\monitor\\ToCompany_API.log.2022-07-01',
+      path: '.\\logs\\slf4j\\file.log',
       ifConnect: false,
+      ifScrollToButtom: true,
       content: '',
       ws: null
     },
@@ -45,8 +47,12 @@
           console.log('Info: WebSocket connection opened.');
         };
         ws.onmessage = function (event) {
-          console.log(event.data);
-          vm.content += event.data
+          vm.content += event.data;
+          if (vm.ifScrollToButtom) {
+            console.log("scrollToButtom")
+            vm.scrollToButtom();
+            setTimeout ("vm.scrollToButtom()","100");
+          }
         };
         ws.onclose = function (e) {
           this.ifConnect = false;
@@ -62,11 +68,26 @@
         this.ifConnect = false;
       },
       clear () {
-        this.content += ""
+        this.content = ""
       },
-      scroll () {
-        var textarea = $("#connect");
-        textarea.scrollTop = textarea.scrollHeight
+      scrollToTop () {
+        var textarea = $("#content");
+        textarea[0].scrollTop = 0;
+        this.ifScrollToButtom = false;
+      },
+      scrollToButtom () {
+        var textarea = $("#content");
+        textarea[0].scrollTop = textarea[0].scrollHeight;
+        this.ifScrollToButtom = true;
+      },
+      mousewheel () {
+        var textarea = $("#content");
+        if (textarea[0].scrollTop + textarea.outerHeight() >= textarea[0].scrollHeight) {
+          // 当滚动到底部，则设置自动滚动至底部
+          this.ifScrollToButtom = true;
+        } else {
+          this.ifScrollToButtom = false;
+        }
       }
     }
   })
