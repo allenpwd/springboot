@@ -27,10 +27,7 @@ public class FileMonitor {
     private Long monitorDelay;
 
     public FileMonitor(String sessionId, String logPath) {
-        this.sessionId = sessionId;
-        this.logPath = logPath;
-        this.monitorDelay = 500L;
-        startFileMonitor(monitorDelay);
+        this(sessionId, logPath, 500L);
     }
 
     public FileMonitor(String sessionId, String logPath, Long monitorDelay) {
