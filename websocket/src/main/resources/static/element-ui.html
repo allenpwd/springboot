@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+<head>
+  <meta charset="UTF-8">
+  <title>查看日志</title>
+  <link rel="stylesheet" href="/webjars/element-ui/2.15.7/lib/theme-chalk/index.css">
+  <style>
+    .content {
+      background: #1b1e21;
+      color: antiquewhite;
+      font-size: smaller;
+      width:100%;
+    }
+    .font20 {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body style="height: 95%;">
+<div id="app" style="height: 100%;">
+  <el-row  :gutter="10">
+    <el-col :span="12">
+      <el-input v-model="path"></el-input>
+    </el-col>
+    <el-col :span="12">
+      <el-button v-if="!ifConnect" type="primary" @click="connect">connect</el-button>
+      <el-button v-else type="button" type="primary" @click="disconnect">disconnect</el-button>
+      <el-button type="primary" @click="clear">clear</el-button>
+      <el-button type="primary" @click="scrollToButtom">scrollToButtom</el-button>
+      <el-button type="primary" @click="scrollToTop">scrollToTop</el-button>
+    </el-col>
+  </el-row>
+
+<!--  <el-row  :gutter="10">-->
+<!--    <el-input class="content" id="content" type="textarea" v-model="content" @mousewheel="mousewheel" readonly="readonly" rows="20"></el-input>-->
+<!--  </el-row>-->
+  <div class="row" style="height: 85%; display: flex; margin-top: 5px">
+    <textarea id="content" class="content" @mousewheel="mousewheel" readonly="readonly">{{content}}</textarea>
+  </div>
+</div>
+</body>
+
+<!-- 引入组件库 -->
+<script src="/webjars/vue/2.6.12/vue.js"></script>
+<script src="/webjars/element-ui/2.15.7/lib/index.js"></script>
+<script src="/webjars/jquery/3.1.1-1/jquery.min.js"></script>
+<script type="text/javascript">
+  const vm = new Vue({
+    el: '#app',
+    data: {
+      path: '.\\logs\\slf4j\\file.log',
+      ifConnect: false,
+      ifScrollToButtom: true,
+      content: '',
+      ws: null
+    },
+    methods: {
+      connect () {
+        var cont = this.content;
+        ws = new WebSocket('ws://' + window.location.host + '/logPath?path=' + encodeURI(this.path));
+        ws.onopen = function () {
+          this.ifConnect = true;
+          console.log('Info: WebSocket connection opened.');
+        };
+        ws.onmessage = function (event) {
+          vm.content += event.data;
+          if (vm.ifScrollToButtom) {
+            console.log("scrollToButtom")
+            vm.scrollToButtom();
+            setTimeout ("vm.scrollToButtom()","300");
+          }
+        };
+        ws.onclose = function (e) {
+          this.ifConnect = false;
+          console.log('Info: WebSocket connection closed.');
+        };
+        this.ifConnect = true
+      },
+      disconnect () {
+        if (ws != null) {
+          ws.close();
+          ws = null;
+        }
+        this.ifConnect = false;
+      },
+      clear () {
+        this.content = ""
+      },
+      scrollToTop () {
+        var textarea = $("#content");
+        textarea[0].scrollTop = 0;
+        this.ifScrollToButtom = false;
+      },
+      scrollToButtom () {
+        var textarea = $("#content");
+        textarea[0].scrollTop = textarea[0].scrollHeight;
+        this.ifScrollToButtom = true;
+      },
+      mousewheel () {
+        var textarea = $("#content");
+        if (textarea[0].scrollTop + textarea.outerHeight() >= textarea[0].scrollHeight) {
+          // 当滚动到底部，则设置自动滚动至底部
+          this.ifScrollToButtom = true;
+        } else {
+          this.ifScrollToButtom = false;
+        }
+      }
+    }
+  })
+</script>
+</html>
