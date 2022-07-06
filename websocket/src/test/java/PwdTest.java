@@ -1,3 +1,4 @@
+import cn.hutool.json.JSONUtil;
 import org.junit.Test;
 import pwd.allen.websocket.util.WebSocketUtils;
 
@@ -8,6 +9,8 @@ import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author pwdan
@@ -45,5 +48,21 @@ public class PwdTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void test2() {
+        String query = "logPath=abc/sdf&name=abc&age=12";
+        Map<String, String> mapParam = new HashMap<>();
+        if (query != null) {
+            String[] params = query.split("&");
+            for (String param : params) {
+                String[] split = param.split("=");
+                if (split.length == 2) {
+                    mapParam.put(split[0], split[1]);
+                }
+            }
+        }
+        System.out.println(JSONUtil.toJsonStr(mapParam));
     }
 }

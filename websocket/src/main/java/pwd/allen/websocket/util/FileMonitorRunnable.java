@@ -13,6 +13,7 @@ import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -33,22 +34,22 @@ public class FileMonitorRunnable implements Runnable {
 
     private String sessionId;
 
-    private String logPath;
+    private Map<String, String> mapParam;
 
     /**
      * 同步内容的间隔，单位毫秒
      */
     private Long monitorDelay;
 
-    public FileMonitorRunnable(String sessionId, String logPath, Long monitorDelay) {
+    public FileMonitorRunnable(String sessionId, Map<String, String> mapParam, Long monitorDelay) {
         this.sessionId = sessionId;
-        this.logPath = logPath;
+        this.mapParam = mapParam;
         this.monitorDelay = monitorDelay;
     }
 
     @Override
     public void run() {
-        File file = new File(logPath);
+        File file = new File(mapParam.get("logPath"));
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
             FileChannel channel = fileInputStream.getChannel();
             long lastModified = file.lastModified();

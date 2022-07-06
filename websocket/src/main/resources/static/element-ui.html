@@ -11,9 +11,6 @@
       font-size: smaller;
       width:100%;
     }
-    .font20 {
-      font-size: 20px;
-    }
   </style>
 </head>
 <body style="height: 95%;">
@@ -24,16 +21,14 @@
     </el-col>
     <el-col :span="12">
       <el-button v-if="!ifConnect" type="primary" @click="connect">connect</el-button>
-      <el-button v-else type="button" type="primary" @click="disconnect">disconnect</el-button>
+      <el-button v-else type="primary" @click="disconnect">disconnect</el-button>
       <el-button type="primary" @click="clear">clear</el-button>
       <el-button type="primary" @click="scrollToButtom">scrollToButtom</el-button>
       <el-button type="primary" @click="scrollToTop">scrollToTop</el-button>
+      <el-link :href="downloadUrl" target="_blank">download</el-link>
     </el-col>
   </el-row>
 
-<!--  <el-row  :gutter="10">-->
-<!--    <el-input class="content" id="content" type="textarea" v-model="content" @mousewheel="mousewheel" readonly="readonly" rows="20"></el-input>-->
-<!--  </el-row>-->
   <div class="row" style="height: 85%; display: flex; margin-top: 5px">
     <textarea id="content" class="content" @mousewheel="mousewheel" readonly="readonly">{{content}}</textarea>
   </div>
@@ -52,12 +47,18 @@
       ifConnect: false,
       ifScrollToButtom: true,
       content: '',
-      ws: null
+      ws: null,
+      dir: window.location.href.replace(/https?:\/\/[^\/]*(.*)\/.*/g,'$1')
+    },
+    computed: {
+      downloadUrl() {
+        return this.dir + '/log/download?' + window.btoa('path=' + this.path);
+      }
     },
     methods: {
       connect () {
         var cont = this.content;
-        ws = new WebSocket('ws://' + window.location.host + '/logPath?path=' + encodeURI(this.path));
+        ws = new WebSocket('ws://' + window.location.host + this.dir + '/logPath?' + window.btoa('logPath=' + this.path));
         ws.onopen = function () {
           this.ifConnect = true;
           console.log('Info: WebSocket connection opened.');

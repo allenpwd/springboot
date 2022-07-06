@@ -6,6 +6,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,8 +51,7 @@ public class WebSocketUtils {
     public static void startMonitor(String sessionId) {
         WebSocketSession session = onlineSession.get(sessionId);
         String query = session.getUri().getQuery();
-        String logPath = query.substring(query.indexOf("=") + 1);
-        new FileMonitor(session.getId(), logPath);
+        new FileMonitor(session.getId(), decQuery(query));
     }
 
     /**
@@ -95,5 +95,26 @@ public class WebSocketUtils {
      */
     public static boolean currentSessionAlive(String sessionId) {
         return onlineSession.containsKey(sessionId);
+    }
+
+    /**
+     * 将query进行base64解密
+     * @param query
+     * @return
+     */
+    public static Map<String, String> decQuery(String query) {
+        // query需要经过base64解密
+        query = new String(Base64.getDecoder().decode(query.getBytes()));
+        Map<String, String> mapParam = new HashMap<>();
+        if (query != null) {
+            String[] params = query.split("&");
+            for (String param : params) {
+                String[] split = param.split("=");
+                if (split.length == 2) {
+                    mapParam.put(split[0], split[1]);
+                }
+            }
+        }
+        return mapParam;
     }
 }
