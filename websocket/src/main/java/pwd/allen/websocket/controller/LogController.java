@@ -2,18 +2,18 @@ package pwd.allen.websocket.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pwd.allen.websocket.entity.FileInfo;
 import pwd.allen.websocket.util.WebSocketUtils;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,6 +70,40 @@ public class LogController {
             }
         }
         return null;
+    }
+
+    /**
+     * 列出目录
+     * @param response
+     */
+    @RequestMapping("/ls")
+    public Object ls(HttpServletRequest request, HttpServletResponse response) {
+        List<FileInfo> list = new ArrayList<>();
+        Map<String, String> mapParam = WebSocketUtils.decQuery(request.getQueryString());
+        // path是指想要下载的文件的路径
+        String path = mapParam.get("path");
+        String bOnlyDir = mapParam.get("bOnlyDir");
+
+        File filePath = new File(path);
+
+        if (!filePath.exists() || !filePath.isDirectory()) {
+            return "目录不存在";
+        }
+        File[] files = filePath.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                if ("1".equals(bOnlyDir) && pathname.isFile()) {
+                    return false;
+                }
+                return true;
+            }
+        });
+        if (files != null && files.length > 0) {
+            for (File file : files) {
+                list.add(new FileInfo(file.getAbsolutePath(), file.getName(), new Date(file.lastModified()), (file.isFile() ? file.length() : null), file.isFile()));
+            }
+        }
+        return list;
     }
 
 }

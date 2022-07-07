@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>查看日志</title>
-  <link rel="stylesheet" href="/webjars/element-ui/2.15.7/lib/theme-chalk/index.css">
+  <link rel="stylesheet" href="webjars/element-ui/2.15.7/lib/theme-chalk/index.css">
   <style>
     .content {
       background: #1b1e21;
@@ -36,9 +36,9 @@
 </body>
 
 <!-- 引入组件库 -->
-<script src="/webjars/vue/2.6.12/vue.js"></script>
-<script src="/webjars/element-ui/2.15.7/lib/index.js"></script>
-<script src="/webjars/jquery/3.1.1-1/jquery.min.js"></script>
+<script src="webjars/vue/2.6.12/vue.js"></script>
+<script src="webjars/element-ui/2.15.7/lib/index.js"></script>
+<script src="webjars/jquery/3.1.1-1/jquery.min.js"></script>
 <script type="text/javascript">
   const vm = new Vue({
     el: '#app',
@@ -53,6 +53,12 @@
     computed: {
       downloadUrl() {
         return this.dir + '/log/download?' + window.btoa('path=' + this.path);
+      }
+    },
+    created() {
+      var query = window.location.href.split('?')[1];
+      if (query != null) {
+        this.path = window.atob(query);
       }
     },
     methods: {

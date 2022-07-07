@@ -61,7 +61,10 @@ public class FileMonitorRunnable implements Runnable {
                 channel.read(byteBuffer);
                 byteBuffer.flip();
                 try {
-                    while (byteBuffer.get() != 10) {}
+                    if (channel.position() != 0) {
+                        // 从第一个换行符开始返回
+                        while (byteBuffer.get() != 10) {}
+                    }
                     decoder.decode(byteBuffer, charBuffer, true);
                     charBuffer.flip();
                     WebSocketUtils.sendMessageTo(sessionId, charBuffer.toString());

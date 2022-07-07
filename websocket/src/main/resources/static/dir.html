@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+<head>
+  <meta charset="UTF-8">
+  <title>查看日志</title>
+  <link rel="stylesheet" href="webjars/element-ui/2.15.7/lib/theme-chalk/index.css">
+  <style>
+    .custom-tree-node {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      padding-right: 8px;
+    }
+  </style>
+</head>
+<body style="height: 95%;">
+<div id="app" style="height: 100%;">
+  <el-row  :gutter="10">
+    <el-col :span="6">
+      <el-input v-model="path"></el-input>
+      <el-link :href="dirUrl">{{dirUrl}}</el-link>
+    </el-col>
+    <el-col :span="18">
+      <el-tree
+              :props="props"
+              :load="loadNode"
+              :render-after-expand="true"
+              :highlight-current="true"
+              lazy>
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+        <span>{{ data.name }}</span>
+          <span v-show="data.isFile">{{data.fileSize/1024+'KB'}}</span>
+        <span>
+          <el-link v-show="data.isFile" :href="downloadUrl(data)" target="_blank">download</el-link>
+          <el-link v-show="data.isFile" :href="watch(data)" target="_blank">watch</el-link>
+        </span>
+      </span>
+      </el-tree>
+    </el-col>
+  </el-row>
+</div>
+</body>
+
+<!-- 引入组件库 -->
+<script src="webjars/vue/2.6.12/vue.js"></script>
+<script src="webjars/element-ui/2.15.7/lib/index.js"></script>
+<script src="webjars/jquery/3.1.1-1/jquery.min.js"></script>
+<script type="text/javascript">
+  const vm = new Vue({
+    el: '#app',
+    data: {
+      path: '.\\logs',
+      props: {
+        label: 'name',
+        children: 'zones',
+        isLeaf: 'isFile'
+      },
+      dir: window.location.href.replace(/https?:\/\/[^\/]*(.*)\/.*/g,'$1')
+    },
+    computed: {
+      dirUrl() {
+        return this.dir + '/dir.html?' + window.btoa(this.path);
+      }
+    },
+    created() {
+      var query = window.location.href.split('?')[1];
+      if (query != null) {
+        this.path = window.atob(query);
+      }
+    },
+    methods: {
+      loadNode(node, resolve) {
+        var newPath = this.path;
+        if (node.data != null) {
+          newPath = node.data.filePath;
+        }
+        $.ajax({
+          type: "GET",
+          url: this.dir + '/log/ls',
+          data: window.btoa('path=' + newPath),
+          success: function(msg) {
+            resolve(msg)
+          }
+        });
+      },
+      downloadUrl(data) {
+        return this.dir + '/log/download?' + window.btoa('path=' + data.filePath);
+      },
+      watch(data) {
+        return this.dir + '/element-ui.html?' + window.btoa(data.filePath);
+      }
+    }
+  })
+</script>
+</html>
