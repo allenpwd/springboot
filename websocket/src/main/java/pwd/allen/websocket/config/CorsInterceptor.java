@@ -28,7 +28,11 @@ public class CorsInterceptor implements HandlerInterceptor {
             origin = "*";
         }
         resp.setHeader("Access-Control-Allow-Origin", origin);
-        resp.setHeader("Access-Control-Expose-Headers", "*");
+        // 如果请求头有特殊的属性，需要在这里设置下，否则浏览器只会发起options请求（猜想：浏览器会根据options请求的响应头信息判断是否允许跨域）
+        resp.setHeader("Access-Control-Allow-Headers", "name");
+        resp.setHeader("Access-Control-Allow-Credentials", "true");
+        // 如果响应头有特殊的属性，需要在这里设置下，否则ajax获取不到指定的响应头，虽然在请求信息里能看到
+        resp.setHeader("Access-Control-Expose-Headers", "token");
         resp.setHeader("token", "abc");
         return true;
     }

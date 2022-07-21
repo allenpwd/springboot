@@ -78,10 +78,15 @@
         }
         $.ajax({
           type: "GET",
-          url: this.dir + '/log/ls',
+          // url: this.dir + '/log/ls',
+          url: 'http://pwd.com:8080' + this.dir + '/log/ls',
           data: window.btoa('path=' + newPath),
-          success: function(msg) {
+          success: function(msg,status,xhr) {
+            console.log('从响应头获取token:' + xhr.getResponseHeader("token"));
             resolve(msg)
+          },
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader("name", "test");
           }
         });
       },
