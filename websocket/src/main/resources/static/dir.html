@@ -19,27 +19,40 @@
 <div id="app" style="height: 100%;">
   <el-row  :gutter="10">
     <el-col :span="6">
-      <el-input v-model="path"></el-input>
-      <el-link :href="dirUrl">{{dirUrl}}</el-link>
+      <el-input v-model="path">
+        <template slot="prepend">目录：</template>
+      </el-input>
     </el-col>
     <el-col :span="18">
-      <el-tree
-              :props="props"
-              :load="loadNode"
-              :render-after-expand="true"
-              :highlight-current="true"
-              lazy>
-        <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span>{{ data.name }}</span>
-          <span v-show="data.isFile">{{data.fileSize/1024+'KB'}}</span>
-        <span>
-          <el-link v-show="data.isFile" :href="downloadUrl(data)" target="_blank">download</el-link>
-          <el-link v-show="data.isFile" :href="watch(data)" target="_blank">watch</el-link>
-        </span>
-      </span>
-      </el-tree>
+      <el-link :href="dirUrl">{{dirUrl}}</el-link>
     </el-col>
   </el-row>
+
+  <el-tree
+          :props="props"
+          :load="loadNode"
+          :render-after-expand="true"
+          :highlight-current="true"
+          accordion
+          lazy>
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+          <span>
+            <i v-show="data.isFile" class="el-icon-notebook-2"></i>
+            <i v-show="!data.isFile" class="el-icon-folder-opened"></i>
+            <b v-show="data.isFile">{{ data.name }}</b>
+            <b v-show="!data.isFile"><el-link :href="getDirUrl(data.filePath)">{{data.name}}</el-link></b>
+          </span>
+          <span>
+            <span v-show="data.isFile">{{getFileSizeDesc(data.fileSize)}}</span>
+            <span style="margin-right: 50px;"></span>
+            <el-link v-show="data.isFile" :href="downloadUrl(data)" target="_blank">download<i class="el-icon-download"></i></el-link>
+            <span style="margin-right: 50px;"></span>
+            <el-link v-show="data.isFile" :href="watch(data)" target="_blank">watch<i class="el-icon-view"></i></el-link>
+            <span style="margin-right: 50px;"></span>
+            <span>{{data.updateTime}}</span>
+          </span>
+        </span>
+  </el-tree>
 </div>
 </body>
 
@@ -61,13 +74,13 @@
     },
     computed: {
       dirUrl() {
-        return this.dir + '/dir.html?' + window.btoa(this.path);
+        return this.dir + '/dir.html?' + window.btoa(encodeURI(this.path));
       }
     },
     created() {
       var query = window.location.href.split('?')[1];
       if (query != null) {
-        this.path = window.atob(query);
+        this.path = decodeURI(window.atob(query));
       }
     },
     methods: {
@@ -78,23 +91,30 @@
         }
         $.ajax({
           type: "GET",
-          // url: this.dir + '/log/ls',
-          url: 'http://pwd.com:8080' + this.dir + '/log/ls',
-          data: window.btoa('path=' + newPath),
-          success: function(msg,status,xhr) {
-            console.log('从响应头获取token:' + xhr.getResponseHeader("token"));
+          url: this.dir + '/log/ls',
+          data: window.btoa(encodeURI('path=' + newPath)),
+          success: function(msg) {
             resolve(msg)
-          },
-          beforeSend: function(xhr) {
-            xhr.setRequestHeader("name", "test");
           }
         });
       },
       downloadUrl(data) {
-        return this.dir + '/log/download?' + window.btoa('path=' + data.filePath);
+        return this.dir + '/log/download?' + window.btoa(encodeURI('path=' + data.filePath));
       },
       watch(data) {
-        return this.dir + '/element-ui.html?' + window.btoa(data.filePath);
+        return this.dir + '/element-ui.html?' + window.btoa(encodeURI(data.filePath));
+      },
+      getFileSizeDesc(fileSize) {
+        if (fileSize < 1024) {
+          return fileSize + 'B';
+        } else if (fileSize < 1024 * 1024) {
+          return (fileSize/1024).toFixed(2) + 'KB';
+        } else {
+          return (fileSize/1024/1024).toFixed(2) + 'MB';
+        }
+      },
+      getDirUrl(filePath) {
+        return this.dir + '/dir.html?' + window.btoa(encodeURI(filePath));
       }
     }
   })

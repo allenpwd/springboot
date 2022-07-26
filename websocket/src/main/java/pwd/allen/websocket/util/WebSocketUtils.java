@@ -6,6 +6,9 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -105,6 +108,11 @@ public class WebSocketUtils {
     public static Map<String, String> decQuery(String query) {
         // query需要经过base64解密
         query = new String(Base64.getDecoder().decode(query.getBytes()));
+        try {
+            query = URLDecoder.decode(query, Charset.defaultCharset().name());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         Map<String, String> mapParam = new HashMap<>();
         if (query != null) {
             String[] params = query.split("&");

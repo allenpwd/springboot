@@ -64,7 +64,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>pwd.allen.websocket.Main</mainClass>
+                    <mainClass>pwd.allen.websocket.LogMain</mainClass>
                 </configuration>
             </plugin>
         </plugins>

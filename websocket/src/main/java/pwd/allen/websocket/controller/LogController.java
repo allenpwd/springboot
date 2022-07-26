@@ -11,10 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author pwdan
@@ -102,6 +99,19 @@ public class LogController {
             for (File file : files) {
                 list.add(new FileInfo(file.getAbsolutePath(), file.getName(), new Date(file.lastModified()), (file.isFile() ? file.length() : null), file.isFile()));
             }
+            // 排序，目录放前面
+            list.sort(new Comparator<FileInfo>() {
+                @Override
+                public int compare(FileInfo o1, FileInfo o2) {
+                    if (o1.getIsFile() && !o2.getIsFile()) {
+                        return 1;
+                    }
+                    if (!o1.getIsFile() && o2.getIsFile()) {
+                        return -1;
+                    }
+                    return (int) (o2.getUpdateTime().getTime() - o1.getUpdateTime().getTime());
+                }
+            });
         }
         return list;
     }

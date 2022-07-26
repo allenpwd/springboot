@@ -17,15 +17,41 @@
 <div id="app" style="height: 100%;">
   <el-row  :gutter="10">
     <el-col :span="12">
-      <el-input v-model="path"></el-input>
+      <el-input v-model="path">
+        <template slot="prepend">路径：</template>
+      </el-input>
     </el-col>
-    <el-col :span="12">
-      <el-button v-if="!ifConnect" type="primary" @click="connect">connect</el-button>
-      <el-button v-else type="primary" @click="disconnect">disconnect</el-button>
-      <el-button type="primary" @click="clear">clear</el-button>
-      <el-button type="primary" @click="scrollToButtom">scrollToButtom</el-button>
-      <el-button type="primary" @click="scrollToTop">scrollToTop</el-button>
-      <el-link :href="downloadUrl" target="_blank">download</el-link>
+    <el-col :span="6">
+      <el-input v-model="search">
+        <template slot="prepend">搜索：</template>
+      </el-input>
+    </el-col>
+    <el-col :span="3">
+      <el-input v-model="loadSize">
+        <template slot="prepend">加载量：</template>
+      </el-input>
+    </el-col>
+    <el-col :span="3">
+      <el-select v-model="charset" clearable placeholder="请选择">
+        <el-option v-for="item in charsetOptions" :key="item" :label="item" :value="item">
+      </el-option>
+    </el-select>
+    </el-col>
+  </el-row>
+  <el-row  :gutter="10" style="margin-top: 5px">
+    <el-col :span="24">
+      <el-button-group>
+        <el-button v-if="!ifConnect" type="primary" @click="connect">connect</el-button>
+        <el-button v-else type="primary" @click="disconnect">disconnect</el-button>
+      </el-button-group>
+      <el-button-group>
+        <el-button type="primary" @click="clear">clear</el-button>
+      </el-button-group>
+      <el-button-group>
+        <el-button type="primary" @click="scrollToButtom">scrollToButtom</el-button>
+        <el-button type="primary" @click="scrollToTop">scrollToTop</el-button>
+      </el-button-group>
+      <el-link :href="downloadUrl" target="_blank">download<i class="el-icon-view el-icon-download"></i></el-link>
     </el-col>
   </el-row>
 
@@ -44,27 +70,31 @@
     el: '#app',
     data: {
       path: '.\\logs\\slf4j\\file.log',
+      search: '',
       ifConnect: false,
       ifScrollToButtom: true,
       content: '',
+      loadSize: 10240,
+      charset: '',
+      charsetOptions: ['utf-8','gbk'],
       ws: null,
       dir: window.location.href.replace(/https?:\/\/[^\/]*(.*)\/.*/g,'$1')
     },
     computed: {
       downloadUrl() {
-        return this.dir + '/log/download?' + window.btoa('path=' + this.path);
+        return this.dir + '/log/download?' + window.btoa(encodeURI('path=' + this.path));
       }
     },
     created() {
       var query = window.location.href.split('?')[1];
       if (query != null) {
-        this.path = window.atob(query);
+        this.path = decodeURI(window.atob(query));
       }
     },
     methods: {
       connect () {
-        var cont = this.content;
-        ws = new WebSocket('ws://' + window.location.host + this.dir + '/logPath?' + window.btoa('logPath=' + this.path));
+        var path = 'logPath=' + this.path + '&search=' + this.search + '&loadSize=' + this.loadSize + '&charset=' + this.charset;
+        ws = new WebSocket('ws://' + window.location.host + this.dir + '/logPath?' + window.btoa(encodeURI(path)));
         ws.onopen = function () {
           this.ifConnect = true;
           console.log('Info: WebSocket connection opened.');
