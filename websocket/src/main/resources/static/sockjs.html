@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+<head>
+  <meta charset="UTF-8">
+  <title>sockjs</title>
+  <link rel="stylesheet" href="webjars/element-ui/2.15.7/lib/theme-chalk/index.css">
+  <style>
+    .content {
+      font-size: smaller;
+      width:100%;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <el-row  :gutter="10">
+    <el-col :span="12">
+      <el-input :disabled="ifConnect" v-model="url">
+        <template slot="prepend">url：</template>
+      </el-input>
+    </el-col>
+    <el-col :span="6">
+      <el-input :disabled="ifConnect" v-model="user">
+        <template slot="prepend">user：</template>
+      </el-input>
+    </el-col>
+    <el-col :span="6">
+      <el-button v-if="!ifConnect" type="primary" @click="connect">connect</el-button>
+      <el-button v-else type="primary" @click="disconnect">disconnect</el-button>
+    </el-col>
+  </el-row>
+  <el-divider></el-divider>
+  <el-row  :gutter="10">
+    <el-col :span="12">
+      <el-input v-model="content">
+        <template slot="prepend">content：</template>
+      </el-input>
+    </el-col>
+    <el-col :span="6">
+      <el-input v-model="receiver">
+        <template slot="prepend">receiver：</template>
+      </el-input>
+    </el-col>
+    <el-col :span="6">
+      <el-select v-model="destination" filterable allow-create clearable placeholder="请选择">
+        <el-option v-for="item in destOptions" :key="item.value" :label="item.name" :value="item.value">
+        </el-option>
+      </el-select>
+      <el-button :disabled="!ifConnect" type="primary" @click="send">send</el-button>
+    </el-col>
+  </el-row>
+  <el-divider></el-divider>
+  <el-row>
+    <el-col :span="6">
+      <el-input v-model="newSubscribe">
+        <template slot="prepend">新订阅：</template>
+        <el-button type="primary" slot="append" @click="subscribe(newSubscribe)">添加</el-button>
+      </el-input>
+    </el-col>
+    <el-col :span="18">
+      <el-tag closable v-for="(item,index) in subscribeArr" @close="unSubscribe(index)">{{item.destination}}</el-tag>
+    </el-col>
+  </el-row>
+  <el-divider></el-divider>
+  <el-input autosize type="textarea" v-model="msg" readonly></el-input>
+</div>
+</body>
+
+<!-- 引入组件库 -->
+<script src="webjars/vue/2.6.12/vue.js"></script>
+<script src="webjars/element-ui/2.15.7/lib/index.js"></script>
+<script src="webjars/jquery/3.1.1-1/jquery.min.js"></script>
+<script src="webjars/sockjs-client/1.0.2/sockjs.min.js"></script>
+<script src="webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
+<script type="text/javascript">
+  const vm = new Vue({
+    el: '#app',
+    data: {
+      url: window.location.href.replace(/(.*)\/.*/g,'$1') + '/broker',
+      user: 'allen',
+      ifConnect: false,
+      content: 'hello!' + new Date(),
+      receiver: 'abc',
+      msg: '',
+      destOptions: [
+        {value: '/app/broadcast', name: '广播'},
+        {value: '/app/resp', name: '发给自己'},
+        {value: '/app/sendTo', name: '发给某人'}
+      ],
+      destination: '/app/resp',
+      newSubscribe: null,
+      client: null,
+      subscribeArr: []
+    },
+    methods: {
+      connect () {
+        // 建立连接对象（还未发起连接）
+        var socket = new SockJS(this.url);
+        // 获取 STOMP 子协议的客户端对象
+        var stompClient = Stomp.over(socket);
+        this.client = stompClient;
+        stompClient.connect(
+                {user: this.user},//客户端认证信息
+                function (frame) {
+                  vm.ifConnect = true;
+                  console.log('Info: WebSocket connection opened.' + frame);
+                  vm.subscribe('/topic/message');
+                  vm.subscribe('/user/topic/resp');
+                  vm.subscribe('/topic/' + vm.user);
+                },
+                function (error) {
+                  vm.ifConnect = false;
+                  console.log('Info: WebSocket connection error：' + error);
+                }
+        );
+        this.ifConnect = true
+      },
+      disconnect() {
+        if (this.client != null) {
+          this.client.disconnect();
+          this.client = null;
+        }
+        this.ifConnect = false;
+      },
+      subscribe(destination) {
+        var rel = this.client.subscribe(destination, function (message) {
+          vm.print('[' + destination + '] Received: ' + message.body);
+        });
+        var obj = {
+          obj: rel,
+          destination: destination
+        }
+        this.subscribeArr.push(obj);
+      },
+      unSubscribe(index) {
+        var tar = this.subscribeArr[index];
+        tar.obj.unsubscribe();
+        this.subscribeArr.splice(index, index + 1);
+      },
+      print(msg) {
+        this.msg += msg + '\n';
+      },
+      send() {
+        var headers = {
+          sender: this.user,
+          receiver: this.receiver
+        };
+        vm.client.send(this.destination, headers, this.content);
+      }
+    }
+  })
+</script>
+</html>
