@@ -1,5 +1,6 @@
 package pwd.allen;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.results.ResultMatchers;
@@ -8,8 +9,12 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -25,15 +30,16 @@ import pwd.allen.controller.MyController;
 import pwd.allen.property.MyProperties;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * @author 门那粒沙
  * @create 2019-08-18 22:46
  **/
-//SpringBoot1.4版本之前用的是SpringJUnit4ClassRunner.class
-@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class) //SpringBoot1.4版本之前用的是SpringJUnit4ClassRunner.class
 //SpringBoot1.4版本之前用的是@SpringApplicationConfiguration(classes = Application.class)
 @SpringBootTest
+@AutoConfigureMockMvc // 添加后能自动注入MockMvc
 public class AppTest {
 
     private static final Logger logger = LoggerFactory.getLogger(AppTest.class);
@@ -42,18 +48,11 @@ public class AppTest {
     private MyProperties myProperties;
 
     @Autowired
-    private WebApplicationContext wac;
-
     private MockMvc mvc;
 
     @Test
     public void test() {
         logger.info("myProperties {}", myProperties);
-    }
-
-    @Before
-    public void setupMockMvc(){
-        mvc = MockMvcBuilders.webAppContextSetup(wac).build(); //初始化MockMvc对象
     }
 
     /**
