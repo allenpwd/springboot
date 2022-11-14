@@ -28,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
+ * 只测试controller层
  * @WebMvcTest注解
  *  @WebMvcTest 自动配置Spring MVC基础结构，并将扫描的bean限制为@Controller、@ControllerAdvice、@JsonComponent、Converter、GenericConverter、Filter、HandlerInterceptor、WebMVCConfiguer和HandlerMethodArgumentResolver。使用此注解时，不扫描常规@Component bean。
  *  测试发现WebConfig2会被加载，怀疑是会解析WebMvcConfigurer类型
@@ -57,11 +58,8 @@ public class MyControllerTest {
 
     @Test
     public void showConfig() throws Exception {
-        String str = "耶稣都留不住，我说的！";
+        String str = "耶稣都留不住， 我说的！";
         Mockito.when(helloService.getHelloStr(ArgumentMatchers.anyString())).thenReturn(str);
-        System.out.println(helloService.getHelloStr("abc"));
-
-
 
         mvc.perform(post("/my/myConfig").param("name", "pwd"))
                 .andExpect(status().isOk())

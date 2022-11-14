@@ -6,9 +6,11 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ import java.util.Map;
  * @SpringBootTest
  *  WebEnvironment取值：
  *      MOCK（默认）：加载 web ApplicationContext 并提供模拟web环境。使用此注解时，嵌入式服务器未启动。如果类路径上没有可用的web环境，则此模式会透明地回退到创建常规的非web ApplicationContext。它可以与 @AutoConfigureMockMvc 或 @AutoConfigureWebTestClient 结合使用，对web应用程序进行基于模拟的测试。
- *      RANDOM_PORT：加载 WebServerApplicationContext 并提供真正的web环境。嵌入式服务器启动并在随机端口上监听。端口能通过变量注入，具体变量忘记了 TODO
+ *      RANDOM_PORT：加载 WebServerApplicationContext 并提供真正的web环境。嵌入式服务器启动并在随机端口上监听。
  *      DEFINED_PORT：加载 WebServerApplicationContext 并提供真正的web环境。嵌入式服务器将启动并在定义的端口（从 application.properties）或默认端口8080上监听。
  *      NONE：使用 SpringApplication 加载 ApplicationContext，但不提供任何web环境（mock或其他）。
  *
@@ -41,6 +43,12 @@ import java.util.Map;
 public class WithServerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(WithServerTest.class);
+
+    /**
+     * 获取服务器端口
+     */
+    @LocalServerPort
+    private int port;
 
     @Autowired
     private MockMvc mvc;
@@ -57,6 +65,7 @@ public class WithServerTest {
 
     @Test
     public void template() {
+        System.out.println("端口为：" + port);
         ResponseEntity<Map> response = restTemplate.getForEntity("/my/myConfig", Map.class);
 
         Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
