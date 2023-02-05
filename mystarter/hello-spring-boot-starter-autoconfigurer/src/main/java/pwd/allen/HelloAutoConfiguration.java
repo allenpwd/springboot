@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  *  引入了AutoConfigurationImportSelector，beanFactory初始化后执行BeanFactory后置处理器的时候
  *  会由ConfigurationClassPostProcessor加载AutoConfigurationImportSelector的selectImports方法返回的配置类集合
  *  AutoConfigurationImportSelector是在getCandidateConfigurations方法会从META-INF/spring.factories中获取各个组件的自动配置类的全限定名，然后根据条件筛选出有效的配置类并返回
- *  AutoConfigurationImportSelector实现了DeferredImportSelector接口以及Ordered接口（最高优先级），所以能够在所有的@Configuration配置类（不包括自动化配置类，即spring.factories文件中的配置类）处理完成后最先运行
+ *  AutoConfigurationImportSelector实现了DeferredImportSelector接口以及Ordered接口（低优先级），所以能够在所有的@Configuration配置类（不包括自动化配置类，即spring.factories文件中的配置类）处理完成后运行
  *
  * @see org.springframework.boot.autoconfigure.AutoConfigurationImportSelector
  *
