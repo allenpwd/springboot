@@ -20,7 +20,14 @@ import java.util.Map;
  * @ConfigurationProperties：告诉SpringBoot将本类中的所有属性和配置文件中相关的配置进行绑定；
  * prefix = "person"：配置文件中哪个下面的所有属性进行一一映射
  *
- * 只有这个组件是容器中的组件，@ConfigurationProperties才有作用
+ * 使用步骤：
+ *  配置类增加注解：@EnableConfigurationProperties
+ *  属性类增加注解：@ConfigurationProperties，指定配置前缀
+ *  属性类可以在@EnableConfigurationProperties的属性中指定，也可以直接加入spring容器，会自动被后置处理器处理
+ *
+ * 原理：
+ *  自动装配类ConfigurationPropertiesAutoConfiguration引入了EnableConfigurationPropertiesRegistrar
+ * @see org.springframework.boot.context.properties.EnableConfigurationPropertiesRegistrar
  *
  * @author pwd
  * @create 2019-02-14 16:04
@@ -29,6 +36,7 @@ import java.util.Map;
 // Canonical names should be kebab-case ('-' separated), lowercase alpha-numeric characters and must start with a letter
 @ConfigurationProperties("pwd.my-config")
 @Data
+//@Component
 //@Validated
 public class MyProperties {
 
