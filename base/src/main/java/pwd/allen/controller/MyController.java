@@ -3,6 +3,8 @@ package pwd.allen.controller;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import com.alibaba.ttl.TransmittableThreadLocal;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import pwd.allen.HelloService;
+import pwd.allen.entity.AlarmMessage;
 import pwd.allen.property.MyProperties;
 
 import javax.servlet.ServletException;
@@ -38,12 +41,13 @@ import java.util.concurrent.TimeUnit;
 //@ConditionalOnProperty(prefix = "controller.MyController", value = "enabled", matchIfMissing = true)    //默认也会开启
 @RequestMapping("my")
 @RestController
+@Api(tags = "我的控制器")
 public class MyController {
 
     private static final Logger logger = LoggerFactory.getLogger(MyController.class);
 
     //#{spEL} spEL里可以用${key}引用属性值
-    @Value("strValue=${controller.MyController.strValue}\nifEnable=#{${controller.MyController.enabled}==true}")
+    @Value("strValue=${controller.MyController.strValue}\nifEnable=#{${controller.MyController.enabled}==true}\npwd.my-config.integer=${pwd.my-config.integer}")
     private String strValue;
 
     @Autowired
@@ -62,7 +66,8 @@ public class MyController {
      * @param paramMap
      * @return
      */
-    @RequestMapping(value = "myConfig", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "我的配置", notes = "我的配置")
+    @GetMapping(value = "myConfig", produces = MediaType.APPLICATION_JSON_VALUE)
     public Object showMyConfig(@RequestParam Map paramMap) {
 
         if (paramMap.containsKey("sleep")) {
@@ -114,10 +119,11 @@ public class MyController {
     }
 
     @GetMapping("log")
-    public void log() {
+    public Object log() {
         logger.info("info");
         logger.warn("warn");
         logger.debug("debug");
+        return new AlarmMessage();
     }
 
     @Value("${uploadPath:/opt/IBM/ABC/test/file/}")

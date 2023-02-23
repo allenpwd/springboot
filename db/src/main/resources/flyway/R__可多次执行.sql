@@ -1,1 +1,1 @@
-update pwd.db_user set user_name='Repeatable Migration' where id=2;
+update db_user set user_name='Repeatable Migration' where id=2;

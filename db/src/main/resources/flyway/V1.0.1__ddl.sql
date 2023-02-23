@@ -6,8 +6,8 @@ CREATE DATABASE IF NOT EXISTS pwd
 -- ----------------------------
 -- Table structure for db_user
 -- ----------------------------
-DROP TABLE IF EXISTS `pwd`.`db_user`;
-CREATE TABLE `pwd`.`db_user`  (
+DROP TABLE IF EXISTS `db_user`;
+CREATE TABLE `db_user`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `age` int(11) NULL DEFAULT NULL,
@@ -21,4 +21,4 @@ CREATE TABLE `pwd`.`db_user`  (
 -- ----------------------------
 -- Records of db_user
 -- ----------------------------
-INSERT INTO `pwd`.`db_user` VALUES (1, '门那粒沙', 18, 0, '2019-12-30 10:56:35', 1, 0xC4E3CAC7C9B5B1C6);
+INSERT INTO `db_user` VALUES (1, '门那粒沙', 18, 0, '2019-12-30 10:56:35', 1, 0xC4E3CAC7C9B5B1C6);

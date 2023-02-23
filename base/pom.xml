@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>base</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -61,6 +61,13 @@
 <!--            <artifactId>plumelog-lite-spring-boot-starter</artifactId>-->
 <!--            <version>3.5.2</version>-->
 <!--        </dependency>-->
+
+        <!-- swagger的增强版 -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>3.0.2</version>
+        </dependency>
     </dependencies>
 
     <build>

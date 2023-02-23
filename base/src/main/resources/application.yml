@@ -1,10 +1,10 @@
 server:
-  port: 80
+  port: 81
   servlet:
     context-path: /
 spring:
   profiles:
-    active: dev,yml2
+    active: dev,yml2,knife4j
 
 ---
 spring:
@@ -68,3 +68,30 @@ management:
 info:
   myInfo:
     test: spring-boot-actuator
+
+
+---
+spring:
+  profiles: knife4j
+knife4j:
+  #启用
+  enable: true
+  #基础认证
+  basic:
+    enable: false
+    username: blade
+    password: blade
+  #增强配置
+  setting:
+    enableSwaggerModels: true
+    enableDocumentManage: true
+    enableHost: true
+    enableHostText: http://localhost
+    enableRequestCache: true
+    enableFilterMultipartApis: true
+    enableFilterMultipartApiMethodType: POST
+    language: zh-CN
+    enableFooter: true
+    enableFooterCustom: true
+    enableDynamicParameter: true
+    footerCustomContent: Copyright © 2022 SpringBlade All Rights Reserved

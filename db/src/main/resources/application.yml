@@ -9,7 +9,7 @@ spring:
 #    schema: classpath:sql/mysql.sql
 #    data: classpath:sql/mysql.sql
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/pwd?useUnicode=true&characterEncoding=utf8&createDatabaseIfNotExist=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.118.102:3306/test?useUnicode=true&characterEncoding=utf8&createDatabaseIfNotExist=true&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
 #    driver-class-name: oracle.jdbc.OracleDriver
@@ -19,6 +19,7 @@ spring:
   flyway:
     baselineOnMigrate: true
     locations: classpath:flyway/ # sql文件的位置，默认classpath:db/migration/
+    baseline-version: 1  # 默认是1，所以V1.0.0这种不会被执行
 
 
 
@@ -37,3 +38,6 @@ logging:
   level:
     pwd.allen: debug
 
+knife4j:
+  #启用
+  enable: true

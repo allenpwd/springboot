@@ -1,23 +1,32 @@
 package pwd.allen.config;
 
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import pwd.allen.filter.MyFilter;
 import pwd.allen.interceptor.MyInterceptor;
 
+import java.util.List;
+
 /**
  * 自定义spring mvc配置
- * 这种自定义方式，spring.jackson.default-property-inclusion=non_empty无效
+ * 这种自定义方式，spring.jackson.default-property-inclusion=non_empty无效，knife4j也会失效
+ * 因为这种方式接管了webmvc配置，springboot的webmvc自动装配会失效
+ * @see org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration
  *
  * @author lenovo
  * @create 2021-03-11 9:07
  **/
 //@Configuration
 //@ServletComponentScan
+@Deprecated
 public class WebConfig extends WebMvcConfigurationSupport {
 
     /**
@@ -50,4 +59,5 @@ public class WebConfig extends WebMvcConfigurationSupport {
     protected void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new MyInterceptor()).addPathPatterns("/**");
     }
+
 }
