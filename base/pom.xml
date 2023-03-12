@@ -12,6 +12,15 @@
     <artifactId>base</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <maven.param>我是pom属性</maven.param>
+        <!--suppress UnresolvedMavenProperty
+            Spring Boot已经将maven-resources-plugins默认的 ${}方式改为了@@方式，如@project.version@
+            设置这个属性能恢复成${}方式
+         -->
+        <resource.delimiter>${*}</resource.delimiter>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
