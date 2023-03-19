@@ -33,3 +33,19 @@ spring:
     type: redis
     # 定义cache名称，用于在缓存注解中引用，多个名称可以使用逗号分隔
     cache-names: redisCache
+
+
+---
+# todo redis集群
+spring:
+  config:
+    activate:
+      on-profile: sentinel
+  redis:
+    password: redis
+    sentinel:
+      master: mymaster
+      nodes:
+        - 192.168.11.163:26379
+        - 192.168.11.164:26379
+        - 192.168.11.165:26379

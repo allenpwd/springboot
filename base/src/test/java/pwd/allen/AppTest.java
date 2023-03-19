@@ -1,5 +1,6 @@
 package pwd.allen;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,9 +41,8 @@ import java.util.Map;
 //SpringBoot1.4版本之前用的是@SpringApplicationConfiguration(classes = Application.class)
 @SpringBootTest
 @AutoConfigureMockMvc // 添加后能自动注入MockMvc
+@Slf4j
 public class AppTest {
-
-    private static final Logger logger = LoggerFactory.getLogger(AppTest.class);
 
     @Autowired
     private MyProperties myProperties;
@@ -52,7 +52,7 @@ public class AppTest {
 
     @Test
     public void test() {
-        logger.info("myProperties {}", myProperties);
+        log.info("myProperties {}", myProperties);
     }
 
     /**
