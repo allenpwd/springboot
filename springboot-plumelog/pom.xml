@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>springboot</artifactId>
+        <groupId>pwd.allen</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>springboot-plumelog</artifactId>
+
+    <dependencies>
+        <!-- 日志查询，链路追踪，日志管理，适合单机小规模项目使用,目前只支持springboot+logback，log4j2组合
+            引入这个starter的话，则不需要配置扫描路径和静态文件路径
+            可以通过http://ip:port/plumelog/#/查看日志，不好用，出现了浏览器崩溃的情况，滚动日志也不准确
+         -->
+        <dependency>
+            <groupId>com.plumelog</groupId>
+            <artifactId>plumelog-lite-spring-boot-starter</artifactId>
+            <version>3.5.2</version>
+        </dependency>
+    </dependencies>
+</project>

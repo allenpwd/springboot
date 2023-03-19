@@ -59,8 +59,6 @@ public class MyController {
     @Autowired
     private WebApplicationContext applicationContext;
 
-    private static final ThreadLocal<Object> THREAD_LOCAL = new TransmittableThreadLocal<>();
-
     /**
      * produces：指定返回值类型，还可以设定返回值的字符编码
      * @param paramMap
@@ -87,21 +85,6 @@ public class MyController {
         paramMap.put("empty", null);
 
         return paramMap;
-    }
-
-    @GetMapping("async")
-    public Object async(HttpServletRequest request) throws InterruptedException {
-        THREAD_LOCAL.set(String.format("这里是父线程:%s", Thread.currentThread().getName()));
-
-        // 异步调用
-        applicationContext.getBean(MyController.class).execAsync();
-        return "hello";
-    }
-
-    @Async
-    public void execAsync() throws InterruptedException {
-        logger.info("【{}】从父线程获取的变量：{}", Thread.currentThread().getName(), THREAD_LOCAL.get());
-        TimeUnit.SECONDS.sleep(5);
     }
 
     /**

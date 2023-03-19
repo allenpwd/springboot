@@ -55,4 +55,9 @@ public class AsyncConfig {
         executor.initialize();
         return TtlExecutors.getTtlExecutor(executor);
     }
+
+    @Bean
+    public MyAsyncConfigurer myAsyncConfigurer() {
+        return new MyAsyncConfigurer();
+    }
 }

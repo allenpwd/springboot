@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.redis.util.RedisLockRegistry;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
@@ -12,6 +14,7 @@ import java.util.concurrent.locks.Lock;
  * 分布式锁
  * TODO 未测试
  */
+@Service
 @RequiredArgsConstructor
 public class RedisLockService {
 
@@ -21,11 +24,20 @@ public class RedisLockService {
 
     private final RedisLockRegistry redisLockRegistry;
 
+    /**
+     * 如果获取不到锁会阻塞
+     * @param lockKey
+     */
     public void lock(String lockKey) {
         Lock lock = obtainLock(lockKey);
         lock.lock();
     }
 
+    /**
+     * 如果获取不到锁会立即返回false
+     * @param lockKey
+     * @return
+     */
     public boolean tryLock(String lockKey) {
         Lock lock = obtainLock(lockKey);
         return lock.tryLock();

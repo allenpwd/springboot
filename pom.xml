@@ -12,6 +12,7 @@
         <module>websocket</module>
         <module>redis</module>
         <module>spring-boot-schedule</module>
+        <module>springboot-plumelog</module>
     </modules>
 
     <parent>

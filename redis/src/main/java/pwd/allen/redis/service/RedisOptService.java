@@ -2,6 +2,8 @@ package pwd.allen.redis.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.*;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -12,8 +14,9 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * TODO 未测试
+ * 封装一个redis操作工具
  */
+@Service
 @RequiredArgsConstructor
 public class RedisOptService {
 

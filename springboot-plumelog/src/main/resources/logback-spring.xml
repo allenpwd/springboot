@@ -29,44 +29,24 @@
         </encoder>
     </appender>
 
-    <!-- ERROR 输入到文件，按日期和文件大小 -->
-    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${log.dir}/file.log</file>
-        <encoder>
-            <pattern>${std}</pattern>
-            <charset>${encoding}</charset>
-        </encoder>
-        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">-->
-            <!--<level>ERROR</level>-->
-            <!--<onMatch>ACCEPT</onMatch>-->
-            <!--<onMismatch>DENY</onMismatch>-->
-        <!--</filter>-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.dir}/file.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!--<fileNamePattern>${log.dir}/file.%d{yyyy-MM-dd}.%i.log</fileNamePattern>-->
-            <maxHistory>${MAXHISTORY}</maxHistory>
-            <!--<timeBasedFileNamingAndTriggeringPolicy-->
-                    <!--class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
-                <!--<maxFileSize>${FILESIZE}</maxFileSize>-->
-            <!--</timeBasedFileNamingAndTriggeringPolicy>-->
-        </rollingPolicy>
-    </appender>
-
     <!-- 可以通过http://ip:port/plumelog/#/查看日志
         不好用，出现了浏览器崩溃的情况，滚动日志也不准确
      -->
-<!--    <appender name="plumelog" class="com.plumelog.lite.logback.appender.LiteAppender">-->
-<!--        <appName>base</appName>-->
-<!--        &lt;!&ndash; 日志存储位置 &ndash;&gt;-->
-<!--        <logPath>${logPath}</logPath>-->
-<!--        &lt;!&ndash; 日志保留天数 &ndash;&gt;-->
-<!--        <keepDay>30</keepDay>-->
-<!--    </appender>-->
+    <appender name="plumelog" class="com.plumelog.lite.logback.appender.LiteAppender">
+        <appName>myPlumelog</appName>
+        <!-- 日志存储位置 -->
+        <logPath>${logPath}</logPath>
+        <!-- 日志保留天数 -->
+        <keepDay>30</keepDay>
+        <env>${plumelog.env}</env>
+<!--        <redisHost>${plumelog.redisHost}</redisHost>-->
+<!--        <redisAuth>${plumelog.redisAuth}</redisAuth>-->
+<!--        <redisDb>${plumelog.redisDb}</redisDb>-->
+    </appender>
 
     <!-- Logger 根目录 -->
     <root level="INFO">
         <appender-ref ref="stdout" />
-        <appender-ref ref="file" />
         <appender-ref ref="plumelog"/>
     </root>
     <logger name="pwd.allen.controller" level="DEBUG" />

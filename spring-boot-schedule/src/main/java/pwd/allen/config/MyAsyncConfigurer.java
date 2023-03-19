@@ -12,7 +12,6 @@ import java.util.concurrent.Executor;
  * @author allen
  * @create 2023-03-19 17:55
  **/
-@Component
 public class MyAsyncConfigurer extends AsyncConfigurerSupport {
 
     /**

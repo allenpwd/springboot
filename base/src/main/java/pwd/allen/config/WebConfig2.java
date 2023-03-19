@@ -41,11 +41,11 @@ public class WebConfig2 implements WebMvcConfigurer {
     }
 
     /**
-     * 添加自定义的拦截器
+     * 添加自定义的拦截器，只处理/my/路径下的
      * @param registry
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new MyInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new MyInterceptor()).addPathPatterns("/my/**");
     }
 }

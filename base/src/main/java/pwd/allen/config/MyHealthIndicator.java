@@ -16,8 +16,6 @@ public class MyHealthIndicator extends AbstractHealthIndicator {
 
     @Override
     protected void doHealthCheck(Health.Builder builder) throws Exception {
-
         builder.outOfService().withDetail("version", "1.0.0").withDetail("msg", "状态不好，撤退！");
-
     }
 }

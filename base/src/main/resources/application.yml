@@ -42,7 +42,7 @@ pwd:
         ruleName: 规则名称
     error-properties:
       include-exception: true
-      path: /errors
+      path: /myPath
 
 hello:
   prefix: 自定义场景启动器的前缀

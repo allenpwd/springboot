@@ -1,0 +1,12 @@
+server:
+  port: 80
+
+# 自定义Plumelog配置，供logback-spring.xml中使用
+plumelog:
+  logPath: /logs/plumelog/lite #
+  appName: myPlumelog
+  env: dev
+  # 需要和plumelog服务端的redis配置一致
+#  redisHost: 127.0.0.1:6379
+#  redisAuth: 123456
+#  redisDb: 10

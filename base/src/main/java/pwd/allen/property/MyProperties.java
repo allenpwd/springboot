@@ -36,16 +36,15 @@ import java.util.Map;
 // Canonical names should be kebab-case ('-' separated), lowercase alpha-numeric characters and must start with a letter
 @ConfigurationProperties("pwd.my-config")
 @Data
-//@Component
 //@Validated
 public class MyProperties {
 
 
 //                                                  @ConfigurationProperties	 @Value
 //    功能	                                        批量注入配置文件中的属性	     一个个指定
-//    松散绑定（例如驼峰、-或者_分隔、不区分大小写）	支持	                         不支持
+//    松散绑定（例如驼峰、-或者_分隔、不区分大小写）	支持	                     不支持
 //    SpEL	                                        不支持	                     支持
-//    JSR303数据校验	                                支持	                         不支持（新版本支持）
+//    JSR303数据校验	                                支持	                     不支持（新版本支持）
 //    复杂类型封装	                                支持                         不支持
 
     @Email
@@ -63,8 +62,8 @@ public class MyProperties {
     /**
      * 不知道这个注解有何用 不加上也能正常嵌套赋值
      */
-    @NestedConfigurationProperty
-    private ErrorProperties errorProperties = new ErrorProperties();
+//    @NestedConfigurationProperty
+    private ErrorProperties errorProperties;
 }
 
 
