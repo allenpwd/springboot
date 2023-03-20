@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +51,9 @@ public class AppTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     @Test
     public void test() {
         log.info("myProperties {}", myProperties);
@@ -75,6 +79,13 @@ public class AppTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
 //                .andExpect(MockMvcResultMatchers.content().string("abc"))
                 .andDo(MockMvcResultHandlers.print());
+    }
+
+    /**
+     * ConfigurableListableBeanFactory.getDependenciesForBean
+     */
+    public void dependencies() {
+        MyController bean = applicationContext.getBean(MyController.class);
     }
 
 }
