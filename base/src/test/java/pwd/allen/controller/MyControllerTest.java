@@ -7,22 +7,15 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import pwd.allen.HelloService;
-import pwd.allen.config.MyAutoConfiguration;
-import pwd.allen.controller.MyController;
-import pwd.allen.property.MyProperties;
+import pwd.allen.config.MyConfig;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  **/
 @RunWith(SpringRunner.class) // 这个去掉的话 mock 有问题
 @WebMvcTest(MyController.class)
-@ImportAutoConfiguration(MyAutoConfiguration.class) //由于不会加载MyAutoConfiguration，所以需要手动加入自定义配置类
+@ImportAutoConfiguration(MyConfig.class) //由于不会加载MyAutoConfiguration，所以需要手动加入自定义配置类
 public class MyControllerTest {
 
     /**
