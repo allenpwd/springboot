@@ -1,8 +1,8 @@
-package pwd.allen.config;
+package pwd.allen.config.config;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import pwd.allen.property.MyProperties;
+import pwd.allen.config.property.MyProperties;
 
 /**
  * 配置文件加载逻辑：

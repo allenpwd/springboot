@@ -1,4 +1,4 @@
-package pwd.allen.property;
+package pwd.allen.config.property;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

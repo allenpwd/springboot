@@ -1,8 +1,8 @@
-package pwd.allen.util;
+package pwd.allen.config.util;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.context.properties.PropertyMapper;
-import pwd.allen.property.MyProperties;
+import pwd.allen.config.property.MyProperties;
 
 /**
  * 是Spring Boot框架中的一个工具类，用于将配置属性映射到Java类的属性上

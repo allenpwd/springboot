@@ -58,3 +58,5 @@ org.springframework.boot.context.config.ConfigFileApplicationListener
 logback.xml的加载顺序早于springboot的application.yml (或application.properties) 
 
 
+### TODO
+- InstantiationAwareBeanPostProcessor
