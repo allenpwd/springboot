@@ -2,48 +2,21 @@ server:
   port: 81
   servlet:
     context-path: /
+    encoding:
+      charset: UTF-8
 spring:
   profiles:
     active: dev,yml2,knife4j
 
+
 ---
 spring:
-  profiles: yml2
-pwd:
-  my-config:
-    #my-str或者myStr都可以 可以用${key}从环境变量、配置文件中读，也可以使用${random.int[1,100]}这种随机数占位符，但是#{spEL}无效
-#    my-str: this is str!${os.name}#{os.name}#{12+1}${12+1}${pwd.my-config.map1.age}${random.uuid}
-    integer: 12
-    bool: false
-    date: 2019/08/21
-    map1:
-      name: pw蛋 ${project.version} @maven.param@
-      age: 18
-    map2: {name: pw蛋,age: 18}
-    list1:
-      - "双引号\n不会处理转义字符"
-      - '单引号\n会处理转义字符'
-      - 没有引号\n会处理转义字符
-      - >
-        通过>（字符后面要回车）换行
-        换行被空格替换，最后会有个换行符
-      - |
-        通过|（字符后面要回车）换行
-        会保留换行符，最后会有个换行符
-      - 在字符串中
-        （无论有没有用引号括起来）
-        回车换行
-        换行被空格替换
-    #todo复合集合类型报错
-#    list2: [one,two,abc]
-    list3:
-      - name: 预警信息
-        id0: 这是id0
-        ruleName: 规则名称
-    error-properties:
-      include-exception: true
-      path: /myPath
-
+  config:
+    activate:
+      on-profile: yml2
+controller:
+  MyController:
+    enabled: true
 hello:
   prefix: 自定义场景启动器的前缀
   suffix: 自定义场景启动器的后缀
@@ -72,7 +45,9 @@ info:
 
 ---
 spring:
-  profiles: knife4j
+  config:
+    activate:
+      on-profile: knife4j
 knife4j:
   #启用
   enable: true

@@ -13,7 +13,7 @@ import com.mongodb.client.model.EstimatedDocumentCountOptions;
 import com.mongodb.internal.client.model.CountOptionsHelper;
 import org.assertj.core.util.Lists;
 import org.bson.Document;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package pwd.allen.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.scheduling.annotation.Async;
 

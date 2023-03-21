@@ -1,63 +1,32 @@
 package pwd.allen;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.results.ResultMatchers;
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.ApplicationContext;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import pwd.allen.controller.MyController;
-import pwd.allen.property.MyProperties;
-
-import java.io.File;
-import java.util.Map;
 
 /**
+ * 新版本只需要加上@SpringBootTest而不需要@RunWith
  * @author 门那粒沙
  * @create 2019-08-18 22:46
  **/
-@RunWith(SpringRunner.class) //SpringBoot1.4版本之前用的是SpringJUnit4ClassRunner.class
-//SpringBoot1.4版本之前用的是@SpringApplicationConfiguration(classes = Application.class)
 @SpringBootTest
 @AutoConfigureMockMvc // 添加后能自动注入MockMvc
 @Slf4j
 public class AppTest {
 
     @Autowired
-    private MyProperties myProperties;
-
-    @Autowired
     private MockMvc mvc;
 
     @Autowired
     private ApplicationContext applicationContext;
-
-    @Test
-    public void test() {
-        log.info("myProperties {}", myProperties);
-    }
 
     /**
      * 1、mockMvc.perform执行一个请求。
@@ -75,7 +44,7 @@ public class AppTest {
      */
     @Test
     public void mvc() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/my/myConfig").accept(MediaType.APPLICATION_JSON).param("name", "pwd"))
+        mvc.perform(MockMvcRequestBuilders.get("/my/log").param("name", "pwd"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
 //                .andExpect(MockMvcResultMatchers.content().string("abc"))
                 .andDo(MockMvcResultHandlers.print());

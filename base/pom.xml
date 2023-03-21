@@ -27,12 +27,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>pwd.allen</groupId>
-            <artifactId>config</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <!-- 引入自定义的启动器 -->
         <dependency>
             <groupId>pwd.allen</groupId>

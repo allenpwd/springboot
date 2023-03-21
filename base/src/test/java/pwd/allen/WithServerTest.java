@@ -1,26 +1,17 @@
 package pwd.allen;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.context.WebApplicationContext;
-import pwd.allen.property.MyProperties;
 
 import java.util.Map;
 
@@ -36,8 +27,6 @@ import java.util.Map;
  * @author 门那粒沙
  * @create 2019-08-18 22:46
  **/
-@RunWith(SpringRunner.class) //SpringBoot1.4版本之前用的是SpringJUnit4ClassRunner.class
-//SpringBoot1.4版本之前用的是@SpringApplicationConfiguration(classes = Application.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc // 添加后能自动注入MockMvc
 public class WithServerTest {
@@ -68,7 +57,7 @@ public class WithServerTest {
         System.out.println("端口为：" + port);
         ResponseEntity<Map> response = restTemplate.getForEntity("/my/myConfig", Map.class);
 
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
+        Assertions.assertEquals(response.getStatusCode(), HttpStatus.OK);
     }
 
 }

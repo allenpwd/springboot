@@ -7,11 +7,11 @@
         <module>mystarter</module>
         <module>base</module>
         <module>mongodb</module>
-        <module>db</module>
-        <module>config</module>
+        <module>springboot-mybatisplus</module>
+        <module>springboot-config</module>
         <module>websocket</module>
         <module>redis</module>
-        <module>spring-boot-schedule</module>
+        <module>springboot-schedule</module>
         <module>springboot-plumelog</module>
     </modules>
 
@@ -28,7 +28,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <boot.version>2.2.1.RELEASE</boot.version>
+        <boot.version>2.5.3</boot.version>
         <hutool.version>5.3.0</hutool.version>
         <sonar.skip>true</sonar.skip>
     </properties>

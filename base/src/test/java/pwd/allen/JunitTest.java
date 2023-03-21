@@ -1,6 +1,6 @@
 package pwd.allen;
 
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.RepeatedTest;
 import org.springframework.boot.SpringApplicationRunListener;
 import org.springframework.core.io.UrlResource;

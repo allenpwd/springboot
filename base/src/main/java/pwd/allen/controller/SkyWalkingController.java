@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * skywalking告警挂钩方法
  * @author 门那粒沙
  * @create 2021-03-07 17:51
  **/

@@ -1,5 +1,5 @@
 import cn.hutool.json.JSONUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 import pwd.allen.websocket.util.WebSocketUtils;
 
 import java.io.File;

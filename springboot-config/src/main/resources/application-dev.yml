@@ -1,0 +1,4 @@
+# 当spring.profiles.active包含dev时，该配置文件会被加载
+pwd:
+  my-config:
+    my-str: this is application-dev.yml
