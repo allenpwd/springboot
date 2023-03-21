@@ -1,4 +1,4 @@
-package pwd.allen.controller;
+package pwd.allen.base.controller;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
@@ -11,7 +11,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import pwd.allen.entity.AlarmMessage;
+import pwd.allen.base.entity.AlarmMessage;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package pwd.allen.config;
+package pwd.allen.base.config;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;

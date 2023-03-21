@@ -1,4 +1,4 @@
-package pwd.allen.listener;
+package pwd.allen.base.listener;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringApplicationRunListener;

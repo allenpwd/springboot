@@ -31,7 +31,7 @@ import java.util.Map;
 //prefix属性不能用驼峰命名，可以用-分隔符，否则会报错：
 // Canonical names should be kebab-case ('-' separated), lowercase alpha-numeric characters and must start with a letter
 @ConfigurationProperties("pwd.my-config")
-@Component
+//@Component
 @Data
 //@Validated
 public class MyProperties {

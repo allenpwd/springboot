@@ -1,4 +1,4 @@
-package pwd.allen;
+package pwd.allen.base;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import pwd.allen.controller.MyController;
+import pwd.allen.base.controller.MyController;
 
 /**
  * 新版本只需要加上@SpringBootTest而不需要@RunWith

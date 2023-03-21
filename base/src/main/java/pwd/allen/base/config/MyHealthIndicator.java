@@ -1,4 +1,4 @@
-package pwd.allen.config;
+package pwd.allen.base.config;
 
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;

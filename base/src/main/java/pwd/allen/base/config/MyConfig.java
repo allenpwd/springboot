@@ -1,8 +1,8 @@
-package pwd.allen.config;
+package pwd.allen.base.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pwd.allen.entity.MyBean;
+import pwd.allen.base.entity.MyBean;
 
 /**
  * @author pwd

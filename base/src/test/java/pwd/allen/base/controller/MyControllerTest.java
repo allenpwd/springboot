@@ -1,4 +1,4 @@
-package pwd.allen.controller;
+package pwd.allen.base.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import pwd.allen.HelloService;
-import pwd.allen.config.MyConfig;
+import pwd.allen.base.config.MyConfig;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

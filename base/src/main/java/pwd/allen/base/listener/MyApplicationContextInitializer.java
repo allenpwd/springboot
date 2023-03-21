@@ -1,4 +1,4 @@
-package pwd.allen.listener;
+package pwd.allen.base.listener;
 
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;

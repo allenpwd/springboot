@@ -1,4 +1,4 @@
-package pwd.allen.filter;
+package pwd.allen.base.filter;
 
 import lombok.extern.log4j.Log4j2;
 

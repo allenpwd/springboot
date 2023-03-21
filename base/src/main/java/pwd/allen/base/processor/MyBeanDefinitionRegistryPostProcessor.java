@@ -1,4 +1,4 @@
-package pwd.allen.processor;
+package pwd.allen.base.processor;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;

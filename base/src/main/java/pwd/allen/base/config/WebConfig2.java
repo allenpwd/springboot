@@ -1,12 +1,12 @@
-package pwd.allen.config;
+package pwd.allen.base.config;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import pwd.allen.filter.MyFilter;
-import pwd.allen.interceptor.MyInterceptor;
+import pwd.allen.base.filter.MyFilter;
+import pwd.allen.base.interceptor.MyInterceptor;
 
 /**
  * 自定义spring mvc配置，并且保留了springboot默认的配置功能

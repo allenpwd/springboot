@@ -1,4 +1,4 @@
-package pwd.allen.config;
+package pwd.allen.base.config;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import pwd.allen.filter.MyFilter;
-import pwd.allen.interceptor.MyInterceptor;
+import pwd.allen.base.filter.MyFilter;
+import pwd.allen.base.interceptor.MyInterceptor;
 
 import java.util.List;
 

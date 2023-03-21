@@ -1,4 +1,4 @@
-package pwd.allen;
+package pwd.allen.util;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.context.properties.PropertyMapper;

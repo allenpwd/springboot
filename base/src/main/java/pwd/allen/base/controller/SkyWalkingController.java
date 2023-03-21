@@ -1,9 +1,9 @@
-package pwd.allen.controller;
+package pwd.allen.base.controller;
 
 import org.apache.skywalking.apm.toolkit.trace.ActiveSpan;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.springframework.web.bind.annotation.*;
-import pwd.allen.entity.AlarmMessage;
+import pwd.allen.base.entity.AlarmMessage;
 
 import java.util.ArrayList;
 import java.util.List;

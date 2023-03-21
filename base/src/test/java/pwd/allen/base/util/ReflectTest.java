@@ -1,4 +1,4 @@
-package pwd.allen.util;
+package pwd.allen.base.util;
 
 import org.junit.jupiter.api.*;
 import org.springframework.core.annotation.AnnotatedElementUtils;
