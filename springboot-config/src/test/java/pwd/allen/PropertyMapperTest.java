@@ -1,6 +1,6 @@
-package pwd.allen.util;
+package pwd.allen;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.context.properties.PropertyMapper;
 import pwd.allen.property.MyProperties;
 

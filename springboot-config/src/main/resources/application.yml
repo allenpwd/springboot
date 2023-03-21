@@ -3,16 +3,22 @@ spring:
     active: hello,knife4j
 pwd:
   my-config:
-    #my-str或者myStr都可以 可以用${key}从环境变量、配置文件中读，也可以使用${random.int[1,100]}这种随机数占位符，但是#{spEL}无效
-    #    my-str: this is str!${os.name}#{os.name}#{12+1}${12+1}${pwd.my-config.map1.age}${random.uuid}
+    my-str: 我是yml!${os.name}#{os.name}#{12+1}${12+1}${pwd.my-config.map1.age}${random.uuid}
     integer: 12
     bool: false
     date: 2019/08/21
-    map1:
-      name: pw蛋 ${project.version} @maven.param@
-      age: 18
-    map2: {name: pw蛋,age: 18}
-    list1:
+    # map配置方式一
+    map2:
+      key1: project.version=${project.version} maven.param=${maven.param}
+      key2: project.version=@project.version@ maven.param=@maven.param@
+    # map配置方式二，只支持一层的json
+    map3: {name: pw蛋,age: 18}
+    # 复合集合类型，map里面又是map，第一个的key是0，第二个的key是1
+    map4:
+      - name: 哦
+        id: 1
+      - name2: 啊
+    list2:
       - "双引号\n不会处理转义字符"
       - '单引号\n会处理转义字符'
       - 没有引号\n会处理转义字符
@@ -22,16 +28,10 @@ pwd:
       - |
         通过|（字符后面要回车）换行
         会保留换行符，最后会有个换行符
-      - 在字符串中
-        （无论有没有用引号括起来）
+      - 在字符串中（无论有没有用引号括起来）
         回车换行
         换行被空格替换
-    #todo复合集合类型报错
-    #    list2: [one,two,abc]
-    list3:
-      - name: 预警信息
-        id0: 这是id0
-        ruleName: 规则名称
+    list3: [one,two,abc]
     error-properties:
       include-exception: true
       path: /myPath

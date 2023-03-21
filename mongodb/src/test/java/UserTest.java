@@ -1,33 +1,18 @@
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.IterUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.json.JSONUtil;
 import com.mongodb.BasicDBObject;
-import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Collation;
-import com.mongodb.client.model.CountOptions;
-import com.mongodb.client.model.EstimatedDocumentCountOptions;
-import com.mongodb.internal.client.model.CountOptionsHelper;
 import org.assertj.core.util.Lists;
 import org.bson.Document;
-import org.junit.jupiter.api.*;
-import org.junit.runner.RunWith;
-import org.springframework.beans.BeanUtils;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import pwd.allen.MongoMain;
 import pwd.allen.Pager;
 import pwd.allen.entity.User;
@@ -35,14 +20,15 @@ import pwd.allen.repository.UserRepository;
 import pwd.allen.service.MongoDbService;
 import pwd.allen.service.UserService;
 
-import javax.websocket.RemoteEndpoint;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author lenovo
  * @create 2021-03-03 16:20
  **/
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = MongoMain.class)
 public class UserTest {
 

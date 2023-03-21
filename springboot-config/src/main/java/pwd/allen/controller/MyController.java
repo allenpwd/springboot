@@ -43,16 +43,7 @@ public class MyController {
     @GetMapping(value = "config")
     public Object showMyConfig(@RequestParam Map paramMap) {
 
-        if (paramMap.containsKey("sleep")) {
-            Integer sleep = Integer.parseInt((String)paramMap.get("sleep"));
-            try {
-                Thread.sleep(sleep);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        log.info("paramMap {}", paramMap);
+        System.out.println(myProperties);
 
         paramMap.put("strValue", strValue);
         paramMap.put("myProperties", myProperties);

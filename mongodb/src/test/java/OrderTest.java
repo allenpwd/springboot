@@ -1,10 +1,6 @@
 import com.mongodb.BasicDBObject;
-import com.mongodb.BasicDBObjectBuilder;
-import com.mongodb.DBObject;
 import com.mongodb.client.AggregateIterable;
-import com.mongodb.util.JSON;
-import org.junit.jupiter.api.*;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
@@ -12,11 +8,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.util.DBObjectUtils;
-import org.springframework.test.context.junit4.SpringRunner;
 import pwd.allen.MongoMain;
 import pwd.allen.entity.Order;
-import pwd.allen.entity.User;
 import pwd.allen.service.OrderService;
 
 import java.util.*;
@@ -25,7 +18,6 @@ import java.util.*;
  * @author 门那粒沙
  * @create 2021-03-27 14:58
  **/
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = MongoMain.class)
 public class OrderTest {
     @Autowired

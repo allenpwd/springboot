@@ -1,14 +1,7 @@
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
 import pwd.allen.redis.RedisMain;
 import pwd.allen.redis.entity.User;
 import pwd.allen.redis.service.MyService;
@@ -16,14 +9,12 @@ import pwd.allen.redis.service.RedisLockService;
 import pwd.allen.redis.service.RedisOptService;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author allen
  * @create 2022-07-03 13:21
  **/
 @Slf4j
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = RedisMain.class)
 public class RedisTest {
 
