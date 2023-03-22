@@ -59,4 +59,4 @@ logback.xml的加载顺序早于springboot的application.yml (或application.pro
 
 
 ### TODO
-- InstantiationAwareBeanPostProcessor
+- ApplicationContextInitializer

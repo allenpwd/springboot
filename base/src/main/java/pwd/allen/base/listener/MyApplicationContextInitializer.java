@@ -4,6 +4,8 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
+ * 允许我们在 Spring 容器启动前，对 ApplicationContext 进行进一步的配置和处理
+ *
  * 回调时机：ioc容器fresh之前
  *
  * 使用方式：

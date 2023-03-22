@@ -13,6 +13,7 @@
         <module>redis</module>
         <module>springboot-schedule</module>
         <module>springboot-plumelog</module>
+        <module>springboot-config-nacos</module>
     </modules>
 
     <parent>
