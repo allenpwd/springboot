@@ -1,32 +1,41 @@
 package pwd.allen.config;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.env.Environment;
 
 /**
+ * 测试下@Value没解析的问题
  * @author allen
  * @create 2023-03-21 21:53
  **/
-@SpringBootTest(classes = ValueTest.class, properties = {"test.myStr=fuck"}, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(classes = {ValueTest.class, TestConfig.class}, properties = {"test.myStr=fuck"}, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class ValueTest {
 
-    /**
-     * @Value属性名支持驼峰或者-分隔的方式
-     *
-     * 解析时机：
-     *  解析占位符是 {@link org.springframework.beans.factory.support.AbstractBeanFactory#resolveEmbeddedValue(String)}
-     *  解析spel是 {@link org.springframework.beans.factory.support.AbstractBeanFactory#evaluateBeanDefinitionString(String, org.springframework.beans.factory.config.BeanDefinition)}
-     *
-     * 原理：引入了{@link org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#populateBean}，会在bean初始化属性的时候回调
-     *  {@link org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor#postProcessProperties(org.springframework.beans.PropertyValues, Object, String)}
-     *  然后委托给InjectedElement处理，有两个内部类的实现：{@link org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredFieldElement}和AutowiredMethodElement。
-     *
-     */
+    @Autowired
+    private Environment environment;
+
+    @Test
+    public void test() {
+        System.out.println(environment.resolvePlaceholders("test.my-str=${test.myStr}"));
+    }
+}
+
+@Configuration
+class TestConfig {
+
+    public TestConfig() {
+        System.out.println("init TestConfig");
+    }
+
     @Value("${test.my-str:default}")
     private String mystr;
 
@@ -37,17 +46,24 @@ public class ValueTest {
      *      -》{@link AbstractApplicationContext#invokeBeanFactoryPostProcessors(org.springframework.beans.factory.config.ConfigurableListableBeanFactory)}
      *      -》{@link org.springframework.context.support.PropertySourcesPlaceholderConfigurer#postProcessBeanFactory(ConfigurableListableBeanFactory)}
      *
-     * TODO 为何不声明为static也行
+     * 建议声明时方法加上static，因为这样实例化PropertySourcesPlaceholderConfigurer的时候不需要先实例化其所在的Config类
+     * 如果提前实例化Config类，可能导致Config的@Value解析不到
      *
      * @return
      */
     @Bean
-    public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
-    @Test
-    public void test() {
+    /**
+     * 测试一下提前实例化
+     * @return
+     */
+    @Bean
+    public BeanPostProcessor myBeanPostProcessor() {
+        // 如果没有声明PropertySourcesPlaceholderConfigurer或者声明时不是static，这里获取不到myStr
         System.out.println(mystr);
+        return new BeanPostProcessor() {};
     }
 }

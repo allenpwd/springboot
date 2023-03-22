@@ -9,6 +9,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.context.annotation.Bean;
@@ -28,8 +29,7 @@ import org.springframework.util.StringValueResolver;
  * @create 2023-03-17 17:32
  **/
 @PropertySource(value = {"classpath:test.properties"})
-@Configuration
-@ContextConfiguration(classes = {ConfigTest.class})
+@SpringBootTest(classes = ConfigTest.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class ConfigTest implements EmbeddedValueResolverAware {
 
     /**
@@ -51,16 +51,16 @@ public class ConfigTest implements EmbeddedValueResolverAware {
     }
 
     /**
-     * @Value的处理器StringValueResolver初始化时机是
-     *      -》{@link org.springframework.context.support.PropertySourcesPlaceholderConfigurer#postProcessBeanFactory(ConfigurableListableBeanFactory)}
+     * @Value属性名支持驼峰或者-分隔的方式
      *
-     * 处理@Value属性解析的时机是（关键是AutowiredAnnotationBeanPostProcessor这个bean后置处理器）
-     *      -》{@link AbstractAutowireCapableBeanFactory#populateBean(String, org.springframework.beans.factory.support.RootBeanDefinition, org.springframework.beans.BeanWrapper)}
-     *      -》{@link AutowiredAnnotationBeanPostProcessor#postProcessProperties(org.springframework.beans.PropertyValues, Object, String)}
-     *      -》{@link org.springframework.beans.factory.support.AbstractBeanFactory#resolveEmbeddedValue(String)}
-     *      -》{@link DefaultListableBeanFactory#resolveDependency(org.springframework.beans.factory.config.DependencyDescriptor, String, java.util.Set, org.springframework.beans.TypeConverter)}
-     *          其中，解析占位符是 {@link AbstractBeanFactory#resolveEmbeddedValue(String)}
-     *          解析spel是 {@link AbstractBeanFactory#evaluateBeanDefinitionString(String, org.springframework.beans.factory.config.BeanDefinition)}
+     * 解析时机：
+     *  解析占位符是 {@link org.springframework.beans.factory.support.AbstractBeanFactory#resolveEmbeddedValue(String)}
+     *  解析spel是 {@link org.springframework.beans.factory.support.AbstractBeanFactory#evaluateBeanDefinitionString(String, org.springframework.beans.factory.config.BeanDefinition)}
+     *
+     * 原理：引入了AutowiredAnnotationBeanPostProcessor，会在bean初始化属性的时候{@link org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#populateBean}回调
+     *  {@link org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor#postProcessProperties(org.springframework.beans.PropertyValues, Object, String)}
+     *  然后委托给InjectedElement处理，有两个内部类的实现：{@link org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredFieldElement}和AutowiredMethodElement。
+     *
      */
     @Test
     public void resolveValue() {
