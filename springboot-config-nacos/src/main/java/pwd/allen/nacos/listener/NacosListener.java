@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import sun.net.spi.nameservice.NameService;
 
 import javax.annotation.PostConstruct;
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 /**
@@ -48,6 +49,8 @@ public class NacosListener {
             }
         });
         log.info("从nacos上读取配置：{}", config);
+
+        log.info(configService.getServerStatus());
     }
 
     /**
@@ -58,7 +61,7 @@ public class NacosListener {
      * @param data
      */
     @NacosConfigListener(dataId = "json_config", groupId = "DEFAULT_GROUP", converter = DataConfigConverter.class)
-    public void onMessage(Data data) {
+    public void onMessage(Map data) {
         log.info("监听到json_config变更：{}", data);
     }
 }
