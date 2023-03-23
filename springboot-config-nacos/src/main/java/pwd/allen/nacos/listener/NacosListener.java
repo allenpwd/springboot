@@ -1,6 +1,7 @@
 package pwd.allen.nacos.listener;
 
 import com.alibaba.nacos.api.annotation.NacosInjected;
+import com.alibaba.nacos.api.annotation.NacosProperties;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.ConfigType;
 import com.alibaba.nacos.api.config.annotation.NacosConfigListener;
@@ -8,6 +9,7 @@ import com.alibaba.nacos.api.config.listener.AbstractListener;
 import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingService;
+import com.alibaba.nacos.spring.util.NacosUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import sun.net.spi.nameservice.NameService;
@@ -19,7 +21,6 @@ import java.util.concurrent.Executor;
 /**
  * 自定义nacos监听器
  *
- * TODO 是否能指定nacos，而不是用全局的配置
  * @author 门那粒沙
  * @create 2021-09-04 17:55
  **/
@@ -29,10 +30,12 @@ public class NacosListener {
 
     /**
      * 能通过@NacosInjected注解注入ConfigService
+     * 能通过properties指定自定义nacos服务器配置，默认读取的是全局nacos配置
+     * 由于支持指定多个nacos服务器，所以configService可能有多个，并且会缓存下来，缓存key生成策略 {@link NacosUtils#identify}
      *
      * 原理：{@link com.alibaba.nacos.spring.beans.factory.annotation.AnnotationNacosInjectedBeanPostProcessor}
      */
-    @NacosInjected
+    @NacosInjected(properties = @NacosProperties)
     private ConfigService configService;
 
     @PostConstruct

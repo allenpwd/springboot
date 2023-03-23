@@ -8,12 +8,13 @@ nacos:
     # 多个用逗号隔开，支持解析${}
     data-ids: yaml_config
     server-addr: "127.0.0.1:8848"
+    # 指定额外的配置（没指定的属性则会继承全局的），支持指定其他nacos地址
     ext-config:
       - type: properties
-        auto-refresh: true
         group: DEFAULT_GROUP
         data-ids: prop_config
-        server-addr: "127.0.0.1:8848"
+    username: nacos
+    password: nacos
 
 
 # nacos配置是添加在environment最后的，application里的配置优先比他优先
