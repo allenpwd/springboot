@@ -13,13 +13,15 @@ import java.util.Arrays;
 /**
  * BeanDefinitionRegistryPostProcessor接口在BeanFactoryPostProcessor基础上额外定义的方法
  *
+ * 使用样例：
+ *  mybatis扫描mapper的注册器：org.mybatis.spring.mapper.MapperScannerConfigurer
+ *
  * @author pwd
  * @create 2018-12-01 16:36
  **/
 @Slf4j
 @Component
 public class MyBeanDefinitionRegistryPostProcessor extends MyBeanFactoryPostProcessor implements BeanDefinitionRegistryPostProcessor {
-
 
     /**
      * 执行时机：所有bean定义信息将要被加载、bean实例未被创建（在postProcessBeanFactory之前）

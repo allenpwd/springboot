@@ -1,3 +1,6 @@
+package pwd.allen;
+
+import com.baomidou.mybatisplus.test.autoconfigure.MybatisPlusTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +13,7 @@ import pwd.allen.mapper.UserMapper;
  * @create 2021-06-26 8:49
  **/
 @SpringBootTest(classes = DbApplication.class)
+//@MybatisPlusTest  // TODO 报错了
 public class MapperTest {
 
     @Autowired

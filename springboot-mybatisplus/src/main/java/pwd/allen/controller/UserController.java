@@ -2,9 +2,7 @@ package pwd.allen.controller;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -12,7 +10,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pwd.allen.entity.User;
-import pwd.allen.mapper.UserMapper;
 import pwd.allen.service.UserService;
 
 import java.util.List;
@@ -43,15 +40,42 @@ public class UserController {
         return rel;
     }
 
-    @GetMapping("getByName")
-    public Object getByName(@RequestParam("name") String name) {
-        Page<User> page = new Page<>(1, 2);
+    @GetMapping("page")
+    @ApiOperation(value = "根据名字查询用户", notes = "根据名字查询用户")
+    public Object page(@RequestParam(value = "name", required = false) String name, Page<User> page) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like("user_name", name);
+        if (StrUtil.isNotEmpty(name)) {
+            queryWrapper.like("user_name", name);
+        }
         Page<User> userPage = userService.page(page, queryWrapper);
         return userPage;
     }
 
+    /**
+     * 以x-www.form-urlencoded方式传参
+     * @param user
+     * @return
+     */
+    @PostMapping("save")
+    @ApiOperation(value = "保存")
+    public Object save(User user) {
+        // 使用mybatis plus自带的方法：如果有id则更新，没有id则插入，实体类必须要指定id
+        boolean b = userService.saveOrUpdate(user);
+        return user;
+    }
+
+    /**
+     * 以json格式的body传参
+     * @param users
+     * @return
+     */
+    @PostMapping("saveList")
+    @ApiOperation(value = "批量保存")
+    public Object saveList(@RequestBody List<User> users) {
+        // 使用mybatis plus自带的方法：如果有id则更新，没有id则插入，实体类必须要指定id
+        boolean b = userService.saveBatch(users);
+        return users;
+    }
 
     @ApiOperation(value = "测试事务", notes = "测试事务")
     @PostMapping("testTransactional")

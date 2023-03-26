@@ -1,1 +1,0 @@
-INSERT INTO `db_user` VALUES (2, 'Versioned Migration', 28, 1, '2021-03-30 10:56:35', 1, 0xC4E3CAC7C9B5B1C6);

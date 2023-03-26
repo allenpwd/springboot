@@ -1,3 +1,5 @@
+package pwd.allen;
+
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.*;
 

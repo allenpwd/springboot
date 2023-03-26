@@ -8,20 +8,14 @@ spring:
   datasource:
 #    schema: classpath:sql/mysql.sql
 #    data: classpath:sql/mysql.sql
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.118.102:3306/test?useUnicode=true&characterEncoding=utf8&createDatabaseIfNotExist=true&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
-#    driver-class-name: oracle.jdbc.OracleDriver
-#    url: jdbc:oracle:thin:@localhost:1521:orcl
-#    username: hr
-#    password: 123456
   flyway:
     baselineOnMigrate: true
-    locations: classpath:flyway/ # sql文件的位置，默认classpath:db/migration/
     baseline-version: 1  # 默认是1，所以V1.0.0这种不会被执行
-
-
+  profiles:
+    active: mysql
+  jackson:
+    default-property-inclusion: non_empty
+    date-format: "yyyy-MM-dd HH:mm:ss"
 
 mybatis-plus:
 #  type-enums-package: pwd.allen.enums #配置枚举 支持通配符 * 或者 ; 分割
@@ -41,3 +35,32 @@ logging:
 knife4j:
   #启用
   enable: true
+
+
+---
+# mysql
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&createDatabaseIfNotExist=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  config:
+    activate:
+      on-profile: mysql
+  flyway:
+    locations: classpath:flyway/mysql/ # sql文件的位置，默认classpath:db/migration/
+
+---
+# oracle
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:orcl
+    username: hr
+    password: 123456
+  config:
+    activate:
+      on-profile: oracle
+  flyway:
+    locations: classpath:flyway/oracle/ # sql文件的位置，默认classpath:db/migration/
