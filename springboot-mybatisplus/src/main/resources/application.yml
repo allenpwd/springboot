@@ -11,6 +11,7 @@ spring:
   flyway:
     baselineOnMigrate: true
     baseline-version: 1  # 默认是1，所以V1.0.0这种不会被执行
+    placeholder-replacement: false # 禁用脚本占位符替换
   profiles:
     active: mysql
   jackson:
