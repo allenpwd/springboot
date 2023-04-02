@@ -21,8 +21,16 @@ public class NacosController {
     @Autowired
     private ConfigurableEnvironment environment;
 
-    @NacosValue(value = "${pwd.prop.info} ${pwd.yml.info}", autoRefreshed = true)
-    private String info;
+    /**
+     * 只能使用一个占位符，因为多个占位符的话只会用第一个占位符的属性名作为key，也就是只有当第一个占位符的属性值改变了才会刷新
+     * 获取key的逻辑：{link com.alibaba.nacos.spring.context.annotation.config.NacosValueAnnotationBeanPostProcessor#resolvePlaceholder}
+     */
+//    @NacosValue(value = "${pwd.prop.info} ${pwd.yml.info}", autoRefreshed = true) //别用多个占位符，这种写法pwd.yml.info改变了不会动态刷新
+    @NacosValue(value = "${pwd.prop.info}", autoRefreshed = true)
+    private String propInfo;
+
+    @NacosValue(value = "${pwd.yml.info}", autoRefreshed = true)
+    private String ymlInfo;
 
     /**
      * 不加autoRefreshed = true没法动态刷新
@@ -33,7 +41,8 @@ public class NacosController {
     @GetMapping("config")
     public Object sayHello(HttpServletRequest request) {
         HashMap<String, Object> resultMap = new HashMap<>(5);
-        resultMap.put("info", info);
+        resultMap.put("propInfo", propInfo);
+        resultMap.put("ymlInfo", ymlInfo);
         resultMap.put("num", num);
         return resultMap;
     }

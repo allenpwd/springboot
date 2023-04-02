@@ -6,17 +6,13 @@ import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.ConfigType;
 import com.alibaba.nacos.api.config.annotation.NacosConfigListener;
 import com.alibaba.nacos.api.config.listener.AbstractListener;
-import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
-import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.spring.util.NacosUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import sun.net.spi.nameservice.NameService;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
-import java.util.concurrent.Executor;
 
 /**
  * 自定义nacos监听器

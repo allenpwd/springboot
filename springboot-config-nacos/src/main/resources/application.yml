@@ -8,9 +8,11 @@ nacos:
     # 多个用逗号隔开，支持解析${}
     data-ids: yaml_config
     server-addr: "127.0.0.1:8848"
-    # 指定额外的配置（没指定的属性则会继承全局的），支持指定其他nacos地址
+    # 指定额外的配置（没指定的属性则会继承全局属性），支持指定其他nacos地址
     ext-config:
       - type: properties
+        # 这个不声明的话是false，全局属性只支持固定的几个属性，并不包括auto-refresh【com.alibaba.boot.nacos.config.util.NacosConfigLoader.buildGlobalNacosProperties】
+        auto-refresh: true
         group: DEFAULT_GROUP
         data-ids: prop_config
     username: nacos

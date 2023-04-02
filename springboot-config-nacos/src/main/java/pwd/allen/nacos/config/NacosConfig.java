@@ -12,7 +12,8 @@ import org.springframework.boot.SpringApplication;
  *
  * 动态刷新原理：
  *  引入了NacosValueAnnotationBeanPostProcessor，会监听配置改变事件，当配置改变时，nacos-client会调用spring的事件发布器发布事件，并带上配置信息
- *      -》{@link com.alibaba.nacos.spring.context.annotation.config.NacosValueAnnotationBeanPostProcessor#onApplicationEvent}
+ *  NacosValueAnnotationBeanPostProcessor监听了相应事件，触发了它的方法：{@link com.alibaba.nacos.spring.context.annotation.config.NacosValueAnnotationBeanPostProcessor#onApplicationEvent}
+ *  该方法会遍历之前记录的要求动态刷新的属性名，从environment中获取最新的属性值，如果值改变了则更改该属性名关联的对象
  * @author allen
  * @create 2023-03-22 21:46
  **/
