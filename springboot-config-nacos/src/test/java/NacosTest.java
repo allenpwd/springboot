@@ -5,9 +5,12 @@ import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingMaintainService;
 import com.alibaba.nacos.api.naming.NamingService;
+import com.alibaba.nacos.api.naming.listener.NamingEvent;
+import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.alibaba.nacos.api.naming.pojo.ListView;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -36,9 +39,9 @@ public class NacosTest {
 		String serverAddr = null, namespace = null, username = null, password = null, accessKey = null;
 
 		serverAddr = "127.0.0.1:8848";
-		namespace = "";
-		username = "nacos";
-		password = "nacos";
+		namespace = "PWD";
+		username = "pwd";
+		password = "123456";
 
 
 		properties = new Properties();
@@ -98,10 +101,22 @@ public class NacosTest {
 		}
 	}
 	@Test
-	public void naming() throws NacosException {
+	public void naming() throws NacosException, InterruptedException {
 		NamingService namingService = NacosFactory.createNamingService(properties);
+		// 获取所有服务（分页）
 		ListView<String> servicesOfServer = namingService.getServicesOfServer(1, 10);
 		System.out.println(servicesOfServer);
+
+		// 订阅指定的服务，服务变更了会通知回调函数
+		namingService.subscribe("providers:pwd.allen.service.IHelloService:pwd-1.0:group1", "DEFAULT_GROUP", event -> {
+			if (event instanceof NamingEvent) {
+				NamingEvent e = (NamingEvent) event;
+				List<Instance> instances = e.getInstances();
+				System.out.println(instances);
+			}
+		});
+
+		Thread.currentThread().join();
 	}
 	//</editor-fold>
 }
