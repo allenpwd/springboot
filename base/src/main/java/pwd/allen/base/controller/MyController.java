@@ -3,14 +3,13 @@ package pwd.allen.base.controller;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import pwd.allen.base.entity.AlarmMessage;
 
 import javax.servlet.ServletException;
@@ -59,8 +58,9 @@ public class MyController {
     @Value("${uploadPath:/opt/IBM/ABC/test/file/}")
     private String uploadPath;
 
+    @ApiOperation(value = "上传", notes = "上传")
     @PostMapping("upload")
-    public Object upload(MultipartHttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
+    public Object upload(@RequestParam("file") MultipartFile file) throws IOException {
         HashMap<String, Object> map = new HashMap<>();
         map.put("size", file.getSize());
         map.put("originalFilename", file.getOriginalFilename());
