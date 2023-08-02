@@ -1,3 +1,5 @@
+# 2.4以后官方说了禁止在非根配置文件下再激活其他配置文件，这会导致某些配置被覆盖
+
 server:
   port: 81
   servlet:
@@ -10,6 +12,8 @@ spring:
 
 
 ---
+# spring.config.activate.on-profile这个配置是结合三个短横线一起使用
+# 标识这一段配置仅在指定环境生效时才加载，直至加载到下一个分隔符（三短横线）,等同于定义一个appliaction-yml2.yml
 spring:
   config:
     activate:
