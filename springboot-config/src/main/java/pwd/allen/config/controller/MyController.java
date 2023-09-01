@@ -36,6 +36,9 @@ public class MyController {
 
     /**
      * produces：指定返回值类型，还可以设定返回值的字符编码
+     *
+     * RequestParam既可以处理单个参数，也可以处理多个参数。处理多个参数需要使用Map接收，并且不指定name属性
+     *
      * @param paramMap
      * @return
      */
