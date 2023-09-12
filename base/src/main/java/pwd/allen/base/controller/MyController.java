@@ -2,6 +2,8 @@ package pwd.allen.base.controller;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,7 @@ import java.util.HashMap;
 @RequestMapping("my")
 @RestController
 @Api(tags = "我的控制器")
+@ApiSupport(author = "门那粒沙")
 @Slf4j
 public class MyController {
 
@@ -59,6 +62,7 @@ public class MyController {
     private String uploadPath;
 
     @ApiOperation(value = "上传", notes = "上传")
+    @ApiOperationSupport(author = "门那粒沙")
     @PostMapping("upload")
     public Object upload(@RequestParam("file") MultipartFile file) throws IOException {
         HashMap<String, Object> map = new HashMap<>();
