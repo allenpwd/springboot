@@ -1,5 +1,6 @@
 package pwd.allen.base.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.apache.skywalking.apm.toolkit.trace.ActiveSpan;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ public class SkyWalkingController {
      * @return
      */
     @GetMapping("/traceId")
+    @ApiOperation("traceId")
     public Object skywalking() {
         //使当前链路报错，并提示报错信息
         ActiveSpan.error(new RuntimeException("测试下在当前链路中报错"));
@@ -42,11 +44,13 @@ public class SkyWalkingController {
     }
 
     @PostMapping("/webhook")
+    @ApiOperation("webhook")
     public void webhoook(@RequestBody List<AlarmMessage> list) {
         lastList = list;
     }
 
     @GetMapping("/show")
+    @ApiOperation("show")
     public List<AlarmMessage> show() {
         return lastList;
     }

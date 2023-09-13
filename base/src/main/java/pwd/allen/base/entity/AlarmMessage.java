@@ -1,5 +1,6 @@
 package pwd.allen.base.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -9,27 +10,23 @@ import lombok.Data;
 @Data
 public class AlarmMessage {
 
+    @ApiModelProperty("类型ID")
     private int scopeId;
-    /**
-     * 类型名称
-     */
+
+    @ApiModelProperty("类型名称")
     private String scope;
-    /**
-     * 实体名称
-     */
+
+    @ApiModelProperty("实体名称")
     private String name;
     private String id0;
-    /**
-     * 告警规则名称
-     */
+
+    @ApiModelProperty("告警规则名称")
     private String ruleName;
     private String id1;
-    /**
-     * 告警消息
-     */
+
+    @ApiModelProperty("告警消息")
     private String alarmMessage;
-    /**
-     * 告警产生时间
-     */
+
+    @ApiModelProperty("告警产生时间")
     private long startTime;
 }

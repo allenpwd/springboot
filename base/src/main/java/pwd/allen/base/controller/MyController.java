@@ -4,15 +4,18 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
+import com.github.xiaoymin.knife4j.spring.configuration.Knife4jProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pwd.allen.base.entity.AlarmMessage;
+import pwd.allen.base.entity.MyResult;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +39,9 @@ import java.util.HashMap;
 @Slf4j
 public class MyController {
 
+    @Autowired
+    private Knife4jProperties knife4jProperties;
+
     /**
      * 转发
      * @param req
@@ -46,23 +52,24 @@ public class MyController {
      */
     @RequestMapping("forward")
     public Object forward(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/my/log").forward(req, resp);
+        req.getRequestDispatcher("/my/alarmMessage").forward(req, resp);
         return "forward test";
     }
 
-    @GetMapping("log")
-    public Object log() {
+    @ApiOperation("alarmMessage")
+    @PostMapping("alarmMessage")
+    public MyResult<AlarmMessage> log(AlarmMessage alarmMessage) {
         log.info("info");
         log.warn("warn");
         log.debug("debug");
-        return new AlarmMessage();
+        return MyResult.success(alarmMessage);
     }
 
     @Value("${uploadPath:/opt/IBM/ABC/test/file/}")
     private String uploadPath;
 
     @ApiOperation(value = "上传", notes = "上传")
-    @ApiOperationSupport(author = "门那粒沙")
+    @ApiOperationSupport(author = "门那粒沙", order = 10)
     @PostMapping("upload")
     public Object upload(@RequestParam("file") MultipartFile file) throws IOException {
         HashMap<String, Object> map = new HashMap<>();

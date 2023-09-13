@@ -55,7 +55,9 @@ spring:
 knife4j:
   #启用
   enable: true
-  #基础认证
+  # 开启生产环境屏蔽
+  production: false
+  # 基础认证，默认帐号密码：admin/123321
   basic:
     enable: true
     username: boot
