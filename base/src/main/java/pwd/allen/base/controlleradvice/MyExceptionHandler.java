@@ -31,8 +31,7 @@ public class MyExceptionHandler {
      */
     @ExceptionHandler({RuntimeException.class})
     public Object handleError(Exception e) {
-       log.error("【默认的ExceptionHandler】error:{}", e.toString());
-       e.printStackTrace();
+       log.error("【默认的ExceptionHandler】error:{}", e.toString(), e);
        return Collections.singletonMap("error", e.toString());
     }
 }

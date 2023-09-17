@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import pwd.allen.base.entity.AlarmMessage;
 import pwd.allen.base.entity.MyResult;
@@ -30,8 +33,8 @@ import java.util.HashMap;
  * @author pwd
  * @create 2019-02-14 16:03
  **/
-//@ConditionalOnExpression("${controller.MyController.enabled}==true")    //开启的条件是：controller.MyController.enabled=true
-@ConditionalOnProperty(prefix = "controller.MyController", value = "enabled", matchIfMissing = true)    //默认也会开启
+//@ConditionalOnExpression(value = "${controller.MyController.enabled}==true")    //开启的条件是：controller.MyController.enabled=true
+@ConditionalOnProperty(prefix = "controller.MyController", value = "enabled", havingValue = "true", matchIfMissing = true)    // 默认也会开启
 @RequestMapping("my")
 @RestController
 @Api(tags = "我的控制器")
