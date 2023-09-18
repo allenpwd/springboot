@@ -12,22 +12,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.core.MethodParameter;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.WebDataBinderFactory;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.annotation.InitBinderDataBinderFactory;
 import org.springframework.web.method.annotation.RequestParamMapMethodArgumentResolver;
+import org.springframework.web.method.annotation.RequestParamMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodArgumentResolverComposite;
 import org.springframework.web.method.support.InvocableHandlerMethod;
-import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.multipart.MultipartFile;
-import pwd.allen.base.entity.AlarmMessage;
+import org.springframework.web.servlet.mvc.method.annotation.PathVariableMethodArgumentResolver;
 import pwd.allen.base.entity.MyEntity;
 import pwd.allen.base.entity.MyResult;
+import pwd.allen.base.validator.MyValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -75,9 +72,9 @@ public class MyController {
      * {@link InvocableHandlerMethod#getMethodArgumentValues}
      * {@link HandlerMethodArgumentResolverComposite#resolveArgument} 可以打断点在这里（断点条件可以是：），看看参数是由哪个HandlerMethodArgumentResolver处理的
      *
-     * @param path
-     * @param myDate
-     * @param num
+     * @param path 由{@link PathVariableMethodArgumentResolver}处理
+     * @param myDate 由{@link RequestParamMethodArgumentResolver}处理
+     * @param num 由{@link RequestParamMethodArgumentResolver}处理
      * @param mapParam 类型为map、@RequestParam注释并且没指定value的参数，会被{@link RequestParamMapMethodArgumentResolver}处理
      * @return
      */
@@ -88,7 +85,7 @@ public class MyController {
         return MyResult.success(mapParam);
     }
     /**
-     * 自定义属性绑定，只对当前Controller有效
+     * 自定义属性绑定，只对当前Controller有效，
      * 方法必须要有个{@link WebDataBinder}入参，使用它可以：
      *  通过addValidators来自定义参数校验
      *  通过registerCustomEditor注册属性绑定器来自定义属性绑定
@@ -97,7 +94,7 @@ public class MyController {
      * InitBinder的value属性用于限定要处理的方法参数，如果没有指定则每个参数都需要绑定一次，逻辑在{@link InitBinderDataBinderFactory#isBinderMethodApplicable}
      */
     @InitBinder("myDate")
-    public void initBinder(WebDataBinder binder) {
+    public void initBinder1(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
     }
@@ -110,10 +107,20 @@ public class MyController {
         log.debug("debug");
         return MyResult.success(myEntity);
     }
+    @InitBinder
+    private void initBinder2(WebDataBinder binder) {
+        binder.addValidators(new MyValidator());
+    }
 
     @Value("${uploadPath:/opt/IBM/ABC/test/file/}")
     private String uploadPath;
 
+    /**
+     * RequestPart是用于获取HTTP请求中的文件内容，即表单中的一个文件项，主要用于文件上传操作
+     * @param file
+     * @return
+     * @throws IOException
+     */
     @ApiOperation(value = "上传", notes = "上传")
     @ApiOperationSupport(author = "门那粒沙", order = 10)
     @PostMapping("upload")

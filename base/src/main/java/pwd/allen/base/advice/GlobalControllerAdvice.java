@@ -1,4 +1,4 @@
-package pwd.allen.base.controlleradvice;
+package pwd.allen.base.advice;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,14 +10,14 @@ import java.util.Collections;
 /**
  * 定义公共的 @ExceptionHandler @InitBinder @ModelAttribute方法
  *
- * @ControllerAdvice 注解 可以用于定义@ExceptionHandler、@InitBinder、@ModelAttribute，并应用到所有@RequestMapping中
+ * @ControllerAdvice 注解 可以用于定义全局的@ExceptionHandler、@InitBinder、@ModelAttribute，对所有注解了@RequestMapping的控制器内的方法有效
  *
  * @author 门那粒沙
  * @create 2020-02-12 11:57
  **/
 @Log4j2
 @RestControllerAdvice
-public class MyExceptionHandler {
+public class GlobalControllerAdvice {
 
     /**
      * 当handler方法发生异常时 用来处理指定的异常
