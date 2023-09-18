@@ -59,7 +59,7 @@ knife4j:
   production: false
   # 基础认证，默认帐号密码：admin/123321
   basic:
-    enable: true
+#    enable: true
     username: boot
     password: boot
   documents: # 自定义文档

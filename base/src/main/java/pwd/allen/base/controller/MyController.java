@@ -10,14 +10,23 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.core.MethodParameter;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.WebDataBinderFactory;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.method.annotation.InitBinderDataBinderFactory;
+import org.springframework.web.method.annotation.RequestParamMapMethodArgumentResolver;
+import org.springframework.web.method.support.HandlerMethodArgumentResolverComposite;
+import org.springframework.web.method.support.InvocableHandlerMethod;
+import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.multipart.MultipartFile;
 import pwd.allen.base.entity.AlarmMessage;
+import pwd.allen.base.entity.MyEntity;
 import pwd.allen.base.entity.MyResult;
 
 import javax.servlet.ServletException;
@@ -26,8 +35,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author pwd
@@ -55,17 +66,49 @@ public class MyController {
      */
     @RequestMapping("forward")
     public Object forward(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/my/alarmMessage").forward(req, resp);
+        req.getRequestDispatcher("/my/myEntity").forward(req, resp);
         return "forward test";
     }
 
-    @ApiOperation("alarmMessage")
-    @PostMapping("alarmMessage")
-    public MyResult<AlarmMessage> log(AlarmMessage alarmMessage) {
+    /**
+     * 参数处理逻辑见：
+     * {@link InvocableHandlerMethod#getMethodArgumentValues}
+     * {@link HandlerMethodArgumentResolverComposite#resolveArgument} 可以打断点在这里（断点条件可以是：），看看参数是由哪个HandlerMethodArgumentResolver处理的
+     *
+     * @param path
+     * @param myDate
+     * @param num
+     * @param mapParam 类型为map、@RequestParam注释并且没指定value的参数，会被{@link RequestParamMapMethodArgumentResolver}处理
+     * @return
+     */
+    @ApiOperation("get")
+    @GetMapping("get/{path}")
+    public MyResult<Object> get(@PathVariable String path, @RequestParam(required = false) Date myDate
+            , @RequestParam Integer num, @RequestParam Map<String, String> mapParam) {
+        return MyResult.success(mapParam);
+    }
+    /**
+     * 自定义属性绑定，只对当前Controller有效
+     * 方法必须要有个{@link WebDataBinder}入参，使用它可以：
+     *  通过addValidators来自定义参数校验
+     *  通过registerCustomEditor注册属性绑定器来自定义属性绑定
+     * 每次请求都要绑定一次（说明每次请求WebDataBinder都要创建一次）
+     *
+     * InitBinder的value属性用于限定要处理的方法参数，如果没有指定则每个参数都需要绑定一次，逻辑在{@link InitBinderDataBinderFactory#isBinderMethodApplicable}
+     */
+    @InitBinder("myDate")
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+    }
+
+    @ApiOperation("myEntity")
+    @PostMapping("myEntity")
+    public MyResult<MyEntity> log(MyEntity myEntity) {
         log.info("info");
         log.warn("warn");
         log.debug("debug");
-        return MyResult.success(alarmMessage);
+        return MyResult.success(myEntity);
     }
 
     @Value("${uploadPath:/opt/IBM/ABC/test/file/}")
