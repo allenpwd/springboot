@@ -6,6 +6,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.github.xiaoymin.knife4j.spring.configuration.Knife4jProperties;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.mvc.method.annotation.PathVariableMethodA
 import pwd.allen.base.entity.MyEntity;
 import pwd.allen.base.entity.MyResult;
 import pwd.allen.base.validator.MyValidator;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -79,9 +81,10 @@ public class MyController {
      * @return
      */
     @ApiOperation("get")
+    @ApiImplicitParam(name = "param1", value = "参数1", dataType = "Object", paramType = "query", example = "value1")
     @GetMapping("get/{path}")
     public MyResult<Object> get(@PathVariable String path, @RequestParam(required = false) Date myDate
-            , @RequestParam Integer num, @RequestParam Map<String, String> mapParam) {
+            , @RequestParam Integer num, @ApiIgnore @RequestParam Map<String, String> mapParam) {
         return MyResult.success(mapParam);
     }
     /**
@@ -97,19 +100,6 @@ public class MyController {
     public void initBinder1(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
-    }
-
-    @ApiOperation("myEntity")
-    @PostMapping("myEntity")
-    public MyResult<MyEntity> log(MyEntity myEntity) {
-        log.info("info");
-        log.warn("warn");
-        log.debug("debug");
-        return MyResult.success(myEntity);
-    }
-    @InitBinder
-    private void initBinder2(WebDataBinder binder) {
-        binder.addValidators(new MyValidator());
     }
 
     @Value("${uploadPath:/opt/IBM/ABC/test/file/}")

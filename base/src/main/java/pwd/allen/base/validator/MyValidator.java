@@ -6,7 +6,7 @@ import org.springframework.validation.Validator;
 import pwd.allen.base.entity.MyEntity;
 
 /**
- * 自定义数据校验器
+ * 自定义MyEntity的数据校验器
  */
 //@Component
 public class MyValidator implements Validator {
@@ -18,7 +18,7 @@ public class MyValidator implements Validator {
      */
     @Override
     public boolean supports(Class<?> clazz) {
-        return MyEntity.class.equals(clazz);
+        return MyEntity.class.isAssignableFrom(clazz);
     }
 
     /**

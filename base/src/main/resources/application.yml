@@ -53,7 +53,7 @@ spring:
     activate:
       on-profile: knife4j
 knife4j:
-  #启用
+  # 启用knife4j增强功能：自定义文档功能、
   enable: true
   # 开启生产环境屏蔽
   production: false
@@ -62,7 +62,7 @@ knife4j:
 #    enable: true
     username: boot
     password: boot
-  documents: # 自定义文档
+  documents: # 自定义文档，只支持.md文件
     - group: myGroup2 # 分组名，docket添加自定义文档时会引用到
       name: md自定义文档
       locations: classpath:md/*
