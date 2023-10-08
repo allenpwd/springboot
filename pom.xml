@@ -14,6 +14,7 @@
         <module>springboot-schedule</module>
         <module>springboot-plumelog</module>
         <module>springboot-config-nacos</module>
+        <module>springboot-minio</module>
     </modules>
 
     <parent>

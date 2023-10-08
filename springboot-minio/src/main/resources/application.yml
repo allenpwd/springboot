@@ -1,0 +1,6 @@
+# Minio配置
+minio:
+  url: http://40035.cdc.k8s:26917
+  accessKey: admin
+  secretKey: Xmq32@aop
+  bucketName: umarketing
