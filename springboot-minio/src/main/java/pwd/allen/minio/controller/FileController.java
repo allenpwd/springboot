@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pwd.allen.minio.config.MinioConfig;
+import pwd.allen.minio.config.MyMinioProperties;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
@@ -30,7 +30,7 @@ import java.net.URLEncoder;
 public class FileController {
 
     @Autowired
-    private MinioConfig minioConfig;
+    private MyMinioProperties minioProperties;
 
     @Autowired
     private MinioClient client;
@@ -45,7 +45,7 @@ public class FileController {
 
         try {
             PutObjectArgs args = PutObjectArgs.builder()
-                    .bucket(minioConfig.getBucketName())
+                    .bucket(minioProperties.getBucketName())
                     .object(file.getOriginalFilename())
                     .stream(file.getInputStream(), file.getSize(), -1)
                     .contentType(file.getContentType())
@@ -68,7 +68,7 @@ public class FileController {
     public Object deleteFiles(@RequestParam("filePath") String filePath) {
         try {
             final RemoveObjectsArgs removeObjectsArgs = RemoveObjectsArgs.builder()
-                    .bucket(minioConfig.getBucketName())
+                    .bucket(minioProperties.getBucketName())
                     .objects(CollUtil.toList(new DeleteObject(filePath)))
                     .build();
 
@@ -95,7 +95,7 @@ public class FileController {
 		OutputStream outputStream = null;
 		try {
             inputStream = client.getObject(
-                    GetObjectArgs.builder().bucket(minioConfig.getBucketName()).object(filePath).build());
+                    GetObjectArgs.builder().bucket(minioProperties.getBucketName()).object(filePath).build());
             if (inputStream != null) {
                 response.setCharacterEncoding("utf8");
                 response.setContentType("application/x-download");

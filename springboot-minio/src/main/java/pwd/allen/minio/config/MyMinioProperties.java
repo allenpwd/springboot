@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  **/
 @Data
 @ConfigurationProperties("minio")
-public class MinioProperties {
+public class MyMinioProperties {
     /**
      * 服务地址
      */
