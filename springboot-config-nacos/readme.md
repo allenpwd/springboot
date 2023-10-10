@@ -28,6 +28,11 @@ nacos.config.enable-remote-sync-config=true
 
 ```
 
+### 问题
+#### 配置读取不到
+可能是配置格式有问题，不如注释被不小心放开
+可以打断点在com.alibaba.nacos.api.config.ConfigService.getConfig；看看获取内容，如果能获取到内容，但是最终没能加载到，可能就是配置内容格式问题
+
 
 ### TODO
 nacos配置是否能配置得比其他类型得配置要优先

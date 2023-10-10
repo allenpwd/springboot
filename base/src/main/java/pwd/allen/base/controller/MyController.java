@@ -2,6 +2,7 @@ package pwd.allen.base.controller;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.URLUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.github.xiaoymin.knife4j.spring.configuration.Knife4jProperties;
@@ -34,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -129,6 +131,17 @@ public class MyController {
         }
         map.put("path", saveFile.getAbsolutePath());
         return map;
+    }
+
+    /**
+     * 重定向的地址不需要做url编码
+     * @param resp
+     * @throws IOException
+     */
+    @GetMapping("redirect")
+    public void redirect(HttpServletResponse resp) throws IOException {
+        String url = "https://baijiahao.baidu.com/s?id=1721805863551776827&wfr=spider&for=pc";
+        resp.sendRedirect(url);
     }
 
 }
