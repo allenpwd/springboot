@@ -2,6 +2,7 @@ package pwd.allen.minio;
 
 import io.minio.*;
 import io.minio.errors.*;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pwd.allen.minio.config.MyMinioProperties;
@@ -17,6 +18,7 @@ public class MinioTemplate {
     @Autowired
     private MyMinioProperties minioProperties;
 
+    @Setter
     @Autowired
     private MinioClient minioClient;
 

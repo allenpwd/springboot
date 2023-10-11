@@ -11,14 +11,12 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Minio 配置信息
  */
-@Data
 @Configuration
 @EnableConfigurationProperties(MyMinioProperties.class)
 public class MinioConfig {
 
     @Bean
-    public MinioClient getMinioClient(MyMinioProperties properties)
-    {
+    public MinioClient getMinioClient(MyMinioProperties properties) {
         return MinioClient.builder().endpoint(properties.getUrl()).credentials(properties.getAccessKey(), properties.getSecretKey()).build();
     }
 }
