@@ -35,8 +35,10 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/broker")
-                .setAllowedOrigins("*")//跨域
-//                .setHandshakeHandler(stompHandshakeHander) //TODO 加上去后报错
+                // 配置跨域
+//                .setAllowedOrigins("*")   // 这个会报错：When allowCredentials is true, allowedOrigins cannot contain the special value "*" since that cannot be set on the "Access-Control-Allow-Origin" response header. To allow credentials to a set of origins, list them explicitly or consider using "allowedOriginPatterns" instead.
+                .setAllowedOriginPatterns("*")
+                .setHandshakeHandler(stompHandshakeHander)
                 .withSockJS();//启动SockJS,以便在WebSocket不可用时可以使用备用传输
     }
 
@@ -54,7 +56,7 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
         //如果客户端向/app/hello这个地址发送消息，那么服务端通过@MessageMapping(“/hello”)这个注解来接收并处理消息
         registry.setApplicationDestinationPrefixes("/app");
 
-        //用户名称前，默认为/user/，当客户段订阅/user开头，spring会解析成/user/{userId}/...
+        //用户名称前缀，默认为/user/，当客户段订阅/user开头，spring会解析成/user/{userId}/...
         registry.setUserDestinationPrefix("/user");
     }
 

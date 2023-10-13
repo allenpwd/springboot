@@ -44,7 +44,7 @@ public class AppTest {
      */
     @Test
     public void mvc() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/my/log").param("name", "pwd"))
+        mvc.perform(MockMvcRequestBuilders.get("/my/get/abc").param("num", "1234"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
 //                .andExpect(MockMvcResultMatchers.content().string("abc"))
                 .andDo(MockMvcResultHandlers.print());

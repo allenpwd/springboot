@@ -48,7 +48,7 @@ public class MessageController {
     public Object message(String message, SimpMessageHeaderAccessor headerAccessor, @Headers Map headers) {
         String sender = headerAccessor.getFirstNativeHeader("sender");
         log.info("sender：{}，接收到消息：{}", sender,  message);
-        return String.format("【%s】%s", sender, message);
+        return String.format("%s发送了广播消息：%s", sender, message);
     }
 
     /**

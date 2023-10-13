@@ -1,4 +1,4 @@
-package pwd.allen;
+package pwd.allen.base;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.RepeatedTest;

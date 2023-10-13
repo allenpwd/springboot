@@ -15,7 +15,6 @@ import java.util.Map;
  * 自定义配置类，映射pwd.myConfig下的配置
  *
  * 使用步骤：
- *  配置类增加注解：{@link org.springframework.boot.context.properties.EnableConfigurationProperties}
  *  属性类增加注解：{@link ConfigurationProperties}，指定配置前缀
  *  引入属性类，有两种方式
  *      方式一：在配置类加上{@link org.springframework.boot.context.properties.EnableConfigurationProperties} 并value属性指定属性类
@@ -25,12 +24,14 @@ import java.util.Map;
  *  自动装配类ConfigurationPropertiesAutoConfiguration引入了EnableConfigurationPropertiesRegistrar
  * @see org.springframework.boot.context.properties.EnableConfigurationPropertiesRegistrar
  *
+ * 问题：
+ *  （1）Canonical names should be kebab-case ('-' separated), lowercase alpha-numeric characters and must start with a letter
+ *  原因：prefix属性不能用驼峰命名，可以用-分隔符
+ *
  * @author pwd
  * @create 2019-02-14 16:04
  **/
-//prefix属性不能用驼峰命名，可以用-分隔符，否则会报错：
-// Canonical names should be kebab-case ('-' separated), lowercase alpha-numeric characters and must start with a letter
-@ConfigurationProperties("pwd.my-config")
+@ConfigurationProperties(prefix = "pwd.my-config")
 //@Component
 @Data
 //@Validated

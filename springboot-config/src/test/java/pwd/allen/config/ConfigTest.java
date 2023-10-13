@@ -23,7 +23,7 @@ import org.springframework.util.StringValueResolver;
  * 测试一下config
  *
  * @PropertySource：能将指定的配置放入spring的environment中
- * 原理：beanFactory后置处理器 {@link ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry(org.springframework.beans.factory.support.BeanDefinitionRegistry)}
+ * 原理：beanFactory后置处理器 {@link ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry}
  *
  * @author pwdan
  * @create 2023-03-17 17:32
@@ -77,12 +77,13 @@ public class ConfigTest implements EmbeddedValueResolverAware {
         //使用beanFactory解析属性中的占位符
         System.out.println(applicationContext.getBeanFactory().resolveEmbeddedValue(str));
 
-        //EmbeddedValueResolver解析属性中的占位符和spel表达式，先使用beanFactory解析占位符，再使用BeanExpressionResolver解析spel表达式
+        //EmbeddedValueResolver解析属性中的占位符和spel表达式（先使用beanFactory解析占位符，再使用BeanExpressionResolver解析spel表达式）
         System.out.println(valueResolver.resolveStringValue(str));
     }
 
     /**
      * EmbeddedValueResolverAware：注入进来一个StringValueResolver，用于占位符解释、SpEL计算
+     * 注：StringValueResolver无法通过@Autowared自动装配
      * @param resolver
      */
     @Override

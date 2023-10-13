@@ -3,6 +3,7 @@ package pwd.allen.base.util;
 import org.junit.jupiter.api.*;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.util.ClassUtils;
 
 /**
  * @author allen
@@ -18,5 +19,11 @@ public class ReflectTest {
     public void test() {
         Async async = AnnotatedElementUtils.findMergedAnnotation(ReflectTest.class, Async.class);
         System.out.println(async.value());
+    }
+
+    @Test
+    public void clazz() {
+        // 判断指定类名的类是否存在
+        System.out.println(ClassUtils.isPresent("org.springframework.web.servlet.DispatcherServlet", null));
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.core.env.Environment;
 
 /**
  * 测试下@Value没解析的问题
+ * 原因：一般是解析的时候StringValueResolver还未初始化
  * @author allen
  * @create 2023-03-21 21:53
  **/
@@ -24,8 +25,11 @@ public class ValueTest {
     private Environment environment;
 
     @Test
-    public void test() {
+    public void test() throws InterruptedException {
         System.out.println(environment.resolvePlaceholders("test.my-str=${test.myStr}"));
+        while (true) {
+            Thread.sleep(1000);
+        }
     }
 }
 
@@ -47,7 +51,8 @@ class TestConfig {
      *      -》{@link org.springframework.context.support.PropertySourcesPlaceholderConfigurer#postProcessBeanFactory(ConfigurableListableBeanFactory)}
      *
      * 建议声明时方法加上static，因为这样实例化PropertySourcesPlaceholderConfigurer的时候不需要先实例化其所在的Config类
-     * 如果提前实例化Config类，可能导致Config的@Value解析不到
+     * 这里如果没有加static的话，config的myStr是null，
+     * 因为config会被提前实例化出来，此时AutowiredAnnotationBeanPostProcessor还没初始化，无法对config做@Value赋值
      *
      * @return
      */
@@ -63,7 +68,7 @@ class TestConfig {
     @Bean
     public BeanPostProcessor myBeanPostProcessor() {
         // 如果没有声明PropertySourcesPlaceholderConfigurer或者声明时不是static，这里获取不到myStr
-        System.out.println(mystr);
+        System.out.println("-------------------------------------" + mystr);
         return new BeanPostProcessor() {};
     }
 }
