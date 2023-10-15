@@ -22,3 +22,11 @@ nacos:
 # nacos配置是添加在environment最后的，application里的配置优先比他优先
 pwd:
   info: i am applicaton.yml
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - env

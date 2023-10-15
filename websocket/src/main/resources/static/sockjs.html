@@ -77,7 +77,7 @@
     el: '#app',
     data: {
       url: window.location.href.replace(/(.*)\/.*/g,'$1') + '/broker',
-      user: 'allen',
+      user: '',
       ifConnect: false,
       content: 'hello!' + new Date(),
       receiver: 'abc',
@@ -92,6 +92,9 @@
       client: null,
       subscribeArr: []
     },
+    mounted() {
+      this.user = this.randomString(6);
+    },
     methods: {
       connect () {
         // 建立连接对象（还未发起连接）
@@ -100,7 +103,10 @@
         var stompClient = Stomp.over(socket);
         this.client = stompClient;
         stompClient.connect(
-                {user: this.user},//客户端认证信息
+                {
+                  user: this.user,
+                  other: 'test'
+                },//客户端认证信息
                 function (frame) {
                   vm.ifConnect = true;
                   console.log('Info: WebSocket connection opened.' + frame);
@@ -121,6 +127,7 @@
           this.client = null;
         }
         this.ifConnect = false;
+        this.subscribeArr = [];
       },
       subscribe(destination) {
         var rel = this.client.subscribe(destination, function (message) {
@@ -142,11 +149,17 @@
       },
       send() {
         var headers = {
-          sender: this.user,
+          user: this.user,
           receiver: this.receiver
         };
         vm.client.send(this.destination, headers, this.content);
-      }
+      },
+      randomString(e) {
+        e = e || 6;
+        var t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678", a = t.length, n = "";
+        for (i = 0; i < e; i++) n += t.charAt(Math.floor(Math.random() * a));
+        return n
+  }
     }
   })
 </script>

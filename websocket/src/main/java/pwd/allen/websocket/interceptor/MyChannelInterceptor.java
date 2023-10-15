@@ -3,15 +3,13 @@ package pwd.allen.websocket.interceptor;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
-import org.springframework.messaging.support.ChannelInterceptorAdapter;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.security.Principal;
@@ -33,7 +31,11 @@ public class MyChannelInterceptor implements ChannelInterceptor {
      */
     public CopyOnWriteArraySet<String> set_users = new CopyOnWriteArraySet<>();
 
-//    @Autowired
+    /**
+     * 不加@Lazy会报错，循环注入
+     */
+    @Lazy
+    @Autowired
     private SimpMessagingTemplate template;
 
     @Override
@@ -58,7 +60,7 @@ public class MyChannelInterceptor implements ChannelInterceptor {
         accessor.setNativeHeader("sessionId", sessionId);
         // 广播通知大家
         if (template != null) {
-            if (StompCommand.CONNECTED.equals(command)) {
+            if (StompCommand.CONNECT.equals(command)) {
                 set_users.add(user);
                 template.convertAndSend("/topic/message", String.format("【%s】用户%s建立连接", sessionId, user));
             } else if (StompCommand.DISCONNECT.equals(command)) {

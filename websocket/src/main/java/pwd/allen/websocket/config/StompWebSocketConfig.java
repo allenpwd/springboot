@@ -3,6 +3,7 @@ package pwd.allen.websocket.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -11,6 +12,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 import pwd.allen.websocket.interceptor.MyChannelInterceptor;
 import pwd.allen.websocket.interceptor.StompHandshakeHander;
+
+import java.util.List;
 
 /**
  * 使用STOMP子协议作为cs通信的通用格式
@@ -22,7 +25,7 @@ import pwd.allen.websocket.interceptor.StompHandshakeHander;
  * @create 2020-02-15 23:14
  **/
 @Configuration
-@EnableWebSocketMessageBroker//启用由消息代理支持的WebSocket消息处理
+@EnableWebSocketMessageBroker// 注解开启使用STOMP协议来传输基于代理(message broker)的消息,这时控制器支持使用@MessageMapping
 public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Autowired
@@ -62,10 +65,9 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
+        // 添加拦截器，可以用于处理客户端发送的消息，例如在消息到达服务器之前进行身份验证、日志记录等操作
         registration.interceptors(myChannelInterceptor());
     }
-
-
 
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
@@ -77,7 +79,15 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setMessageSizeLimit(1024 * 128);//配置Stomp最大容量
     }
 
-
+    /**
+     * 添加消息转换器
+     * @param messageConverters the converters to configure (initially an empty list)
+     * @return whether to also add default converter or not
+     */
+    @Override
+    public boolean configureMessageConverters(List<MessageConverter> messageConverters) {
+        return WebSocketMessageBrokerConfigurer.super.configureMessageConverters(messageConverters);
+    }
 
     @Bean
     public MyChannelInterceptor myChannelInterceptor() {

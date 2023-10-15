@@ -2,7 +2,6 @@ package pwd.allen.websocket.controller;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Headers;
@@ -64,8 +63,8 @@ public class MessageController {
     }
 
     @MessageMapping("/sendTo")
-    public void chat(String message, @Header("sender") String sender, @Header("receiver") String receiver) {
-        log.info("sender：{},receiver：{},接收到消息：{}", sender, receiver, message);
+    public void chat(String message, @Header("user") String user, @Header("receiver") String receiver) {
+        log.info("user：{},receiver：{},接收到消息：{}", user, receiver, message);
         this.template.convertAndSend("/topic/" + receiver, message);
     }
 
@@ -77,13 +76,13 @@ public class MessageController {
      * @see org.springframework.messaging.simp.user.UserDestinationMessageHandler
      *
      * @param message
-     * @param sender
+     * @param user
      * @return
      */
     @MessageMapping("/resp")
     @SendToUser("/topic/resp") //客户端需要订阅/user/topic/resp
-    public String  resp(String message, @Header("sender") String sender) {
-        log.info("sender：{},接收到消息：{}", sender, message);
-        return String.format("【%s】%s", sender, message);
+    public String resp(String message, @Header("user") String user) {
+        log.info("user：{},接收到消息：{}", user, message);
+        return String.format("【%s】%s", user, message);
     }
 }
