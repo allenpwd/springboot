@@ -18,6 +18,13 @@ pwd:
       - name: 哦
         id: 1
       - name2: 啊
+    map5:
+      obj1:
+        strVal: 值1
+        intVal: 1
+      obj2:
+        strVal: 值2
+        intVal: 2
     list2:
       - "双引号\n不会处理转义字符"
       - '单引号\n会处理转义字符'

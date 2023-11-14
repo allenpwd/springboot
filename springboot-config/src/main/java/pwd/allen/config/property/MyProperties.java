@@ -55,6 +55,7 @@ public class MyProperties {
     private Map map2;
     private Map map3;
     private Map map4;
+    private Map<String, MyObj> map5;
     private List list1;
     private List list2;
     private List list3;

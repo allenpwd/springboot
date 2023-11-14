@@ -39,7 +39,7 @@ public class NacosTest {
 		String serverAddr = null, namespace = null, username = null, password = null, accessKey = null;
 
 		serverAddr = "127.0.0.1:8848";
-		namespace = "PWD";
+		namespace = "";
 		username = "pwd";
 		password = "123456";
 
@@ -73,7 +73,7 @@ public class NacosTest {
 		System.out.println(content);
 
 		// 另启线程监控配置文件的变更
-		configService.addListener("json_config", "DEFAULT_GROUP", new Listener() {
+		configService.addListener("prop_config", "DEFAULT_GROUP", new Listener() {
 			@Override
 			public Executor getExecutor() {
 				return Executors.newSingleThreadExecutor();
