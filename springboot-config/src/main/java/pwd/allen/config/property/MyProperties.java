@@ -4,7 +4,6 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.Email;
 import java.util.Date;
@@ -22,7 +21,11 @@ import java.util.Map;
  *
  * 原理：
  *  自动装配类ConfigurationPropertiesAutoConfiguration引入了EnableConfigurationPropertiesRegistrar
- * @see org.springframework.boot.context.properties.EnableConfigurationPropertiesRegistrar
+ *      向IOC容器中注册EnableConfigurationProperties指定的beanDefinition信息
+ *      绑定ConfigurationPropertiesBindingPostProcessor后置处理器
+ *  当在创建Properties对象时，在bean生命周期的initializeBean的postProcessBeforeInitialization由ConfigurationPropertiesBindingPostProcessor起作用
+ *  {@link org.springframework.boot.context.properties.ConfigurationPropertiesBindingPostProcessor#postProcessBeforeInitialization}
+ *      解析前缀这些然后赋值
  *
  * 问题：
  *  （1）Canonical names should be kebab-case ('-' separated), lowercase alpha-numeric characters and must start with a letter
