@@ -22,7 +22,7 @@ import org.springframework.util.StringValueResolver;
 /**
  * 测试一下config
  *
- * @PropertySource：能将指定的配置放入spring的environment中
+ * @PropertySource：能将指定的配置放入spring的environment中，不支持yml格式
  * 原理：beanFactory后置处理器 {@link ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry}
  *
  * @author pwdan
