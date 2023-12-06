@@ -5,19 +5,26 @@ package pwd.allen.base.advice;
  * @create 2023-12-06 17:13
  **/
 
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
+import pwd.allen.base.entity.MyEntity;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 
 /**
- * 在执行Controller接口之前，如果Controller参数是被@RequestBody修饰，可以对该参数进行一些特殊处理，比如参数解密，参数转换等。
+ * 在执行Controller接口之前，如果Controller接口的参数是被@RequestBody修饰，可以对该参数进行一些特殊处理，比如参数解密，参数转换等。
  *
  * TODO https://blog.csdn.net/weixin_37672801/article/details/125307351
  */
@@ -26,7 +33,7 @@ import java.lang.reflect.Type;
 public class MyRequestBodyAdvice implements RequestBodyAdvice {
 
     /**
-     * 该方法用于判断当前请求，是否要执行beforeBodyRead方法
+     * 该方法用于判断当前请求的RequestBody参数是否要拦截，即是否要执行beforeBodyRead方法
      * methodParameter方法的参数对象
      * type方法的参数类型
      * aClass 将会使用到的Http消息转换器类类型
@@ -36,8 +43,7 @@ public class MyRequestBodyAdvice implements RequestBodyAdvice {
      */
     @Override
     public boolean supports(MethodParameter methodParameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
-        // TODO 是否只有参数有@RequestBody的才会进来
-        return true;
+        return MyEntity.class.getTypeName().equals(targetType.getTypeName());
     }
 
     /**
@@ -50,7 +56,29 @@ public class MyRequestBodyAdvice implements RequestBodyAdvice {
      */
     @Override
     public HttpInputMessage beforeBodyRead(HttpInputMessage inputMessage, MethodParameter parameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) throws IOException {
-        return inputMessage;
+        if (inputMessage.getBody().available() <= 0) {
+            return inputMessage;
+        }
+
+        // 获取前端入参jsonobj
+        String requestData = IoUtil.read(inputMessage.getBody(), StandardCharsets.UTF_8);
+//        byte[] requestBodyByte = new byte[inputMessage.getBody().available()];
+//        inputMessage.getBody().read(requestBodyByte);
+//        String requestData = new String(requestBodyByte, StandardCharsets.UTF_8);
+        MyEntity myEntity = JSONUtil.toBean(requestData, MyEntity.class);
+        myEntity.setStrA("我用RequestBodyAdvice改了值");
+
+        // 使用解密后的数据，构造新的读取流
+        return new HttpInputMessage() {
+            @Override
+            public InputStream getBody() throws IOException {
+                return new ByteArrayInputStream(JSONUtil.toJsonStr(myEntity).getBytes());
+            }
+            @Override
+            public HttpHeaders getHeaders() {
+                return inputMessage.getHeaders();
+            }
+        };
     }
 
     /**
