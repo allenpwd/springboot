@@ -18,9 +18,10 @@ import pwd.allen.base.entity.MyResult;
  *  用法：需要把实现类注册到RequestMappingHandlerAdapter和ExceptionHandlerExceptionResolver；加上RestControllerAdvice这个注解会被自动注册
  *
  * {@link RestControllerAdvice}
- *  value是指定对那些路径进行拦截，如果都需要拦截的话不需要写value
+ *  value/basePackages：指定对那些路径进行拦截，如果都需要拦截的话不需要写value
+ *  annotations：指定一个或多个注解，被这些注解所标记的 Controller 会被该 @ControllerAdvice管理
  */
-@RestControllerAdvice(value = "pwd.allen.base.controller")
+@RestControllerAdvice(value = "pwd.allen.base.controller", annotations = IgnoreResponseAdvice.class)
 @Slf4j
 public class MyResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
