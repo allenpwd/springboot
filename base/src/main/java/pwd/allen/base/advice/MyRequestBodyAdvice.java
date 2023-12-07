@@ -14,7 +14,10 @@ import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import pwd.allen.base.entity.MyEntity;
 
 import java.io.ByteArrayInputStream;
@@ -59,6 +62,8 @@ public class MyRequestBodyAdvice implements RequestBodyAdvice {
         if (inputMessage.getBody().available() <= 0) {
             return inputMessage;
         }
+
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 
         // 获取前端入参jsonobj
         String requestData = IoUtil.read(inputMessage.getBody(), StandardCharsets.UTF_8);
