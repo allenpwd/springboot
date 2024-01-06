@@ -62,13 +62,59 @@
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
+            <!--<editor-fold desc="fat jar方式">-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>pwd.allen.BaseMain</mainClass>
+                    <mainClass>pwd.allen.base.BaseMain</mainClass>
+                    <!--解决windows命令行窗口中文乱码-->
+                    <jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>
                 </configuration>
             </plugin>
+            <!--</editor-fold>-->
+
+            <!--<editor-fold desc="精简打包方式">-->
+            <!-- 启动Jar需要指定外部依赖的jar目录：java -Dloader.path=lib -jar base.jar -->
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <mainClass>pwd.allen.base.BaseMain</mainClass>-->
+<!--                    &lt;!&ndash;解决windows命令行窗口中文乱码&ndash;&gt;-->
+<!--                    <jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>-->
+<!--                    &lt;!&ndash; 关键点：指定layout = ZIP；打包的时候就不会把依赖的jar一起当进去， &ndash;&gt;-->
+<!--                    <layout>ZIP</layout>-->
+<!--                    &lt;!&ndash; 如果打包时需要指定保留某些依赖，可以使用includes，一般只有经常变动的依赖才需要保留 &ndash;&gt;-->
+<!--                    <includes>-->
+<!--                        &lt;!&ndash; groupID和artifactID可以设置为non-exists，表示不打包依赖 &ndash;&gt;-->
+<!--                        <include>-->
+<!--                            <groupId>pwd.allen</groupId>-->
+<!--                            <artifactId>hello-spring-boot-starter-autoconfigurer</artifactId>-->
+<!--                        </include>-->
+<!--                    </includes>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-dependency-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>copy-dependencies</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>copy-dependencies</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <outputDirectory>${project.build.directory}/lib</outputDirectory>-->
+<!--                            <excludeTransitive>false</excludeTransitive>-->
+<!--                            <stripVersion>false</stripVersion>-->
+<!--                            <includeScope>runtime</includeScope>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+            <!--</editor-fold>-->
         </plugins>
     </build>
 
