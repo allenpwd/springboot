@@ -1,19 +1,18 @@
 package pwd.allen.base;
 
-import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringApplicationRunListener;
-import org.springframework.core.io.UrlResource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.boot.env.YamlPropertySourceLoader;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MutablePropertySources;
+import org.springframework.core.env.PropertySource;
+import org.springframework.core.env.StandardEnvironment;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.support.SpringFactoriesLoader;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,5 +44,20 @@ public class JunitTest {
         // 获取spring.factories中配置的指定类
         List<String> stringList = SpringFactoriesLoader.loadFactoryNames(SpringApplicationRunListener.class, getClass().getClassLoader());
         System.out.println(stringList);
+    }
+
+    /**
+     * 读取yml文件
+     * @throws IOException
+     */
+    @Test
+    public void readConfig() throws IOException {
+        // 获取Spring的环境对象
+        ConfigurableEnvironment environment = new StandardEnvironment();
+        MutablePropertySources propertySources = environment.getPropertySources();
+        // 读取yml文件并添加到environment中
+        List<PropertySource<?>> propertySourceList = new YamlPropertySourceLoader().load("application.yml", new DefaultResourceLoader().getResource("application.yml"));
+        propertySourceList.forEach(propertySources::addLast);
+        System.out.println(environment.getProperty("server.port"));
     }
 }
