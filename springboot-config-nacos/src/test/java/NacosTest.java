@@ -8,6 +8,13 @@ import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.listener.NamingEvent;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.alibaba.nacos.api.naming.pojo.ListView;
+import com.alibaba.nacos.client.naming.remote.http.NamingHttpClientManager;
+import com.alibaba.nacos.client.naming.utils.UtilAndComs;
+import com.alibaba.nacos.common.constant.HttpHeaderConsts;
+import com.alibaba.nacos.common.http.client.NacosRestTemplate;
+import com.alibaba.nacos.common.http.param.Header;
+import com.alibaba.nacos.common.utils.UuidUtils;
+import com.alibaba.nacos.common.utils.VersionUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -36,12 +43,18 @@ public class NacosTest {
 	private static Properties properties;
 
 	static {
-		String serverAddr = null, namespace = null, username = null, password = null, accessKey = null;
+		String serverAddr = null, namespace = null, username = null, password = null, accessKey = null, group = null;
 
 		serverAddr = "127.0.0.1:8848";
 		namespace = "";
 		username = "pwd";
 		password = "123456";
+
+		serverAddr = "nacos.devops.cndatacom.com:18818";
+		namespace = "CRM-UMarketing-Backend-Foundation";
+		username = "qx_nacos_admin";
+		password = "V3Bde@a29";
+		group = "PWD";
 
 
 		properties = new Properties();
@@ -117,6 +130,21 @@ public class NacosTest {
 		});
 
 		Thread.currentThread().join();
+	}
+
+	@Test
+	public void naming2() throws NacosException, InterruptedException {
+		//		HttpClientConfig httpClientConfig = new HttpClientConfig(3000, 50000, -1, TimeUnit.MILLISECONDS, -1, 5, 0, 0, true, 16, null);
+//		NacosRestTemplate nacosRestTemplate = new NacosRestTemplate(LoggerFactory.getLogger("com.alibaba.nacos.client.naming"), new JdkHttpClientRequest(httpClientConfig));
+		NacosRestTemplate nacosRestTemplate = NamingHttpClientManager.getInstance().getNacosRestTemplate();
+		Header header = Header.newInstance();
+		header.addParam(HttpHeaderConsts.CLIENT_VERSION_HEADER, VersionUtils.version);
+		header.addParam(HttpHeaderConsts.USER_AGENT_HEADER, UtilAndComs.VERSION);
+		header.addParam(HttpHeaderConsts.ACCEPT_ENCODING, "gzip,deflate,sdch");
+		header.addParam(HttpHeaderConsts.CONNECTION, "Keep-Alive");
+		header.addParam(HttpHeaderConsts.REQUEST_ID, UuidUtils.generateUuid());
+		header.addParam(HttpHeaderConsts.REQUEST_MODULE, "Naming");
+//		nacosRestTemplate.exchangeForm("/nacos/v1/ns/instance/beat", header, )
 	}
 	//</editor-fold>
 }
