@@ -2,6 +2,7 @@ package pwd.allen.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Date;
 public class User {
     @Id
     private String id;
+    @Indexed(unique = true)
     private String name;
     private Integer age;
     private Date birthday;
