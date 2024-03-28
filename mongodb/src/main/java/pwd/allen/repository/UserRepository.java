@@ -1,5 +1,10 @@
 package pwd.allen.repository;
 
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.repository.DeleteQuery;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,6 +26,35 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     Optional<User> findFirstByOrderByAgeDesc();
 
-    @Query("{ 'name': ?0 }")
-    List<User> findByName(@Param("name") String name);
+    // 分页查询
+    Page<User> findByAgeGreaterThanEqual(Integer age, Pageable pageable);
+
+    /**
+     * 通过@Query自定义查询
+     * @param name
+     * @return
+     */
+//    @Query("{ name: /?0/ }")  // 这个也能达到效果，但是idea会有代码错误提示
+    @Query("{ name: { $regex: ?0 } }")
+    List<User> findByNameLike2(@Param("name") String name);
+
+    // 删除操作
+
+    /**
+     * 返回类型需要是long
+     * @param name
+     * @return
+     */
+    @DeleteQuery("{ 'name' : ?0 }")
+    long deleteUserByName(String name);
+
+    /**
+     * TODO 报错
+     * @param id
+     * @param name
+     * @return
+     */
+    @Query("{$set: {name: ?1 }}")
+    UpdateResult updateNameById(String id, String name);
+
 }

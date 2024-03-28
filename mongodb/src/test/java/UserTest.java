@@ -1,5 +1,7 @@
 import cn.hutool.core.collection.IterUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.AggregateIterable;
@@ -172,6 +174,23 @@ public class UserTest {
         iterable.allowDiskUse(true);
         List<Map> list = IterUtil.toList(iterable);
         System.out.println(list);
+    }
+
+    @Test
+    public void repository() {
+        User user = new User(UUID.fastUUID().toString(), RandomUtil.randomString(6), RandomUtil.randomInt(10, 100), new Date());
+        System.out.println(userRepository.save(user));
+
+        System.out.println("-----------" + userRepository.findByNameLike("jun"));
+
+        System.out.println("-----------" + userRepository.findFirstByOrderByAgeDesc());
+
+        System.out.println("-----------" + userRepository.findByNameLike2("juni"));
+
+        Page<User> page = userRepository.findByAgeGreaterThanEqual(1, PageRequest.of(0, 1));
+        System.out.println(String.format("总数:%s，%s", page.getTotalElements(), page.getContent()));
+
+        System.out.println("-----------" + userRepository.deleteUserByName(user.getName()));
     }
 
 }

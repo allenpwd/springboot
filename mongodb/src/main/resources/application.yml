@@ -1,0 +1,22 @@
+server:
+  port: 8091
+
+spring:
+  data:
+    mongodb:
+      # 格式-》mongodb://[{username}:{password}@]{ips}[/{database}][?{options}]，其中ips多个用逗号隔开
+      uri: 'mongodb://pwd:123456@192.168.118.102:27017/pwd'
+#      host: 192.168.118.102
+#      port: 27017
+#      database: pwd
+#      username: pwd
+#      password: 123
+
+logging:
+  level:
+#    org.springframework.data.mongodb.core.MongoTemplate: debug
+    org:
+      mongodb:
+        driver:
+          protocol:
+            command: debug

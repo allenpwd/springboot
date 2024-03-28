@@ -145,6 +145,8 @@ public class NacosTest {
 		header.addParam(HttpHeaderConsts.REQUEST_ID, UuidUtils.generateUuid());
 		header.addParam(HttpHeaderConsts.REQUEST_MODULE, "Naming");
 //		nacosRestTemplate.exchangeForm("/nacos/v1/ns/instance/beat", header, )
+
+
 	}
 	//</editor-fold>
 }

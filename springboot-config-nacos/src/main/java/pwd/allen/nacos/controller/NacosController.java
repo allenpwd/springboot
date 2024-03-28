@@ -1,6 +1,7 @@
 package pwd.allen.nacos.controller;
 
 import com.alibaba.nacos.api.config.annotation.NacosValue;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,9 @@ public class NacosController {
      */
     @NacosValue("${pwd.yml.num:18}")
     private Integer num;
+
+    @Autowired
+    private BeanFactory beanFactory;
 
     @GetMapping("config")
     public Object sayHello(HttpServletRequest request) {
