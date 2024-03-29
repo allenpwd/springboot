@@ -1,6 +1,20 @@
 spring:
   data:
     neo4j:
-      uri: bolt://localhost:7687
-      username: your_username
-      password: your_password
+      uri: bolt://192.168.118.102:27687
+      username: neo4j
+      password: 123456
+
+
+#打印neo4j生成的Cypher
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          neo4j:
+            cypher: DEBUG
+      neo4j:
+        driver:
+          OutboundMessageHandler: debug
+          InboundMessageHandler: debug

@@ -1,4 +1,4 @@
-package pwd.allen;
+package pwd.allen.neo4j;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @create 2024-03-28 17:08
  **/
 @SpringBootApplication
-public class Neo4jMain {
+public class Neo4jApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Neo4jMain.class, args);
+        SpringApplication.run(Neo4jApplication.class, args);
     }
 }
