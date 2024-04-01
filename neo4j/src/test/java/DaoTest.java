@@ -1,12 +1,24 @@
+import cn.hutool.core.collection.CollUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import pwd.allen.neo4j.Neo4jApplication;
 import pwd.allen.neo4j.dao.ArtistRepository;
 import pwd.allen.neo4j.dao.MovieRepository;
+import pwd.allen.neo4j.dao.PersonRepository;
 import pwd.allen.neo4j.dao.SongRepository;
 import pwd.allen.neo4j.entity.Movie;
+import pwd.allen.neo4j.entity.Person;
+import pwd.allen.neo4j.entity.Roles;
 import pwd.allen.neo4j.entity.doc.Song;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author pwdan
@@ -17,13 +29,10 @@ import pwd.allen.neo4j.entity.doc.Song;
 public class DaoTest {
 
     @Autowired
-    private ArtistRepository artistRepository;
-
-    @Autowired
-    private SongRepository songRepository;
-
-    @Autowired
     private MovieRepository movieRepository;
+
+    @Autowired
+    private PersonRepository personRepository;
 
     /**
      * 执行语句是：MERGE (n:`Movie` {title: $__id__}) SET n += $__properties__ RETURN n
@@ -40,6 +49,25 @@ public class DaoTest {
         System.out.println(movie);
     }
 
+    @Test
+    public void saveRelation() {
+        Optional<Movie> movie = movieRepository.findById("叶问");
+        Person person1 = personRepository.findById("J.T. Walsh").get();
+        Person person2 = personRepository.findById("Kevin Pollak").get();
+        movie.ifPresent(m -> {
+            if (CollUtil.isEmpty(m.getDirectors())) {
+                m.setDirectors(Arrays.asList(person1, person2));
+            }
+            if (CollUtil.isEmpty(m.getActorsAndRoles())) {
+                Roles roles = new Roles();
+                roles.setActor(person1);
+                roles.setRoles(Arrays.asList("老王", "王警官"));
+                m.setActorsAndRoles(Arrays.asList(roles));
+            }
+            movieRepository.save(m);
+        });
+    }
+
 
     /**
      * 执行语句：
@@ -50,21 +78,57 @@ public class DaoTest {
         System.out.println(movieRepository.findByTitle("A Few Good Men"));
     }
 
+    /**
+     * 执行语句：
+     * MATCH (n:`Movie`) WHERE n.title = $__id__ RETURN n{.released, .tagline, .title, __nodeLabels__: labels(n), __internalNeo4jId__: id(n), Movie_DIRECTED_Person: [(n)<-[:`DIRECTED`]-(n_directors:`Person`) | n_directors{.born, .name, __nodeLabels__: labels(n_directors), __internalNeo4jId__: id(n_directors)}], Movie_ACTED_IN_Person: [(n)<-[Movie__relationship__Person:`ACTED_IN`]-(n_actorsAndRoles:`Person`) | n_actorsAndRoles{.born, .name, __nodeLabels__: labels(n_actorsAndRoles), __internalNeo4jId__: id(n_actorsAndRoles), Movie__relationship__Person}]}
+     */
     @Test
-    public void deleteAllArtist() {
-        artistRepository.deleteAll();
+    public void queryMovie2() {
+        System.out.println(movieRepository.findById("A Few Good Men"));
+    }
+
+    /**
+     * MATCH (n:`Movie`) RETURN n ORDER BY n.released DESC, n.title SKIP 0 LIMIT 10
+     */
+    @Test
+    public void findAll() {
+        Sort.TypedSort<Movie> movieSort = Sort.sort(Movie.class);
+        Page<Movie> page = movieRepository.findAll(PageRequest.of(0, 10).withSort(movieSort.by(Movie::getReleased).descending().and(movieSort.by(Movie::getTitle))));
+        System.out.println(page.getTotalElements());
+        System.out.println(page.getContent());
     }
 
     @Test
-    public void saveSong() {
-        Song song = Song.builder()
-                .title("夜曲")
-                .coverUrl("http://abc")
-                .releaseDate("2024-04-01")
-                .duration("04:31")
-                .artist(artistRepository.findById(1L).get())
-                .build();
-
-        System.out.println(songRepository.save(song));
+    public void findDistinctMovieByReleasedGreaterThanEqual() {
+        Page<Movie> page = movieRepository.findDistinctMovieByReleasedGreaterThanEqualOrderByReleasedDesc(2000, PageRequest.of(0, 10));
+        System.out.println(page.getTotalElements());
+        System.out.println(page.getContent());
     }
+
+    @Test
+    public void findMoviesByActorName() {
+        List<Movie> movies = movieRepository.findMoviesByActorName("Laurence Fishburne");
+        System.out.println(movies);
+    }
+    @Test
+    public void findPersonsByTitle() {
+        System.out.println(movieRepository.findPersonsByTitle("The Matrix"));
+    }
+
+    @Test
+    public void deleteAll() {
+        movieRepository.deleteAll();
+    }
+
+    @Test
+    public void findFirstOrderByReleasedDesc() {
+        Movie movie = movieRepository.findFirstByOrderByReleasedDesc();
+        System.out.println(movie);
+    }
+
+    @Test
+    public void cleanAll() {
+        System.out.println(movieRepository.cleanAll());
+    }
+
 }

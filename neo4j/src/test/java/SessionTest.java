@@ -4,18 +4,27 @@ import org.neo4j.driver.*;
 import org.neo4j.driver.internal.InternalPath;
 import org.neo4j.driver.internal.value.PathValue;
 import org.neo4j.driver.types.Path;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+@SpringBootTest(classes = {SessionTest.class}, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class SessionTest {
+
+    @Value("${spring.neo4j.uri}")
+    private String uri;
+
+    @Value("${spring.neo4j.authentication.username}")
+    private String username;
+
+    @Value("${spring.neo4j.authentication.password}")
+    private String password;
 
     private Session session;
 
     @BeforeEach
     public void init() {
-        String uri = "bolt://192.168.118.102:7687";
-        String username = "neo4j";
-        String password = "123456";
         Driver driver = GraphDatabase.driver(uri, AuthTokens.basic(username, password));
         this.session = driver.session();
     }
