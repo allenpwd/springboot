@@ -131,4 +131,9 @@ public class DaoTest {
         System.out.println(movieRepository.cleanAll());
     }
 
+    @Test
+    public void addActedIn() {
+        System.out.println(movieRepository.addActedIn("叶问", "Laurence Fishburne", Arrays.asList("ALLEN", "TONY")));
+    }
+
 }
