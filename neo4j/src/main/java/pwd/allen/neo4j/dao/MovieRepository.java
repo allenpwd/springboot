@@ -5,13 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import pwd.allen.neo4j.entity.Movie;
 import pwd.allen.neo4j.entity.Person;
 
 import java.util.List;
-import java.util.Map;
 
 public interface MovieRepository extends Neo4jRepository<Movie, String> {
 
