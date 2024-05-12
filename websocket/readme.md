@@ -7,7 +7,9 @@ WebSocket 使得客户端和服务器之间的数据交换变得更加简单，�
 
 #### 为什么需要STOMP
 直接使用 WebSocket（SockJS） 就很类似于 使用 TCP 套接字来编写 web 应用，因为没有高层协议，就需要我们定义应用间所发送消息的语义，还需要确保连接的两端都能遵循这些语义；\
-因此，可以在 WebSocket 之上使用 STOMP协议，来为浏览器 和 server间的 通信增加适当的消息语义。
+因此，可以在 WebSocket 之上使用 STOMP协议，来为浏览器 和 server间的 通信增加适当的消息语义。\
+其实STOMP协议并不是为WS所设计的，它其实是消息队列的一种协议，和AMQP、JMS是平级的。 只不过由于它的简单性恰巧可以用于定义WS的消息体格式。 \
+目前很多服务端消息队列都已经支持了STOMP，比如RabbitMQ、Apache ActiveMQ等。很多语言也都有STOMP协议的客户端解析库，像JAVA的Gozirra、C的libstomp、Python的pyactivemq、JavaScript的stomp.js等等。
 
 #### frame
 STOMP在websocket上提供了一中基于帧线路格式（frame-based wire format）。

@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
-import org.springframework.util.StringUtils;
 
 import java.security.Principal;
 import java.text.MessageFormat;
@@ -50,14 +50,15 @@ public class MyChannelInterceptor implements ChannelInterceptor {
         if (StrUtil.isEmpty(user)) {
             // 这个好像时security认证相关的 TODO
             Principal principal = accessor.getUser();
-//        principal = SimpMessageHeaderAccessor.getUser(message.getHeaders());
-            if (principal != null && !StringUtils.isEmpty(principal.getName())) {
+            if (principal == null) {
+                principal = SimpMessageHeaderAccessor.getUser(message.getHeaders());
+            }
+            if (principal != null && !StrUtil.isEmpty(principal.getName())) {
                 user = principal.getName();
             } else {
                 user = sessionId;
             }
         }
-        accessor.setNativeHeader("sessionId", sessionId);
         // 广播通知大家
         if (template != null) {
             if (StompCommand.CONNECT.equals(command)) {

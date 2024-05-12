@@ -37,11 +37,11 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
      */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/broker")
+        registry.addEndpoint("/myStomp")
                 // 配置跨域
 //                .setAllowedOrigins("*")   // 这个会报错：When allowCredentials is true, allowedOrigins cannot contain the special value "*" since that cannot be set on the "Access-Control-Allow-Origin" response header. To allow credentials to a set of origins, list them explicitly or consider using "allowedOriginPatterns" instead.
                 .setAllowedOriginPatterns("*")
-                .setHandshakeHandler(stompHandshakeHander)
+                .setHandshakeHandler(stompHandshakeHander)  // 握手处理，主要是连接的时候认证获取其他数据验证等
                 .withSockJS();//启动SockJS,以便在WebSocket不可用时可以使用备用传输
     }
 
@@ -53,6 +53,8 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         //启用一个简单的基于内存的消息代理，指定服务端广播消息的路径前缀
         //也可以用成其他的传统信息代理，比如rabbitmq activeMq TODO
+//        registry.enableStompBrokerRelay("/topic").setRelayHost("localhost").setRelayPort(61613);
+        // 不一定要用topic，可以自定义，不过一般用topic 代表发布广播，即群发，queue 代表点对点，即发指定用户
         registry.enableSimpleBroker("/topic");
 
         //指定服务端处理WebSocket消息的前缀是/app
@@ -60,6 +62,7 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/app");
 
         //用户名称前缀，默认为/user/，当客户段订阅/user开头，spring会解析成/user/{userId}/...
+        //其中userId默认是sessionId，如果自定义了Principal，则为Principal的username
         registry.setUserDestinationPrefix("/user");
     }
 

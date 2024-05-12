@@ -76,7 +76,7 @@
   const vm = new Vue({
     el: '#app',
     data: {
-      url: window.location.href.replace(/(.*)\/.*/g,'$1') + '/broker',
+      url: window.location.href.replace(/(.*)\/.*/g,'$1') + '/myStomp?username=',
       user: '',
       ifConnect: false,
       content: 'hello!' + new Date(),
@@ -98,7 +98,7 @@
     methods: {
       connect () {
         // 建立连接对象（还未发起连接）
-        var socket = new SockJS(this.url);
+        var socket = new SockJS(this.url + this.user);
         // 获取 STOMP 子协议的客户端对象
         var stompClient = Stomp.over(socket);
         this.client = stompClient;
