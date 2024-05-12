@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.Map;
 
 /**
@@ -88,8 +89,8 @@ public class MessageController {
      */
     @MessageMapping("/resp")
     @SendToUser("/topic/resp") //客户端需要订阅/user/topic/resp
-    public String resp(@Payload String message, @Header("user") String user) {
-        log.info("user：{},接收到消息：{}", user, message);
+    public String resp(@Payload String message, @Header("user") String user, Principal principal) {
+        log.info("user：{},接收到消息：{}", principal.getName(), message);
         return String.format("【%s】%s", user, message);
     }
 }
