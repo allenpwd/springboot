@@ -12,6 +12,7 @@ spring:
     baselineOnMigrate: true
     baseline-version: 1  # 默认是1，所以V1.0.0这种不会被执行
     placeholder-replacement: false # 禁用脚本占位符替换
+    create-schemas: true # 是否自动创建schemas，默认是true
   profiles:
     active: mysql
   jackson:
