@@ -44,14 +44,16 @@ knife4j:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&createDatabaseIfNotExist=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&createDatabaseIfNotExist=true&serverTimezone=Asia/Shanghai&createDatabaseIfNotExist=true
     username: root
     password: 123456
   config:
     activate:
       on-profile: mysql
   flyway:
-    locations: classpath:flyway/mysql/ # sql文件的位置，默认classpath:db/migration/
+    # sql文件的位置，默认classpath:db/migration/
+    locations: classpath:flyway/mysql/ddl,classpath:flyway/mysql/dml,classpath:flyway/mysql/dir
+#    clean-disabled: false  # todo 不会清空数据库重新初始化
 
 ---
 # oracle
