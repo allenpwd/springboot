@@ -38,3 +38,43 @@ logging:
 	{ [/my/forward]}: forward(HttpServletRequest,HttpServletResponse)
 	{POST [/my/upload]}: upload(MultipartFile)
 ```
+
+### 打成war包，部署到外部服务器如tomcat中
+- 需要将pom.xml中的spring-boot-starter-tomcat依赖
+方法一：
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+方法二：
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-tomcat</artifactId>
+    <scope>provided</scope>
+</dependency>
+```
+- 在pom.xml中添加：
+```xml
+<packaging>war</packaging>
+```
+- 启动类继承SpringBootServletInitializer
+```java
+public class MyApplication extends SpringBootServletInitializer {
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(MyApplication.class);
+    }
+    public static void main(String[] args) {
+        SpringApplication.run(MyApplication.class, args);
+    }
+}
+```

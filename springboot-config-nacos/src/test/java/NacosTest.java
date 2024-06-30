@@ -50,11 +50,16 @@ public class NacosTest {
 		username = "pwd";
 		password = "123456";
 
-		serverAddr = "nacos.devops.cndatacom.com:18818";
-		namespace = "CRM-UMarketing-Backend-Foundation";
-		username = "qx_nacos_admin";
-		password = "V3Bde@a29";
-		group = "PWD";
+		serverAddr = "40030.cdc.k8s:31701";
+		namespace = "";
+		username = "";
+		password = "";
+
+//		serverAddr = "nacos.devops.cndatacom.com:18818";
+//		namespace = "CRM-UMarketing-Backend-Foundation";
+//		username = "qx_nacos_admin";
+//		password = "V3Bde@a29";
+//		group = "PWD";
 
 
 		properties = new Properties();
@@ -82,7 +87,7 @@ public class NacosTest {
     public void config() throws NacosException, InterruptedException {
 		ConfigService configService = NacosFactory.createConfigService(properties);
 		// 根据dataId、group定位到具体配置文件，获取其内容. 方法中的三个参数分别是: dataId, group, 超时时间
-		String content = configService.getConfig("yaml_config", "DEFAULT_GROUP", 3000L);
+		String content = configService.getConfig("blade.yaml", "DEFAULT_GROUP", 3000L);
 		System.out.println(content);
 
 		// 另启线程监控配置文件的变更
