@@ -17,6 +17,11 @@ import org.springframework.integration.redis.util.RedisLockRegistry;
 @Configuration
 public class RedisConfig {
 
+    /**
+     * 自定义redisTemplate，覆盖默认的redisTemplate
+     * @param redisConnectionFactory
+     * @return
+     */
     @Bean(name="redisTemplate")
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();

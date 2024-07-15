@@ -13,6 +13,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import java.util.concurrent.Executor;
 
 /**
+ * {@link EnableAsync}
  * 属性：
  *  mode:代理方式：默认是PROXY
  *    - PROXY：采用Spring的动态代理（含JDK动态代理和CGLIB）

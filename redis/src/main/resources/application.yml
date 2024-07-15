@@ -38,7 +38,9 @@ spring:
 ---
 # todo redis集群
 spring:
-  profiles: sentinel
+  config:
+    activate:
+      on-profile: sentinel
   redis:
     password: redis
     sentinel:

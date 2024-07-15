@@ -12,6 +12,12 @@
     <artifactId>springboot-schedule</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
         <!-- 实现线程池级别xi线程变量共享 -->
         <dependency>
             <groupId>com.alibaba</groupId>

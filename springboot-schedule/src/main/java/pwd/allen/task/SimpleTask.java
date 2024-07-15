@@ -43,8 +43,10 @@ public class SimpleTask {
     public void printTask() {
         log.info("定时调起的任务开始");
         THREAD_LOCAL.set(integer.incrementAndGet());
-        // 直接调是不是无法异步
+        // 这种能正常异步
         simpleTask.async();
+        // 这种无法异步
+//        this.async();
         log.info("定时调起的任务结束");
     }
 
