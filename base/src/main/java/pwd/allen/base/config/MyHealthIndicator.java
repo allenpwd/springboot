@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 自定义 actuator 的 健康端点
- * health的名称是my，逻辑在 {@link org.springframework.boot.actuate.health.HealthIndicatorNameFactory}
+ * health的名称是my，逻辑在 {@link org.springframework.boot.actuate.health.HealthContributorNameFactory}
  *
  * @author lenovo
  * @create 2019-12-11 12:42

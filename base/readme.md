@@ -40,7 +40,7 @@ logging:
 ```
 
 ### 打成war包，部署到外部服务器如tomcat中
-- 需要将pom.xml中的spring-boot-starter-tomcat依赖
+- 需要排除pom.xml中的spring-boot-starter-tomcat依赖
 方法一：
 ```xml
 <dependency>
