@@ -43,7 +43,7 @@ public class StompHandshakeHander extends DefaultHandshakeHandler {
                 principal = new HttpPrincipal(servletRequest.getServletRequest().getParameter("username"), "realm");
             }
         }
-        System.out.println("StompHandshakeHander.determineUser:" + principal);
+        System.out.println("StompHandshakeHandler.determineUser:" + principal);
         return principal;
     }
 }

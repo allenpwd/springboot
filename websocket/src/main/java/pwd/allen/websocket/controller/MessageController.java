@@ -43,7 +43,9 @@ public class MessageController {
     @MessageMapping("/broadcast")
     @SendTo("/topic/message")
     public Object message(String message, SimpMessageHeaderAccessor headerAccessor, @Headers Map headers) {
-        String sender = headerAccessor.getFirstNativeHeader("sender");
+        String sender = headerAccessor.getUser().getName();
+//        sender = headerAccessor.getFirstNativeHeader("user");
+
         log.info("sender：{}，接收到消息：{}", sender,  message);
         return String.format("%s发送了广播消息：%s", sender, message);
     }
@@ -65,10 +67,10 @@ public class MessageController {
     @MessageMapping("/sendTo")
     public void chat(String message, @Header("user") String user, @Header("receiver") String receiver) {
         log.info("user：{},receiver：{},接收到消息：{}", user, receiver, message);
-        // 方式一：每个客户端订阅/topic/{username}，然后服务器向该地址发送消息
+        // 方式一：每个客户端订阅/topic/{自己的名字}，然后服务器向该地址发送消息
 //        this.template.convertAndSend("/topic/" + receiver, message);
         // 方式二：每个客户端订阅/user/topic/resp，然后服务器用convertAndSendToUser发送消息，，需要有配置Principal，否则无法根据user找到sessionId
-        template.convertAndSendToUser(receiver, "/topic/resp", message);
+        template.convertAndSendToUser(receiver, "/topic/resp", String.format("%s给你发送了消息：%s", receiver, message));
     }
 
     /**

@@ -112,7 +112,7 @@
                   console.log('Info: WebSocket connection opened.' + frame);
                   vm.subscribe('/topic/message');
                   vm.subscribe('/user/topic/resp');
-                  vm.subscribe('/topic/' + vm.user);
+                  // vm.subscribe('/topic/' + vm.user);
                 },
                 function (error) {
                   vm.ifConnect = false;
