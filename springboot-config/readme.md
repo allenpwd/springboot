@@ -35,7 +35,11 @@
 12、应用默认属性，使用SpringApplication.setDefaultProperties定义的内容
 
 #### application配置文件读取pom属性
-Spring Boot已经将maven-resources-plugins默认的 ${}方式改为了@@方式，如@project.version@，若要配置成${project.version}的方式，可以在pom中设置属性<resource.delimiter>${*}</resource.delimiter>
+Spring Boot已经将maven-resources-plugins默认的 ${}方式改为了@@方式，如@project.version@，若要配置成${project.version}的方式，可以在pom中设置属性
+```xml
+<resource.delimiter>${*}</resource.delimiter>
+```
+
 
 ##### 源码
 org.springframework.boot.context.config.ConfigFileApplicationListener
