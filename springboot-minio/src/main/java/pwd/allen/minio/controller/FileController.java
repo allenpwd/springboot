@@ -9,6 +9,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.MediaTypeFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pwd.allen.minio.config.MyMinioProperties;
@@ -43,12 +45,15 @@ public class FileController {
     @PostMapping("upload")
     public Object upload(@NotNull @RequestParam MultipartFile file) {
 
+        String contentType = file.getContentType();
+//        contentType = MediaTypeFactory.getMediaType(file.getName()).orElse(MediaType.APPLICATION_OCTET_STREAM).toString();
+
         try {
             PutObjectArgs args = PutObjectArgs.builder()
                     .bucket(minioProperties.getBucketName())
                     .object(file.getOriginalFilename())
                     .stream(file.getInputStream(), file.getSize(), -1)
-                    .contentType(file.getContentType())
+                    .contentType(contentType)
                     .build();
             ObjectWriteResponse objectWriteResponse = client.putObject(args);
             return objectWriteResponse;

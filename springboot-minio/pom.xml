@@ -18,6 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <minio.version>8.4.3</minio.version>
         <okhttp3.version>4.8.1</okhttp3.version>
+        <aws-java-sdk-s3.version>1.12.263</aws-java-sdk-s3.version>
     </properties>
 
     <dependencies>
@@ -42,6 +43,13 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
             <version>${hutool.version}</version>
+        </dependency>
+
+        <!-- Amazon Web Services官方提供的软件开发工具包，用于简化开发者与AWS云服务之间的交互 -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>${aws-java-sdk-s3.version}</version>
         </dependency>
     </dependencies>
 

@@ -1,4 +1,4 @@
-package pwd.allen.minio;
+package pwd.allen.minio.service;
 
 import io.minio.*;
 import io.minio.http.Method;

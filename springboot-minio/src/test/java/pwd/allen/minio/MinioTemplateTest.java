@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import pwd.allen.minio.config.MinioConfig;
+import pwd.allen.minio.service.MinioTemplate;
 
 import java.io.IOException;
 import java.io.InputStream;
