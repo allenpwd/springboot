@@ -38,7 +38,7 @@ pwd:
       - 在字符串中（无论有没有用引号括起来）
         回车换行
         换行被空格替换
-    list3: [one,two,abc]
+    list3: [one,two,abc] # 去掉数组的方口号也是能正常识别成列表的
     error-properties:
       include-exception: true
       path: /myPath
