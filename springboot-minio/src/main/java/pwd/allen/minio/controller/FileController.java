@@ -56,7 +56,7 @@ public class FileController {
                     .contentType(contentType)
                     .build();
             ObjectWriteResponse objectWriteResponse = client.putObject(args);
-            return objectWriteResponse;
+            return objectWriteResponse.toString();
         } catch (Exception e) {
             log.error(e.toString(), e);
             return e.toString();

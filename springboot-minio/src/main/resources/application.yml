@@ -1,6 +1,6 @@
 # Minio配置
 minio:
-  url: http://192.168.118.102:9001
-  accessKey: minioadmin
-  secretKey: minioadmin
+  url: http://192.168.118.102:9000
+  accessKey: admin # 可以用帐号密码，也可以用accessKey secretKey
+  secretKey: admin@123
   bucketName: my-bucket
