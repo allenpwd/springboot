@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Slf4j
 @Component
-@RocketMQTransactionListener(txProducerGroup = "spring_boot_producer_group")
+@RocketMQTransactionListener
 public class SyncProducerListener implements RocketMQLocalTransactionListener {
     private AtomicInteger trnner = new AtomicInteger(0);
     private ConcurrentHashMap<String, Object> localTrans = new ConcurrentHashMap<>();

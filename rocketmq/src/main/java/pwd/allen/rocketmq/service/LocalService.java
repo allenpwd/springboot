@@ -1,12 +1,11 @@
 package pwd.allen.rocketmq.service;
-
-import com.zang.rocket.constant.MQTags;
-import com.zang.rocket.constant.MQTopic;
-import com.zang.rocket.producer.SyncProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.TransactionSendResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pwd.allen.rocketmq.constant.MQTags;
+import pwd.allen.rocketmq.constant.MQTopic;
+import pwd.allen.rocketmq.producer.SyncProducer;
 
 /**
  * @author Zhang Qiang
