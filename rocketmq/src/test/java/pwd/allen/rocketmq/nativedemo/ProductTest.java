@@ -1,10 +1,7 @@
 package pwd.allen.rocketmq.nativedemo;
 
+import cn.hutool.core.date.DateUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
-import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
-import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
-import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
@@ -12,7 +9,6 @@ import org.apache.rocketmq.client.producer.MessageQueueSelector;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
-import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.common.message.MessageQueue;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.junit.jupiter.api.AfterEach;
@@ -58,6 +54,8 @@ public class ProductTest {
      * 在mq集群中，要等到所有的从机都复制了消息以后才会返回
      * 适用于响应要求不高的重要消息
      *
+     * 批量发送消息：如果发送一组消息，那么这一组消息会被当做一个消息消费（TODO 消费者多线程模式下并没有一次性收到三条消息）
+     *
      * @throws MQClientException
      * @throws MQBrokerException
      * @throws RemotingException
@@ -66,10 +64,19 @@ public class ProductTest {
     @Test
     public void syncSend() throws MQClientException, MQBrokerException, RemotingException, InterruptedException {
         //创建信息
-        Message message = new Message(topic, "我是一个同步的信息".getBytes());
+        List<Message> msgs = Arrays.asList(
+                new Message(topic, "我第一个同步的信息".getBytes()),
+                new Message(topic, "我第二个同步的信息".getBytes()),
+                new Message(topic, "我第三个同步的信息".getBytes())
+
+        );
         //发送信息
-        SendResult sendResult = producer.send(message);
+        SendResult sendResult = producer.send(msgs.get(0));
         log.info("sendResult:{}", sendResult.getSendStatus().toString());
+
+        sendResult = producer.send(msgs);
+        log.info("sendResult:{}", sendResult.getSendStatus().toString());
+
     }
 
     /**
@@ -113,7 +120,7 @@ public class ProductTest {
     @Test
     public void onewaySend() throws MQClientException, RemotingException, InterruptedException, IOException {
         //创建信息
-        Message message = new Message(topic, "我是一个单向的信息".getBytes());
+        Message message = new Message(topic, "tag1", "mykey", "我是一个单向的信息".getBytes());
         //异步消息就是在此调用了new SendCallback()来完成操作，重写发送成功和发送失败的逻辑。
         producer.sendOneway(message);
     }
@@ -138,7 +145,9 @@ public class ProductTest {
 
     /**
      * 顺序发送消息
-     * 默认情况下，生产者把消息发送到队列用的是轮询的方式，而消费者在默认情况下接收消息也是轮询的方式，消费者默认情况下是用多线程的并发模式接收消息，这时候就不能保证接收消息的顺序
+     * 将消息发送到一个队列中（消费者如果按照多线程的方式接收消息的话，消息仍然有可能不是顺序的）
+     *
+     * 由于broker机制，默认情况下，生产者把消息发送到队列用的是轮询的方式，而消费者在默认情况下接收消息也是轮询的方式，消费者默认情况下是用多线程的并发模式接收消息，这时候就不能保证接收消息的顺序
      * 如果要确保消息的顺序，可以将消息发送到同一个队列中
      */
     @Test
@@ -164,6 +173,25 @@ public class ProductTest {
         for (Message msg : msgs) {
             producer.send(msg, messageQueueSelector, "额外参数");
         }
+    }
+
+    /**
+     * 发送事务信息
+     *
+     * 事务性消息确保本地事务的执行和消息的发送可以原子地执行
+     * 适用于不需要确认消息是否成功到达消费者的应用场景，例如：日志记录、监控数据上报
+     *
+     * @throws MQClientException
+     * @throws MQBrokerException
+     * @throws RemotingException
+     * @throws InterruptedException
+     */
+    @Test
+    public void transactionSend() throws MQClientException, RemotingException, InterruptedException, IOException {
+        //创建信息
+        Message message = new Message(topic, "我是一个单向的信息".getBytes());
+        //异步消息就是在此调用了new SendCallback()来完成操作，重写发送成功和发送失败的逻辑。
+        producer.sendOneway(message);
     }
 
 }

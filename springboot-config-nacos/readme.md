@@ -32,6 +32,8 @@ nacos.config.enable-remote-sync-config=true
 #### 配置读取不到
 可能是配置格式有问题，比如注释被不小心放开，或者文件编码问题；或者配置md5校验不通过（例如直接在数据库改了配置文件名）
 可以打断点在com.alibaba.nacos.api.config.ConfigService.getConfig；看看获取内容，如果能获取到内容，但是最终没能加载到，可能就是配置内容格式问题
+#### 配置修改后读取到的配置内容还是旧的
+如果通过sql修改配置，需要重启nacos服务
 
 
 ### TODO

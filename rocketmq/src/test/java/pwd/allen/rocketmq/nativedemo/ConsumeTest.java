@@ -42,7 +42,7 @@ public class ConsumeTest {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(group);
         //连接nameSrv
         consumer.setNamesrvAddr(namesrvAddr);
-        //订阅一个主题  * 代表订阅这个主题中所有信息
+        //订阅一个主题，第二个入参是用来过滤信息的，默认是*,支持"tagA || tagB || tagC" 这样或者的写法
         consumer.subscribe("test-topic","*");
         // 设置一个监听器 (一直监听，异步回调)
         // MessageListenerConcurrently是并发消费
@@ -87,8 +87,8 @@ public class ConsumeTest {
                 for (int i = 0; i < msgs.size(); i++) {
                     log.info("消息{}:{}", i, new String(msgs.get(i).getBody()));
                 }
-                //返回成功（SUCCESS） ,消息从队列中弹出
-                //RECONSUME,失败，消息重新回到队列，过一会重新投递供当前消费者或其他消费者
+                //返回成功（CONSUME_SUCCESS） ,消息从队列中弹出
+                //ConsumeConcurrentlyStatus.RECONSUME_LATER,失败，消息重新回到队列，过一会重新投递供当前消费者或其他消费者
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
         });

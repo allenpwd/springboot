@@ -1,4 +1,8 @@
 rocketmq:
+  # name-server地址，格式：host:port;host:port
   name-server: 192.168.118.102:9876
   producer:
     group: boot_producer
+    # rocketMQ服务端配置acl授权信息，没有则不需要
+#    access-key: access-key
+#    secret-key: secret-key
