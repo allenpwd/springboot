@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * 死信队列是死信Topic下分区数唯一的单独队列。如果产生了死信消息，那对应的ConsumerGroup的死信Topic名称为%DLQ%ConsumerGroupName，死信队列的消息将不会再被消费。
+ * 我们也可以去监听死信队列，然后进行自己的业务上的逻辑
+ *
  * @author pwdan
  * @create 2024-09-06 9:58
  **/
@@ -44,6 +47,7 @@ public class ConsumeTest {
         consumer.setNamesrvAddr(namesrvAddr);
         //订阅一个主题，第二个入参是用来过滤信息的，默认是*,支持"tagA || tagB || tagC" 这样或者的写法
         consumer.subscribe("test-topic","*");
+
         // 设置一个监听器 (一直监听，异步回调)
         // MessageListenerConcurrently是并发消费
         // 默认是20个线程一起消费，可以参看 consumer.setConsumeThreadMax()
@@ -78,6 +82,9 @@ public class ConsumeTest {
         consumer.setNamesrvAddr(namesrvAddr);
         //订阅一个主题  * 代表订阅这个主题中所有信息
         consumer.subscribe("test-topic","*");
+
+        consumer.setMaxReconsumeTimes(3);
+
         // 设置一个监听器 (一直监听，异步回调)
         // MessageListenerConcurrently是并发消费
         // 默认是20个线程一起消费，可以参看 consumer.setConsumeThreadMax()
@@ -88,8 +95,10 @@ public class ConsumeTest {
                     log.info("消息{}:{}", i, new String(msgs.get(i).getBody()));
                 }
                 //返回成功（CONSUME_SUCCESS） ,消息从队列中弹出
+//                return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
                 //ConsumeConcurrentlyStatus.RECONSUME_LATER,失败，消息重新回到队列，过一会重新投递供当前消费者或其他消费者
-                return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+                // 如果重试次数超过MaxReconsumeTimes，则消息会被放入死信队列
+                return ConsumeConcurrentlyStatus.RECONSUME_LATER;
             }
         });
         //启动

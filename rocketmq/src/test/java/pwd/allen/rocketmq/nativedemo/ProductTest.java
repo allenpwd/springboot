@@ -63,6 +63,9 @@ public class ProductTest {
      */
     @Test
     public void syncSend() throws MQClientException, MQBrokerException, RemotingException, InterruptedException {
+        // 设置同步模式下的发送失败重试次数
+        producer.setRetryTimesWhenSendFailed(3);
+
         //创建信息
         List<Message> msgs = Arrays.asList(
                 new Message(topic, "我第一个同步的信息".getBytes()),
@@ -90,6 +93,9 @@ public class ProductTest {
      */
     @Test
     public void asyncSend() throws MQClientException, RemotingException, InterruptedException, IOException {
+        // 设置异步模式下的发送失败重试次数
+        producer.setRetryTimesWhenSendAsyncFailed(3);
+
         //创建信息
         Message message = new Message(topic, "我是一个异步的信息".getBytes());
         //异步消息就是在此调用了new SendCallback()来完成操作，重写发送成功和发送失败的逻辑。
