@@ -2,6 +2,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import pwd.allen.redis.RedisMain;
 import pwd.allen.redis.entity.User;
 import pwd.allen.redis.service.MyService;
@@ -26,6 +27,17 @@ public class RedisTest {
 
     @Autowired
     private RedisLockService redisLockService;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    /**
+     * redis如果存入的值是字符串，会在前后拼上双引号
+     */
+    @Test
+    public void template() {
+        redisTemplate.opsForValue().set("test:abc", "test");
+    }
 
     /**
      * 如果用GenericJackson2JsonRedisSerializer，存儲的格式是：

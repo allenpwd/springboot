@@ -16,7 +16,6 @@
         <module>springboot-config-nacos</module>
         <module>springboot-minio</module>
         <module>neo4j</module>
-        <module>neo4j</module>
         <module>rocketmq</module>
     </modules>
 
