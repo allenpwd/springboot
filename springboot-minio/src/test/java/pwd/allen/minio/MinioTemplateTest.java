@@ -3,9 +3,11 @@ package pwd.allen.minio;
 import cn.hutool.core.io.IoUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import pwd.allen.minio.config.MinioConfig;
+import pwd.allen.minio.service.IFileService;
 import pwd.allen.minio.service.MinioTemplate;
 
 import java.io.IOException;
@@ -20,35 +22,37 @@ import java.nio.charset.Charset;
 @SpringBootTest(classes = MinioConfig.class)
 class MinioTemplateTest {
     @Autowired
-    private MinioTemplate minioTemplate;
+    @Qualifier("minioTemplate")
+//    @Qualifier("s3Tempalte")
+    private IFileService fileService;
 
     String buckName =  "my-bucket";
     @Test
     void createBucket() {
-        minioTemplate.createBucket(buckName);
+        fileService.createBucket(buckName);
     }
 
     @Test
     void getObjectURL() {
-        String objectURL = minioTemplate.getObjectURL(buckName, "application.yml", 60);
+        String objectURL = fileService.getObjectURL(buckName, "application.yml", 60);
         System.out.println(objectURL);
     }
 
     @Test
     void getObject() {
-        InputStream inputStream = minioTemplate.getObject(buckName, "application.yml");
+        InputStream inputStream = fileService.getObject(buckName, "application.yml");
         System.out.println(IoUtil.read(inputStream, Charset.defaultCharset()));
     }
 
     @Test
     void putObject() throws IOException {
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("application.yml");
-        minioTemplate.putObject(buckName, "application.yml", inputStream);
+        fileService.putObject(buckName, "application.yml", inputStream);
         inputStream.close();
     }
 
     @Test
     void removeObject() {
-        minioTemplate.removeObject(buckName, "application.yml");
+        fileService.removeObject(buckName, "application.yml");
     }
 }
