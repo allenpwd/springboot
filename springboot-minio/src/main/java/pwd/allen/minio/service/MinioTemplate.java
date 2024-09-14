@@ -12,7 +12,7 @@ import java.io.InputStream;
 
 @Component
 @Slf4j
-public class MinioTemplate {
+public class MinioTemplate implements IFileService {
 
     @Autowired
     private MyMinioProperties minioProperties;
@@ -62,6 +62,7 @@ public class MinioTemplate {
      * @param objectName
      * @return
      */
+    @Override
     public InputStream getObject(String bucketName, String objectName) {
         try {
             return minioClient.getObject(GetObjectArgs.builder().bucket(bucketName).object(objectName).build());
@@ -76,16 +77,24 @@ public class MinioTemplate {
      * @param objectName
      * @param stream
      */
+    @Override
     public void putObject(String bucketName, String objectName, InputStream stream) {
         try {
-            putObject(bucketName, objectName, stream, stream.available(), "application/octet-stream");
+            putObject(bucketName, objectName, stream, stream.available(), null);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void putObject(String bucketName, String objectName, InputStream stream, int size, String contextType) {
+    @Override
+    public void putObject(String bucketName, String objectName, InputStream stream, Integer size, String contextType) {
+        if (contextType == null || "".equals(contextType)) {
+            contextType = "application/octet-stream";
+        }
         try {
+            if (size == null) {
+                size = stream.available();
+            }
             createBucket(bucketName);
             minioClient.putObject(PutObjectArgs.builder().bucket(bucketName).object(objectName).stream(stream, size, -1).contentType(contextType).build());
         } catch (Exception e) {
@@ -98,6 +107,7 @@ public class MinioTemplate {
      * @param bucketName
      * @param objectName
      */
+    @Override
     public void removeObject(String bucketName, String objectName) {
         try {
             minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucketName).object(objectName).build());
