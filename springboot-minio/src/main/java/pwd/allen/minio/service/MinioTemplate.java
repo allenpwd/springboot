@@ -6,11 +6,15 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pwd.allen.minio.config.MyMinioProperties;
 
 import java.io.InputStream;
 
-@Component
+/**
+ * 使用 MinioClient 操作Minio
+ */
+@Service
 @Slf4j
 public class MinioTemplate implements IFileService {
 
@@ -96,7 +100,14 @@ public class MinioTemplate implements IFileService {
                 size = stream.available();
             }
             createBucket(bucketName);
-            minioClient.putObject(PutObjectArgs.builder().bucket(bucketName).object(objectName).stream(stream, size, -1).contentType(contextType).build());
+            minioClient.putObject(PutObjectArgs
+                    .builder()
+                    .bucket(bucketName)
+                    .object(objectName)
+                    .stream(stream, size, -1)
+                    .contentType(contextType)
+                    .build()
+            );
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

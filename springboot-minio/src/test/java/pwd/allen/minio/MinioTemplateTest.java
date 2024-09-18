@@ -18,12 +18,12 @@ import java.nio.charset.Charset;
  * @author pwdan
  * @create 2023-10-11 17:35
  **/
-@Import(MinioTemplate.class)
-@SpringBootTest(classes = MinioConfig.class)
+@SpringBootTest(classes = MinioMain.class)
 class MinioTemplateTest {
+
     @Autowired
     @Qualifier("minioTemplate")
-//    @Qualifier("s3Tempalte")
+//    @Qualifier("s3Template")
     private IFileService fileService;
 
     String buckName =  "my-bucket";

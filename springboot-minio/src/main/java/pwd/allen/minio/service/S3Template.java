@@ -6,20 +6,22 @@ import com.amazonaws.services.s3.model.S3Object;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
 /**
- *
+ * 使用 AmazonS3 操作minio
  * https://blog.51cto.com/u_16213459/10685241
  *
  * @author pwdan
  * @create 2024-08-07 17:14
  **/
 @Slf4j
-@Component
+@Service
 public class S3Template implements IFileService {
 
     @Autowired
@@ -46,7 +48,9 @@ public class S3Template implements IFileService {
     @Override
     public String getObjectURL(String bucketName, String objectName, int expires) {
         try {
-            return s3Client.generatePresignedUrl(bucketName, objectName, new Date(expires * 1000L)).getPath();
+            Calendar instance = Calendar.getInstance();
+            instance.add(Calendar.SECOND, expires);
+            return s3Client.generatePresignedUrl(bucketName, objectName, instance.getTime()).toString();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
