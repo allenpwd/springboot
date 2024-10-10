@@ -25,6 +25,9 @@ public class RocketMQTemplateTest {
         Thread.sleep(1000L);
     }
 
+    /**
+     * org.springframework.messaging.MessagingException: Can not found MQProducer 'spring_boot_producer_group' in cache! please define @RocketMQLocalTransactionListener class or invoke createOrGetStartedTransactionMQProducer() to create it firstly
+     */
     @Test
     public void sendMessageInTransaction() {
         Message message = MessageBuilder.withPayload("sendMessageInTransaction").build();

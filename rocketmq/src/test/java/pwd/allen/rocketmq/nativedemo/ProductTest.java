@@ -1,6 +1,5 @@
 package pwd.allen.rocketmq.nativedemo;
 
-import cn.hutool.core.date.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
@@ -28,7 +27,7 @@ public class ProductTest {
 
     private String namesrvAddr = "192.168.118.102:9876";
     private String producerGroup = "test-producer-group";
-    private String topic = "test-topic";
+    public static String TOPIC = "test-topic";
 
     private DefaultMQProducer producer;
 
@@ -68,9 +67,9 @@ public class ProductTest {
 
         //创建信息
         List<Message> msgs = Arrays.asList(
-                new Message(topic, "我第一个同步的信息".getBytes()),
-                new Message(topic, "我第二个同步的信息".getBytes()),
-                new Message(topic, "我第三个同步的信息".getBytes())
+                new Message(TOPIC, "我第一个同步的信息".getBytes()),
+                new Message(TOPIC, "我第二个同步的信息".getBytes()),
+                new Message(TOPIC, "我第三个同步的信息".getBytes())
 
         );
         //发送信息
@@ -97,7 +96,7 @@ public class ProductTest {
         producer.setRetryTimesWhenSendAsyncFailed(3);
 
         //创建信息
-        Message message = new Message(topic, "我是一个异步的信息".getBytes());
+        Message message = new Message(TOPIC, "我是一个异步的信息".getBytes());
         //异步消息就是在此调用了new SendCallback()来完成操作，重写发送成功和发送失败的逻辑。
         producer.send(message, new SendCallback() {
             @Override
@@ -126,7 +125,7 @@ public class ProductTest {
     @Test
     public void onewaySend() throws MQClientException, RemotingException, InterruptedException, IOException {
         //创建信息
-        Message message = new Message(topic, "tag1", "mykey", "我是一个单向的信息".getBytes());
+        Message message = new Message(TOPIC, "tag1", "mykey", "我是一个单向的信息".getBytes());
         //异步消息就是在此调用了new SendCallback()来完成操作，重写发送成功和发送失败的逻辑。
         producer.sendOneway(message);
     }
@@ -140,7 +139,7 @@ public class ProductTest {
      */
     @Test
     public void sendDelay() throws Exception {
-        Message msg = new Message(topic, "延迟消息".getBytes());
+        Message msg = new Message(TOPIC, "延迟消息".getBytes());
         // 设置延迟等级3，即10s后才能被消费
         // 延迟等级默认一共18个等级，从1开始，依次为：1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h
         msg.setDelayTimeLevel(3);
@@ -160,9 +159,9 @@ public class ProductTest {
     public void sendByOrder() throws MQBrokerException, RemotingException, InterruptedException, MQClientException {
         //创建信息
         List<Message> msgs = Arrays.asList(
-                new Message(topic, "消息1".getBytes()),
-                new Message(topic, "消息2".getBytes()),
-                new Message(topic, "消息3".getBytes())
+                new Message(TOPIC, "消息1".getBytes()),
+                new Message(TOPIC, "消息2".getBytes()),
+                new Message(TOPIC, "消息3".getBytes())
 
         );
 
@@ -195,7 +194,7 @@ public class ProductTest {
     @Test
     public void transactionSend() throws MQClientException, RemotingException, InterruptedException, IOException {
         //创建信息
-        Message message = new Message(topic, "我是一个单向的信息".getBytes());
+        Message message = new Message(TOPIC, "我是一个单向的信息".getBytes());
         //异步消息就是在此调用了new SendCallback()来完成操作，重写发送成功和发送失败的逻辑。
         producer.sendOneway(message);
     }

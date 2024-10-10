@@ -30,7 +30,7 @@ public class ConsumeTest {
 
     private String namesrvAddr = "192.168.118.102:9876";
     private String group = "test-consumer-group";
-    private String topic = "test-topic";
+    private String topic = ProductTest.TOPIC;
 
 
     /**
@@ -46,7 +46,7 @@ public class ConsumeTest {
         //连接nameSrv
         consumer.setNamesrvAddr(namesrvAddr);
         //订阅一个主题，第二个入参是用来过滤信息的，默认是*,支持"tagA || tagB || tagC" 这样或者的写法
-        consumer.subscribe("test-topic","*");
+        consumer.subscribe(topic,"*");
 
         // 设置一个监听器 (一直监听，异步回调)
         // MessageListenerConcurrently是并发消费
@@ -81,7 +81,7 @@ public class ConsumeTest {
         //连接nameSrv
         consumer.setNamesrvAddr(namesrvAddr);
         //订阅一个主题  * 代表订阅这个主题中所有信息
-        consumer.subscribe("test-topic","*");
+        consumer.subscribe(topic,"*");
 
         consumer.setMaxReconsumeTimes(3);
 
