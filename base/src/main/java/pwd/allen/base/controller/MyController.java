@@ -2,7 +2,6 @@ package pwd.allen.base.controller;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.URLUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.github.xiaoymin.knife4j.spring.configuration.Knife4jProperties;
@@ -24,9 +23,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolverCompo
 import org.springframework.web.method.support.InvocableHandlerMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.PathVariableMethodArgumentResolver;
-import pwd.allen.base.entity.MyEntity;
 import pwd.allen.base.entity.MyResult;
-import pwd.allen.base.validator.MyValidator;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.ServletException;
@@ -35,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -96,7 +92,7 @@ public class MyController {
      *  通过registerCustomEditor注册属性绑定器来自定义属性绑定
      * 每次请求都要绑定一次（说明每次请求WebDataBinder都要创建一次）
      *
-     * InitBinder的value属性用于限定要处理的方法参数，如果没有指定则每个参数都需要绑定一次，逻辑在{@link InitBinderDataBinderFactory#isBinderMethodApplicable}
+     * InitBinder的value属性用于限定要处理的方法参数，如果没有指定则每个参数都会被绑定一次，逻辑在{@link InitBinderDataBinderFactory#isBinderMethodApplicable}
      */
     @InitBinder("myDate")
     public void initBinder1(WebDataBinder binder) {

@@ -37,11 +37,11 @@ public class MyRequestBodyAdvice implements RequestBodyAdvice {
 
     /**
      * 该方法用于判断当前请求的RequestBody参数是否要拦截，即是否要执行beforeBodyRead方法
-     * methodParameter方法的参数对象
-     * type方法的参数类型
-     * aClass 将会使用到的Http消息转换器类类型
      * 注意：此判断方法，会在beforeBodyRead 和 afterBodyRead方法前都触发一次。
      *
+     * @param methodParameter 方法的参数对象
+     * @param targetType 方法的参数类型
+     * @param converterType 将会使用到的Http消息转换器类类型
      * @return 返回true则会执行beforeBodyRead
      */
     @Override
@@ -51,10 +51,11 @@ public class MyRequestBodyAdvice implements RequestBodyAdvice {
 
     /**
      * 在Http消息转换器执转换，之前执行
-     * inputMessage 客户端的请求数据
-     * parameter方法的参数对象
-     * targetType方法的参数类型
-     * converterType 将会使用到的Http消息转换器类类型
+     *
+     * @param inputMessage 客户端的请求数据
+     * @param parameter 方法的参数对象
+     * @param targetType 方法的参数类型
+     * @param converterType 将会使用到的Http消息转换器类类型
      * @return 返回 一个自定义的HttpInputMessage
      */
     @Override
@@ -88,11 +89,12 @@ public class MyRequestBodyAdvice implements RequestBodyAdvice {
 
     /**
      * 在Http消息转换器执转换，之后执行
-     * body 转换后的对象
-     * inputMessage 客户端的请求数据
-     * parameter 方法的参数类型
-     * targetType 方法的参数类型
-     * converterType 使用的Http消息转换器类类型
+     *
+     * @param body 转换后的对象
+     * @param inputMessage 客户端的请求数据
+     * @param parameter 方法的参数对象
+     * @param targetType 方法的参数类型
+     * @param converterType 将会使用到的Http消息转换器类类型
      * @return 返回一个新的对象
      */
     @Override

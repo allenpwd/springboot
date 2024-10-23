@@ -1,5 +1,6 @@
 package pwd.allen.entity;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.baomidou.mybatisplus.annotation.IEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -7,6 +8,7 @@ public enum StatusEnum implements IEnum<Integer> {
     ON(1, "启用"),
     OFF(0, "禁用");
 
+    @EnumValue
     private int value;
     @JsonValue
     private String desc;

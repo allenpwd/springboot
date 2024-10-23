@@ -5,3 +5,6 @@ pwd.allen.base.listener.MyApplicationContextInitializer
 # Application Listeners
 org.springframework.boot.SpringApplicationRunListener=\
 pwd.allen.base.listener.MySpringApplicationRunListener
+
+#org.springframework.context.ApplicationListener=\
+#pwd.allen.base.listener.MyApplicationListener

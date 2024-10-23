@@ -15,7 +15,8 @@ import pwd.allen.base.entity.MyResult;
 /**
  * {@link ResponseBodyAdvice}
  *  用途：对RestController的响应进行拦截处理（在响应被{@link HttpMessageConverter}处理之前）
- *  用法：需要把实现类注册到RequestMappingHandlerAdapter和ExceptionHandlerExceptionResolver；加上RestControllerAdvice这个注解会被自动注册
+ *  用法：方法一：把实现类注册到RequestMappingHandlerAdapter和ExceptionHandlerExceptionResolver
+ *     方法二：加上RestControllerAdvice这个注解会被自动注册
  *
  * {@link RestControllerAdvice}
  *  value/basePackages：指定对那些路径进行拦截，如果都需要拦截的话不需要写value
