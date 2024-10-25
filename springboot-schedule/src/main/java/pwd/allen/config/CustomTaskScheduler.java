@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 
 /**
+ * Spring Boot 使用 ThreadPoolTaskScheduler 作为默认的调度器。这个调度器会管理一个线程池，并根据任务的执行时间将任务提交给线程池中的线程执行。这样可以避免不断循环判断是否到达执行时间，从而提高效率。
+ *
  * 重写spring的任务调度所有 schedule* 方法，记录调度对象，便于后续操作：例如取消定时任务
  */
 @Data
