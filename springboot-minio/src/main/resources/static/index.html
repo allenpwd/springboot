@@ -81,7 +81,8 @@
                  */
                 handleHttpRequest: async (options) => {
                     const file = options.file
-                    const task = await getTaskInfo(file)
+                    console.log(file)
+                    const task = await this.getTaskInfo(file)
                     if (task) {
                         const { finished, path, taskRecord } = task
                         const { fileIdentifier: identifier } = taskRecord
@@ -129,7 +130,9 @@
                  */
                 getTaskInfo: async (file) => {
                     let task;
+                    console.log('开始计算文件md5')
                     const identifier = await this.md5(file)
+                    console.log(identifier)
                     const { code, data, msg } = await this.taskInfo(identifier)
                     if (code === 200000) {
                         task = data
