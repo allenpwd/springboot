@@ -68,6 +68,6 @@ public class ReactorTest {
                 .delayElements(Duration.ofSeconds(1));
         flux.subscribe(System.out::println);
 
-        Thread.sleep(5000);
+        flux.blockLast();
     }
 }

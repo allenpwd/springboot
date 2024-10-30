@@ -14,6 +14,9 @@ import pwd.allen.flux.entity.User;
 @WebFluxTest(controllers = UserController.class)
 public class UserHandlerTest {
 
+    /**
+     * 由于Webflux是异步的，我们不能直接使用MockMvc客户端访问它，这个时候需要换另一个客户端WebTestClient
+     */
     @Autowired
     private WebTestClient webTestClient;
 
