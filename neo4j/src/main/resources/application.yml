@@ -1,9 +1,13 @@
 spring:
   neo4j:
-    uri: bolt://192.168.118.102:7687
+#    uri: bolt://192.168.118.102:7687
+#    authentication:
+#      username: neo4j
+#      password: 123456
+    uri: bolt://40033-bk7.cdc.k8s:42507
     authentication:
       username: neo4j
-      password: 123456
+      password: VXe19@kka_bp
 
 
 #打印neo4j生成的Cypher

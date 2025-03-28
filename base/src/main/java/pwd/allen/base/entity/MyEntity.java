@@ -29,4 +29,5 @@ public class MyEntity {
     private Map<String, Object> mapA;
     @Size(max = 10, message = "list长度最大不能超过10")
     private List<String> listA;
+    private StatusEnum status;
 }

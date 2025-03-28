@@ -5,12 +5,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pwd.allen.base.entity.MyEntity;
 import pwd.allen.base.entity.MyResult;
+import pwd.allen.base.entity.StatusEnum;
 import pwd.allen.base.validator.MyValidator;
 
 import javax.validation.Valid;
@@ -26,7 +24,8 @@ public class ValidController {
 
     @ApiOperation("binder")
     @PostMapping("binder")
-    public MyResult<MyEntity> binder(@RequestBody MyEntity myEntity, BindingResult result) {
+    public MyResult<MyEntity> binder(@RequestParam(required = false) String query, @RequestBody MyEntity myEntity, BindingResult result) {
+        myEntity.setStatus(StatusEnum.DISABLED);
         return MyResult.success(myEntity);
     }
     @InitBinder

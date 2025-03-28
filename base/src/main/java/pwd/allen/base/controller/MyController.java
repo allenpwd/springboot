@@ -2,6 +2,7 @@ package pwd.allen.base.controller;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.github.xiaoymin.knife4j.spring.configuration.Knife4jProperties;
@@ -13,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +33,9 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -138,6 +142,36 @@ public class MyController {
     public void redirect(HttpServletResponse resp) throws IOException {
         String url = "https://baijiahao.baidu.com/s?id=1721805863551776827&wfr=spider&for=pc";
         resp.sendRedirect(url);
+    }
+
+    /**
+     * 返回application.properties给前端
+     * @return
+     */
+    @GetMapping("/download")
+    public ResponseEntity<byte[]> download() throws UnsupportedEncodingException {
+        String fileName = "测试.docx";
+        byte[] documentBytes = IoUtil.readBytes(this.getClass().getClassLoader().getResourceAsStream(fileName));
+        String encodingFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.name());
+        encodingFileName = new String(fileName.getBytes(), StandardCharsets.ISO_8859_1);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + encodingFileName)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(documentBytes);
+    }
+
+    /**
+     * 返回application.properties给前端
+     * @return
+     */
+    @GetMapping("/download2")
+    public void download2(HttpServletResponse response) throws IOException {
+        String fileName = "测试.docx";
+        try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(fileName)) {
+            response.setContentType(MediaType.APPLICATION_OCTET_STREAM.toString());
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + new String(fileName.getBytes(), StandardCharsets.ISO_8859_1));
+            response.getOutputStream().write(IoUtil.readBytes(inputStream));
+        }
     }
 
 }
