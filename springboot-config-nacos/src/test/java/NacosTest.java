@@ -56,10 +56,10 @@ public class NacosTest {
 		password = "";
 
 //		serverAddr = "nacos.devops.cndatacom.com:18818";
-		serverAddr = "192.168.205.41:8848";
-		namespace = "CRM-UMarketing-Backend-Foundation";
-		username = "qx_nacos_admin";
-		password = "n@V2!5jnjm";
+		serverAddr = "nacos.devops.cndatacom.com:18818";
+		namespace = "eidd_CRM-SCABCLargeScreen-API-TEST";
+		username = "qx_zhjr";
+		password = "znGU*5BanW";
 		group = "DEVELOP_FUMK";
 
 

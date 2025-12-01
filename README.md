@@ -60,3 +60,11 @@ logback.xml的加载顺序早于springboot的application.yml (或application.pro
 
 ### TODO
 - ApplicationContextInitializer
+
+```xml
+<dependency>
+    <groupId>com.github.ulisesbocchio</groupId>
+    <artifactId>jasypt-spring-boot-starter</artifactId>
+    <version>3.0.5</version>
+</dependency>
+```

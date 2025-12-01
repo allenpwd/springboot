@@ -10,6 +10,7 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import pwd.allen.base.annotation.IgnoreResponseAdvice;
+import pwd.allen.base.annotation.MyResponseAdvice;
 import pwd.allen.base.entity.MyResult;
 
 /**
@@ -22,7 +23,7 @@ import pwd.allen.base.entity.MyResult;
  *  value/basePackages：指定对那些路径进行拦截，如果都需要拦截的话不需要写value
  *  annotations：指定一个或多个注解，被这些注解所标记的 Controller 会被该 @ControllerAdvice管理
  */
-@RestControllerAdvice(value = "pwd.allen.base.controller", annotations = IgnoreResponseAdvice.class)
+@RestControllerAdvice(value = "pwd.allen.base.controller", annotations = MyResponseAdvice.class)
 @Slf4j
 public class MyResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
@@ -49,7 +50,7 @@ public class MyResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     }
 
     /**
-     * 响应给客户端之前做处理
+     * 响应给客户端之前做处理，如果方法出错，则不会执行此方法
      * @param body the body to be written
      * @param returnType the return type of the controller method
      * @param selectedContentType the content type selected through content negotiation

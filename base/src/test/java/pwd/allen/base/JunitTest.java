@@ -60,4 +60,9 @@ public class JunitTest {
         propertySourceList.forEach(propertySources::addLast);
         System.out.println(environment.getProperty("server.port"));
     }
+
+    @Test
+    public void test1() {
+        System.out.println(System.getenv("ProgramFiles"));
+    }
 }
