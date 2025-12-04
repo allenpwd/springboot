@@ -5,7 +5,6 @@ import io.minio.http.Method;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import pwd.allen.minio.config.MyMinioProperties;
 
@@ -16,7 +15,7 @@ import java.io.InputStream;
  */
 @Service
 @Slf4j
-public class MinioTemplate implements IFileService {
+public class MinioFileService implements IFileService {
 
     @Autowired
     private MyMinioProperties minioProperties;
@@ -25,8 +24,9 @@ public class MinioTemplate implements IFileService {
     @Autowired
     private MinioClient minioClient;
 
-    public MinioTemplate() {}
+    public MinioFileService() {}
 
+    @Override
     public void createBucket(String bucketName) {
         try {
             if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())) {
@@ -44,6 +44,7 @@ public class MinioTemplate implements IFileService {
      * @param expires   过期时间 单位s 默认7天
      * @return
      */
+    @Override
     public String getObjectURL(String bucketName, String objectName, int expires) {
         try {
             return minioClient.getPresignedObjectUrl(

@@ -5,12 +5,10 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -22,7 +20,7 @@ import java.util.Map;
  **/
 @Slf4j
 @Service
-public class S3Template implements IFileService {
+public class S3FileService implements IFileService {
 
     @Autowired
     private AmazonS3 s3Client;

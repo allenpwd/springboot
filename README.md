@@ -5,7 +5,7 @@
 - 通过spring-boot的SPI机制，从spring.factories获得所有EnableAutoConfiguration的自动装配配置主类信息，并去掉一些重复的
 - 排除需要排除的类，具体操作是通过@SpringBootApplication 注解中的 exclude、excludeName、环境属性中的 spring.autoconfigure.exclude配置
 - 根据  spring-autoconfigure-metadata.properties 中配置的规则过虑掉一部分引导类 
-##### spring-autoconfigure-metadata.properties
+##### spring-autoconfigure-metadata.properties 
 内容格式： (自动配置的类全名.条件Condition=值)
 
 
@@ -60,3 +60,11 @@ logback.xml的加载顺序早于springboot的application.yml (或application.pro
 
 ### TODO
 - ApplicationContextInitializer
+
+```xml
+<dependency>
+    <groupId>com.github.ulisesbocchio</groupId>
+    <artifactId>jasypt-spring-boot-starter</artifactId>
+    <version>3.0.5</version>
+</dependency>
+```

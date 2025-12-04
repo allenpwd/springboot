@@ -5,10 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import pwd.allen.minio.config.MinioConfig;
 import pwd.allen.minio.service.IFileService;
-import pwd.allen.minio.service.MinioTemplate;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +19,7 @@ import java.nio.charset.Charset;
 class MinioTemplateTest {
 
     @Autowired
-    @Qualifier("minioTemplate")
+    @Qualifier("minioFileService")
 //    @Qualifier("s3Template")
     private IFileService fileService;
 
@@ -32,11 +29,12 @@ class MinioTemplateTest {
         fileService.createBucket(buckName);
     }
 
+    /**
+     * 预览地址的ip一旦生成不能使用其他ip进行访问，否则会验证失败，因为ip被用于签名验证，
+     */
     @Test
     void getObjectURL() {
-        String objectName = "test1.xlsx";
-        objectName = "SpringBoot+Vue 的昆虫科普管理系统的设计与实现 选题.docx";
-        String objectURL = fileService.getObjectURL(buckName, objectName, 60 * 60);
+        String objectURL = fileService.getObjectURL(buckName, "test/秒杀+分布式锁.doc", 60);
         System.out.println(objectURL);
     }
 
