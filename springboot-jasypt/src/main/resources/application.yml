@@ -17,9 +17,23 @@ management:
 # jasypt 密码加密配置
 jasypt:
   encryptor:
-    # 加密盐值
+    # 加密密钥，务必保密
     password: jasypt
-    # 加密算法 默认PBEWithMD5AndDES
+    # 加密算法 默认PBEWithMD5AndDES，这种方式每次加密出来的结果都不一样，但是解密结果是一样的
     algorithm: PBEWithMD5AndDES
     # 默认 org.jasypt.iv.NoIvGenerator
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
+    # 指定自己注册的stringEncryptor的bean名称，如果不指定，会创建默认的（必须指定必要的参数，否则报错：either 'jasypt.encryptor.password' or one of ['jasypt.encryptor.private-key-string', 'jasypt.encryptor.private-key-location'] must be provided for Password-based or Asymmetric encryption）
+#    bean: stringEncryptor
+    # 密钥迭代次数，影响破解难度，默认1000
+    key-obtention-iterations: 1000
+    # 加密池的大小，默认1
+    pool-size: 1
+    # 盐生成器类，防止彩虹表攻击，默认org.jasypt.salt.RandomSaltGenerator
+    salt-generator-classname: org.jasypt.salt.RandomSaltGenerator
+    # 输出编码类型，默认base64
+    string-output-type: base64
+    #设置前缀后缀
+    property:
+      prefix: "ENC("
+      suffix: ")"

@@ -1,6 +1,7 @@
 package pwd.allen.redis.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.interceptor.CacheAspectSupport;
@@ -48,5 +49,11 @@ public class MyService {
         user.setBirthday(new Date());
         log.info("操作了数据库，添加了{}", user);
         return user;
+    }
+
+    @CacheEvict(value = "myRedisCache", key = "#name")
+    public Boolean deleteUser(String name) {
+        log.info("操作了数据库，删除了{}", name);
+        return true;
     }
 }

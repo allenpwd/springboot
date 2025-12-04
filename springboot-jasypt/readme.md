@@ -8,3 +8,10 @@ Jasypt (Java Simplified Encryption) 是一个开源的Java库，专注于简化�
 - 环境感知：可以在不同的环境中（如开发、测试、生产）使用不同的加密策略和密钥，增强安全性。
 - 无状态操作：Jasypt的加密操作不依赖于外部状态，使得它易于部署和使用。
 - 集成友好：提供了与Spring框架的紧密集成，可以通过Spring Boot Starter轻松配置和使用。
+
+
+### 原理
+看到是懒加载一个stringencryptor，保证能提前初始化出来，然后在环境变量初始化时对他们进行wrapper并返回
+
+
+springboot2.x以下的版本，只能用jasypt1.x的版本。如果用jasypt2.x的版本，启动会报错，详见https://github.com/ulisesbocchio/jasypt-spring-boot/issues/97
