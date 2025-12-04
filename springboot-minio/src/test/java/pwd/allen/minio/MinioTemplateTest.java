@@ -34,7 +34,9 @@ class MinioTemplateTest {
 
     @Test
     void getObjectURL() {
-        String objectURL = fileService.getObjectURL(buckName, "application.yml", 60);
+        String objectName = "test1.xlsx";
+        objectName = "SpringBoot+Vue 的昆虫科普管理系统的设计与实现 选题.docx";
+        String objectURL = fileService.getObjectURL(buckName, objectName, 60 * 60);
         System.out.println(objectURL);
     }
 

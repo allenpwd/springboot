@@ -55,12 +55,17 @@ public class NacosTest {
 		username = "";
 		password = "";
 
-//		serverAddr = "nacos.devops.cndatacom.com:18818";
-		serverAddr = "192.168.205.41:8848";
-		namespace = "CRM-UMarketing-Backend-Foundation";
-		username = "qx_nacos_admin";
-		password = "n@V2!5jnjm";
-		group = "DEVELOP_FUMK";
+		serverAddr = "nacos.devops.cndatacom.com:18818";
+		namespace = "eidd_CRM-SCABCLargeScreen-API-TEST";
+		username = "qx_zhjr";
+		password = "znGU*5BanW";
+		group = "CSGRC_BEI_TWOTWO_NEW_GROUP";
+
+		serverAddr = "139.159.230.161:8848";
+		namespace = "CSGRC_BEI_TWOTWO_NEW_GROUP";
+		username = "qx_zhjr";
+		password = "znGU*5BanW";
+		group = "CSGRC_BEI_TWOTWO_NEW_GROUP";
 
 
 		properties = new Properties();
@@ -88,7 +93,7 @@ public class NacosTest {
     public void config() throws NacosException, InterruptedException {
 		ConfigService configService = NacosFactory.createConfigService(properties);
 		// 根据dataId、group定位到具体配置文件，获取其内容. 方法中的三个参数分别是: dataId, group, 超时时间
-		String content = configService.getConfig("umarketing-enterprise.yml", "DEVELOP_FUMK", 3000L);
+		String content = configService.getConfig("csgrc.yml", "CSGRC_BEI_TWOTWO_NEW_GROUP", 3000L);
 		System.out.println(content);
 
 		// 另启线程监控配置文件的变更

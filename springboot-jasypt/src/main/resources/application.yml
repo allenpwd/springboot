@@ -1,0 +1,25 @@
+pwd:
+  # myPassword
+  password: ENC(6525nekMUbqtZGLVhr6PVQ==)
+server:
+  servlet:
+    # /jasypt
+    context-path: ENC(r28a64AQU+8gjidBPbORPg==)
+
+# actuator看到的password是******脱敏的，但是context-path没有脱敏
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - env
+
+# jasypt 密码加密配置
+jasypt:
+  encryptor:
+    # 加密盐值
+    password: jasypt
+    # 加密算法 默认PBEWithMD5AndDES
+    algorithm: PBEWithMD5AndDES
+    # 默认 org.jasypt.iv.NoIvGenerator
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
